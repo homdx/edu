@@ -1,11 +1,11 @@
 %%	Group 1 - Assignment 1
 %	Anirudh Gupta		-	6607652
 %	Maria Panoukidou	-	6607946
-%	Sudip Sinha		-	6609779
+%	Sudip Sinha			-	6609779
 
 %%	Initialize
 clear all; clf; clc;
-digits = [2 3];	% Change this to [3 8] for the last part of the exercise.
+digits = [3 8];	% Change this to [3 8] for the last part of the exercise.
 
 
 %%	Part (a)   	Prepare the training data.
