@@ -1,3 +1,8 @@
+%%	Group 1 - Assignment 1
+%	Anirudh Gupta     -  6607652
+%	Maria Panoukidou  -  6607946
+%	Sudip Sinha       -  6609779
+
 function [ pred ] = knnClassify( train_data, train_label, test_data, k )
 %knnClassify The k-nearest neighbour classifier
 %	Classifies the points of the test_data according to the

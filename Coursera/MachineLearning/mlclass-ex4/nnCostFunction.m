@@ -77,7 +77,8 @@ h = sigmoid(z3);
 
 %   Cost
 J = 1/m * (sum(sum(-yk .* log(h) - (1-yk) .* log(1-h))) ...
-    + lambda/2 * (sum(sum(Theta1(:, 2:end) .^ 2)) + sum(sum(Theta2(:, 2:end) .^ 2))));
+        + lambda/2 * (sum(sum(Theta1(:, 2:end) .^ 2)) ...
+                    + sum(sum(Theta2(:, 2:end) .^ 2))));
 
 %   Backward propagation
 del3 = h - yk;
