@@ -25,8 +25,8 @@
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/function.h>
-#include <deal.II/numerics/vectors.h>
-#include <deal.II/numerics/matrices.h>
+#include <deal.II/numerics/vector_tools.h>
+#include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/sparse_matrix.h>
@@ -66,8 +66,8 @@ Tensor<1,2> Solution::gradient (const Point<2>   &p,
   //deal.II steps 1-3 and the function evaluation 
   //the value of this function above.
   Tensor<1,2> return_value;
-  return_value[0] = 0.;
-  return_value[1] = 0.;
+  return_value[0] = M_PI * cos(M_PI * p(0)) * sin(2.*M_PI * p(1));
+  return_value[1] = 2 * M_PI * sin(M_PI * p(0)) * cos(2.*M_PI * p(1));
   return return_value;
 }
 
@@ -201,8 +201,9 @@ void Problem::assemble_system ()
  	   *  Note: do not remove the term fe_values.JxW (q_point)
  	   *  it contains the quadrature weights!
  	   */
+	  Point<2> c_point = fe_values.quadrature_point(q_point);
 	  cell_rhs(i) += (fe_values.shape_value (i, q_point) *
-			  1. *
+			  5 * M_PI * M_PI * sin(M_PI * c_point(0)) * sin(2 * M_PI * c_point(1)) *
 			  fe_values.JxW (q_point));
 	}
       cell->get_dof_indices (local_dof_indices);
@@ -267,7 +268,7 @@ void Problem::output_results ()
 				     Solution(),
 				     difference_per_cell,
 				     QGauss<2>(3),
-				     VectorTools::L2_norm);
+				     VectorTools::H1_seminorm);
   h1_value[iter] = difference_per_cell.l2_norm();
   std::cout << "H1 Error: "
 	    << h1_value[iter]
@@ -292,8 +293,8 @@ void Problem::summarize_results () const
        * triangulations h_1, h_2, h_3 in the array named " l2_value "
        * and those for the H1 seminorm in h1_value.
        */
-      order_p = log(2);
-      order_m = log(2);
+      order_p = log(l2_value[i-1] / l2_value[i]) / log(2);
+      order_m = log(h1_value[i-1] / h1_value[i]) / log(2);
       std::cout<<dofs[i]<<"\t"<<l2_value[i]<<"\t"<<order_p<<"\t"<<h1_value[i]<<"\t"<<order_m<<std::endl;
     }
     else
