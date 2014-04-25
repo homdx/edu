@@ -1,0 +1,422 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Exercise 5
+\end_layout
+
+\begin_layout Standard
+Notations
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $S$
+\end_inset
+
+ = message is actually spam
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $L$
+\end_inset
+
+ = message is actually legitimate
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\hat{S}$
+\end_inset
+
+ = message is classified as spam
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\hat{L}$
+\end_inset
+
+ = message is classified as legitimate
+\end_layout
+
+\begin_layout Subsection*
+Part (a)
+\end_layout
+
+\begin_layout Standard
+From the given data, we conclude the following:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{S}\mid S\right)=0.85$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{S}\mid L\right)=0.05$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(S\right)=0.60$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(L\right)=1-\Pr\left(S\right)=1-0.60=0.40$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{S}\cap S\right)=\Pr\left(\hat{S}\mid S\right)\Pr\left(S\right)=0.85\times0.60=0.51$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{S}\cap L\right)=\Pr\left(\hat{S}\mid L\right)\Pr\left(L\right)=0.05\times0.40=0.02$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{S}\right)=\Pr\left(\hat{S}\cap S\right)+\Pr\left(\hat{S}\cap L\right)=0.51+0.02=0.53$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{L}\cap S\right)=\Pr\left(S\right)-\Pr\left(\hat{S}\cap S\right)=0.60-0.51=0.09$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\Pr\left(\hat{L}\cap L\right)=\Pr\left(L\right)-\Pr\left(\hat{S}\cap L\right)=0.40-0.02=0.38$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="4">
+<features tabularvalignment="middle">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" bottomline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $S$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $L$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\hat{S}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.51
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.02
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.53
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $\hat{L}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.09
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.38
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.47
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.60
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+0.40
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+From the above table, we can conclude the following
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Definitions from 
+\begin_inset Quotes eld
+\end_inset
+
+Counting performance measures (2)
+\begin_inset Quotes erd
+\end_inset
+
+ page of the slides
+\end_layout
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Itemize
+False positive 
+\begin_inset Formula $=\Pr\left(\hat{S}\mid L\right)=\frac{\Pr\left(\hat{S}\cap L\right)}{\Pr\left(L\right)}=\frac{0.02}{0.40}=0.05$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+False negative 
+\begin_inset Formula $=\Pr\left(\hat{L}\mid S\right)=\frac{\Pr\left(\hat{L}\cap S\right)}{\Pr\left(S\right)}=\frac{0.09}{0.60}=0.15$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Average error 
+\begin_inset Formula $=\Pr\left(\hat{S}\cap L\right)+\Pr\left(\hat{L}\cap S\right)=0.02+0.09=0.11$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Part (b)
+\end_layout
+
+\begin_layout Itemize
+A classication algorithm with zero false positive rate would be a classifier
+ which simply classifies everything as legitimate.
+\end_layout
+
+\begin_layout Itemize
+A classication algorithm with zero false negative rate would be a classifier
+ which simply classifies everything as spam.
+\end_layout
+
+\begin_layout Subsection*
+Part (c)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename E5.eps
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,7 +1,4 @@
-%%	Group 1 - Assignment 1
-%	Anirudh Gupta     -  6607652
-%	Maria Panoukidou  -  6607946
-%	Sudip Sinha       -  6609779
+%%	Exercise 1 - kNN classifier
 
 %%	Initialize
 clear all; clf; clc;

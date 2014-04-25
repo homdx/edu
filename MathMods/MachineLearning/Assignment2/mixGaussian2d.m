@@ -17,3 +17,5 @@ x_class2 = repmat(mu2,n2,1) + randn(n2,2)*R2;
 x = [x_class1;x_class2];
 y = ones(n,1);
 y(n1+1:n) = 2;
+
+end

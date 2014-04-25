@@ -10,3 +10,5 @@ x_class2 = mu2 + sigma2*randn(n2,1);
 x = [x_class1;x_class2];
 y = ones(n,1);
 y(n1+1:n) = 2;
+
+end
