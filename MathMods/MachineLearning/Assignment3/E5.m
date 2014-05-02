@@ -1,4 +1,3 @@
-function E5
 %%	Exercise 5 - Ridge regression
 
 
@@ -77,5 +76,3 @@ for i = 1:length(lambda)
 	err(i) = lossL2(y_test, add1(X_test_poly) * w);
 end
 [lambda',  2 .^ lambda',  err]
-
-end
