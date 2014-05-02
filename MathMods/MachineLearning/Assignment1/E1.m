@@ -3,6 +3,7 @@
 %%	Initialize
 clear all; clf; clc;
 
+
 %%	Part (a)   	Prepare the dataset and the classifier.
 %	Generate data
 n1 = 20; train_data_class1 = rand(n1,2);

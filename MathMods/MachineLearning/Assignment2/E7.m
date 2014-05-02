@@ -4,8 +4,8 @@
 clear all; clc;
 
 sigma = 0.1;
-[X_train,Y_train] = genLinData(50, sigma);
-[X_test, Y_test]  = genLinData(30, sigma);
+[X_train, Y_train] = genLinData(50, sigma);
+[X_test,  Y_test ] = genLinData(30, sigma);
 
 %%	Part (a)
 
@@ -24,9 +24,7 @@ legend('Y_{train}', 'Y_{test}');
 
 %	Ploting the fitted line.
 w = LLS(X_train, Y_train);
-[~, mIdx] = min(X_train);
-[~, MIdx] = max(X_train);
-X = X_train([mIdx MIdx]);
+X = [min(X_train); max(X_train)];
 y = [[1;1] X] * w;
 line(X, y);
 legend('Y_{train}', 'Y_{test}', 'Y_{pred}');
@@ -61,9 +59,7 @@ figure(1);
 X_train = [X_train; 10];
 Y_train = [Y_train; 10];
 w = LLS(X_train, Y_train);
-[~, mIdx] = min(X_train);
-[~, MIdx] = max(X_train);
-X = X_train([mIdx MIdx]);
+X = [min(X_train); max(X_train)];
 y = [[1;1] X] * w;
 line(X, y);
 axis([-2 1, 0 2.5]);

@@ -1,0 +1,252 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Assignment 3"
+\pdf_author "Sudip Sinha"
+\pdf_subject "Machine Learning"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict true
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Machine Learning - Assignment 3
+\end_layout
+
+\begin_layout Author
+Sudip Sinha
+\end_layout
+
+\begin_layout Subsection*
+Exercise 2
+\end_layout
+
+\begin_layout Standard
+Given
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $VV^{T}=V^{T}V=I$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $D$
+\end_inset
+
+ is an invertible diagonal matrix
+\end_layout
+
+\begin_layout Standard
+Proof
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $B=VD^{-1}V^{T}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $AB=VDV^{T}VD^{-1}V^{T}=VD\left(V^{T}V\right)D^{-1}V^{T}=VDID^{-1}V^{T}=V\left(DD^{-1}\right)V^{T}=VIV^{T}=I$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $BA=VD^{-1}V^{T}VDV^{T}=VD^{-1}\left(V^{T}V\right)DV^{T}=VD^{-1}IDV^{T}=V\left(D^{-1}D\right)V^{T}=VIV^{T}=I$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, 
+\begin_inset Formula $A^{-1}=B=VD^{-1}V^{T}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+Exercise 3
+\end_layout
+
+\begin_layout Standard
+We just have to show that the square of the norm is a convex function.
+\end_layout
+
+\begin_layout Standard
+By the definition of norm,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\left\Vert tx+\left(1-t\right)y\right\Vert  & \leq & \left\Vert tx\right\Vert +\left\Vert \left(1-t\right)y\right\Vert =t\left\Vert x\right\Vert +\left(1-t\right)\left\Vert y\right\Vert \\
+\implies\left\Vert tx+\left(1-t\right)y\right\Vert ^{2} & \leq & \left(t\left\Vert x\right\Vert +\left(1-t\right)\left\Vert y\right\Vert \right)^{2}\leq t^{2}\left\Vert x\right\Vert ^{2}+\left(1-t\right)^{2}\left\Vert y\right\Vert ^{2}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, the least squares loss function 
+\begin_inset Formula $\left\Vert y-Xw\right\Vert ^{2}$
+\end_inset
+
+ is a convex function of 
+\begin_inset Formula $w$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+Exercise 4
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula $W=\mbox{diag}\left(r_{i}\right)$
+\end_inset
+
+.
+ Therefore, 
+\begin_inset Formula $W^{T}=W$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Thus, the problem can be reformulated as
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+w=\arg\min_{w}\left(e\right),\mbox{ where }e=\left(y-Xw\right)^{T}W\left(y-Xw\right)
+\]
+
+\end_inset
+
+Using the rules of Matrix Calculus given 
+\begin_inset CommandInset href
+LatexCommand href
+name "here"
+target "http://en.wikipedia.org/wiki/Matrix_calculus"
+
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\frac{\partial e}{\partial w} & = & \left(y-Xw\right)^{T}W\frac{\partial}{\partial w}\left(y-Xw\right)+\left(y-Xw\right)^{T}W^{T}\frac{\partial}{\partial w}\left(y-Xw\right)\\
+ & = & 2\left(y-Xw\right)^{T}W^{T}\left(-X\right)\qquad\left(\mbox{Since }W^{T}=W\right)\\
+ & = & 2\left(X^{T}W\left(Xw-y\right)\right)^{T}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For minimum error:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+ & \frac{\partial e}{\partial w} & =0^{T}\\
+\implies & 2\left(X^{T}W\left(Xw-y\right)\right)^{T} & =0^{T}\\
+\implies & X^{T}W\left(Xw-y\right) & =0\\
+\implies & X^{T}WXw & =X^{T}y\\
+\implies & w & =\left(X^{T}WX\right)^{-1}X^{T}y
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

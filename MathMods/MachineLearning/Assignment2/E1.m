@@ -3,7 +3,7 @@
 %%	Initialization
 clear all; clc;
 load('20Newsgroup.mat');
-n = 40;
+% n = 40;
 
 %%	Training data set
 trIdx6 = find(y_train == 6);  rand_train_6 = randperm(length(trIdx6));
@@ -29,13 +29,10 @@ k = 1:2:9;
 err_train = zeros(length(k), 1);
 err_test = zeros(length(k), 1);
 for i = 1:length(k)
-	fprintf('k = %i\n', k(i));
-	tic;
 	pred_train = knnClassify(x_train_6_8, y_train_6_8, x_train_6_8, k(i));
 	pred_test  = knnClassify(x_train_6_8, y_train_6_8, x_test_6_8,  k(i));
 	err_train(i) = loss01(pred_train, y_train_6_8);
 	err_test(i)  = loss01(pred_test,  y_test_6_8);
-	toc;
 end
 
 %%	Plot the training and the test errors.

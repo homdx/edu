@@ -3,7 +3,7 @@ This repository contains small projects and assignments done during my education
 
 ## Folder descriptions ##
 * Coursera - Container for my courses taken in Coursera.
-    0. Machine Learning - ML005
+    0. Machine Learning - Andrew Ng @ Stanford
 * MathMods - Container for my courses taken during my masters.
     0. MATLAB Tutorial - Donato Pera @ UAQ.
     0. Machine Learning - Ulrike von Luxburg @ UHH

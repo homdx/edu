@@ -8,7 +8,8 @@ clear all; clc;
 %% Part (a)
 
 %	Description of the data.
-% TODO
+%	According to p1 and p2, it generates normally distributed data bases on
+%	mu and sigma values for two classes.
 
 figure(1);  clf;
 
