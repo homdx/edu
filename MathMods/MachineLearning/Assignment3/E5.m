@@ -12,10 +12,10 @@ title('Ridge regression');  xlabel('x');  ylabel('y');
 
 %	Plot the Training and Test points
 scatter(x_train, y_train, 30, 'm', 'fill');	% Training points
-scatter(x_test, y_test, 30, 'b', 'fill');	% Test points
+scatter(x_test , y_test , 30, 'b', 'fill');	% Test points
 
 %	Plot the fitted line
-w = LLS(x_train, y_train);
+w = RidgeLLS(x_train, y_train, 0);
 X = [min(x_train); max(x_train)];
 y = [[1;1] X] * w;
 line(X, y, 'LineStyle', '--', 'Color', 'r');
@@ -56,23 +56,23 @@ legend(lgnd);
 
 %	Plot the ridge regression function
 lambda = [1e-4 1e-1 1e+1];
-X_test_poly = mapFeatures(x_test, powers);
+X_train_poly = mapFeatures(x_train, powers);
 for i = 1:length(lambda)
-	w = RidgeLLS(X_test_poly, y_test, lambda(i));
-	y_test_ridge = add1(Xx_poly) * w;
-	plot(xx, y_test_ridge, 'Color', rand(1,3));
+	w = RidgeLLS(X_train_poly, y_train, lambda(i));
+	y_train_ridge = add1(Xx_poly) * w;
+	plot(xx, y_train_ridge, 'Color', rand(1,3));
 	lgnd = char(lgnd, strcat('y_{ridge, \lambda=', num2str(lambda(i)), '}'));
 end
 legend(lgnd);
 
-xlim([min([x_test; x_train]), max([x_test; x_train])]);
-ylim([min([y_test; y_train]), max([y_test; y_train])]);
+xlim([min([x_train; x_train]), max([x_train; x_train])]);
+ylim([min([y_train; y_train]), max([y_train; y_train])]);
 
 %	Prediction error
 lambda = -15:1;
 err = zeros(length(lambda), 1);
 for i = 1:length(lambda)
-	w = RidgeLLS(X_test_poly, y_test, 2 ^ lambda(i));
-	err(i) = lossL2(y_test, add1(X_test_poly) * w);
+	w = RidgeLLS(X_train_poly, y_train, 2 ^ lambda(i));
+	err(i) = lossL2(y_train, add1(X_train_poly) * w);
 end
 [lambda',  2 .^ lambda',  err]
