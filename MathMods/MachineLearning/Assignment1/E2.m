@@ -1,8 +1,9 @@
 %%	Exercise 2 - kNN for digit classification
 
+
 %%	Initialize
 clear all; clf; clc;
-digits = [3 8];	% Change this to [3 8] for the last part of the exercise.
+digits = [2 3];	% Change this to [3 8] for the last part of the exercise.
 
 
 %%	Part (a)   	Prepare the training data.
@@ -20,7 +21,7 @@ x_test = double(test_data(tsList,:));
 y_test = double(test_label(tsList));
 
 %	Visualize the training example number 155.
-% dig = reshape(train_data(155,:),16,16);
+% dig = reshape(train_data(155,:), 16, 16);
 % imagesc(dig);
 % colormap('gray');
 
