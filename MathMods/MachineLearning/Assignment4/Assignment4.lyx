@@ -1,0 +1,225 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman cmr
+\font_sans cmss
+\font_typewriter cmtt
+\font_default_family rmdefault
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_title "Assignment 3"
+\pdf_author "Sudip Sinha"
+\pdf_subject "Machine Learning"
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\papersize default
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict true
+\end_header
+
+\begin_body
+
+\begin_layout Section*
+Exercise 1 - Rewriting the Fisher criterion for LDA
+\end_layout
+
+\begin_layout Standard
+Let 
+\begin_inset Formula 
+\[
+J\left(w\right)=\frac{\left\langle w,\mu_{+}-\mu_{-}\right\rangle ^{2}}{\sigma_{w,+}^{2}+\sigma_{w,-}^{2}}=\frac{N}{D}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+First let us evaluate the numerator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+N & = & \left\langle w,\mu_{+}-\mu_{-}\right\rangle ^{2}\\
+ & = & \left\langle w,\mu_{+}-\mu_{-}\right\rangle \left\langle w,\mu_{+}-\mu_{-}\right\rangle \\
+ & = & \left\langle w,\mu_{+}-\mu_{-}\right\rangle \left\langle \mu_{+}-\mu_{-},w\right\rangle \qquad\mbox{Since }\left\langle a,b\right\rangle =\left\langle b,a\right\rangle \\
+ & = & w^{,T}\left(\mu_{+}-\mu_{-}\right)\left(\mu_{+}-\mu_{-}\right)^{T}w\\
+ & = & w^{T}C_{B}w\\
+ & = & \left\langle w,C_{B}w\right\rangle 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Moving on the the denominator.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\sigma_{w,+}^{2} & = & \frac{1}{m_{+}}\sum_{i:Y_{i}=+1}\left(\left\langle w,X_{i}-\mu_{+}\right\rangle ^{2}\right)\\
+ & = & \frac{1}{m_{+}}\sum_{i:Y_{i}=+1}\left(w^{T}\left(X_{i}-\mu_{+}\right)\left(X_{i}-\mu_{+}\right)^{T}w\right)\qquad\mbox{See evaluation for }N\\
+ & = & w^{T}\left(\frac{1}{m_{+}}\sum_{i:Y_{i}=+1}\left(X_{i}-\mu_{+}\right)\left(X_{i}-\mu_{+}\right)^{T}\right)w\\
+\sim\sigma_{w,-}^{2} & = & w^{T}\left(\frac{1}{m_{-}}\sum_{i:Y_{i}=-1}\left(X_{i}-\mu_{-}\right)\left(X_{i}-\mu_{-}\right)^{T}\right)w\\
+\implies D=\sigma_{w,+}^{2}+\sigma_{w,-}^{2} & = & w^{T}\left[\left\{ \frac{1}{m_{+}}\sum_{i:Y_{i}=+1}\left(X_{i}-\mu_{+}\right)\left(X_{i}-\mu_{+}\right)^{T}\right\} +\left\{ \frac{1}{m_{-}}\sum_{i:Y_{i}=-1}\left(X_{i}-\mu_{-}\right)\left(X_{i}-\mu_{-}\right)^{T}\right\} \right]w\\
+ & = & w^{T}C_{W}w\\
+ & = & \left\langle w,C_{W}w\right\rangle 
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, 
+\begin_inset Formula 
+\[
+J\left(w\right)=\frac{\left\langle w,\mu_{+}-\mu_{-}\right\rangle ^{2}}{\sigma_{w,+}^{2}+\sigma_{w,-}^{2}}=\frac{\left\langle w,C_{B}w\right\rangle }{\left\langle w,C_{W}w\right\rangle }
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+Exercise 4 - Complexity of multiclass classification
+\end_layout
+
+\begin_layout Subsection*
+Part (a) - Learning complexity = 
+\begin_inset Formula $c\left(m_{1}^{2}+m_{2}^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+One-vs-All: 
+\begin_inset Formula $\binom{k}{1}\times c\left[\left(\frac{1}{k}n\right)^{2}+\left\{ \left(1-\frac{1}{k}\right)n\right\} ^{2}\right]=\frac{cn^{2}}{k}\left[\left(k-1\right)^{2}+1\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+One-vs-One: 
+\begin_inset Formula $\binom{k}{2}\times c\left[\left(\frac{1}{k}n\right)^{2}+\left(\frac{1}{k}n\right)^{2}\right]=\frac{cn^{2}}{k}\left(k-1\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Part (b) - Learning complexity = 
+\begin_inset Formula $c\left(m_{1}+m_{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+One-vs-All: 
+\begin_inset Formula $\binom{k}{1}\times c\left[\left(\frac{1}{k}n\right)+\left(1-\frac{1}{k}\right)n\right]=cnk$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+One-vs-One: 
+\begin_inset Formula $\binom{k}{2}\times c\left[\left(\frac{1}{k}n\right)+\left(\frac{1}{k}n\right)\right]=cn\left(k-1\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Comments
+\end_layout
+
+\begin_layout Itemize
+One-vs-One is faster in both cases.
+\end_layout
+
+\begin_layout Itemize
+For scaling 
+\begin_inset Formula $n$
+\end_inset
+
+, the algorithm for part (b) is preferable.
+\end_layout
+
+\begin_layout Section*
+Exercise 5 - Parameter selection by the training error
+\end_layout
+
+\begin_layout Standard
+Overfitting
+\end_layout
+
+\end_body
+\end_document
