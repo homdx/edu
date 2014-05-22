@@ -1,0 +1,98 @@
+#	Impact analysis of severe weather events
+
+
+##	Synopsis
+In this report, we aim to describe the comparative damages by different storms in the United States between the years 1950 and 2011. Our overall hypothesis is that tornados would be causing the most damage to both people's lives as well to property and crops. To investigate this hypothesis, we obtained the storm database from the U.S. National Oceanic and Atmospheric Administration's (NOAA), which is collected from monitors sited across the U.S. For the health impact, we look at the total injuries and the fatalities that have come about due to each type of storm. Similarly, for wealth, we look at property damage and the crop damage. From these data, we found that, on average across the U.S., tornados are most damaging to human lives and property, and hail the most damaging for crops.
+
+
+##	Data Processing
+```{r Initialize, cache=TRUE}
+#	Download the data (Use 'http' since 'https' is not supported by 'download.file')
+download.file(
+	url="http://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2",
+	destfile="StormData.csv.bz2")
+
+#	Extract the actual file
+R.utils::bunzip2("StormData.csv.bz2")
+
+#	Read the data
+storm = read.csv(file="StormData.csv")
+```
+
+```{r Init}
+#	Set the number of elements to be considered for analysis
+N = 16
+
+#	Load required libraries
+library("ggplot2")
+library("grid")
+
+#	Define required functions
+vplayout = function(x, y) viewport(layout.pos.row=x, layout.pos.col=y)
+```
+
+Health impact is estimated by two factors - fatalities and injuries.
+```{r HealthImpactCalc}
+#	Calculate the impact on health across the United States
+healthImpact = aggregate(
+	x=cbind(storm$FATALITIES, storm$INJURIES),
+	by=list(storm$EVTYPE),
+	FUN=sum)
+names(healthImpact) = c("EVTYPE", "FATALITIES", "INJURIES")
+#	List out the high impact events.
+majorFatalitiesImpact = healthImpact[order(healthImpact$FATALITIES, decreasing=TRUE)[1:N], 1:2]
+majorInjuriesImpact   = healthImpact[order(healthImpact$INJURIES,   decreasing=TRUE)[1:N], c(1,3)]
+```
+
+Wealth impact is estimated by two factors - property and crop damages.
+```{r WealthImpactCalc}
+#	Calculate the impact on wealth across the United States
+wealthImpact = aggregate(
+	x=cbind(storm$PROPDMG, storm$CROPDMG),
+	by=list(storm$EVTYPE),
+	FUN=sum)
+names(wealthImpact) = c("EVTYPE", "PROPDMG", "CROPDMG")
+#	List out the high impact events.
+majorPropImpact = wealthImpact[order(wealthImpact$PROPDMG, decreasing=TRUE)[1:N], 1:2]
+majorCropImpact = wealthImpact[order(wealthImpact$CROPDMG, decreasing=TRUE)[1:N], c(1,3)]
+```
+
+
+
+## Results
+
+###	Health Impact
+```{r HealthImpactDisp}
+#	Plot the result as a panel plot in the same figure
+plotFatalities = ggplot(data=majorFatalitiesImpact, aes(x=EVTYPE, y=FATALITIES, fill=EVTYPE)) +
+	geom_bar(stat="identity") + ggtitle(label="Health Impact - Fatalities")	+
+	theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position="none")
+plotInjuries   = ggplot(data=majorInjuriesImpact,   aes(x=EVTYPE, y=INJURIES,   fill=EVTYPE)) +
+	geom_bar(stat="identity") + ggtitle(label="Health Impact - Injuries")	+
+	theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position="none")
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 1)))
+print(plotFatalities, vp = vplayout(1, 1))
+print(plotInjuries,   vp = vplayout(2, 1))
+```
+
+###	Wealth Impact
+```{r WealthImpactDisp}
+#	Plot the result as a panel plot in the same figure
+plotProp = ggplot(data=majorPropImpact, aes(x=EVTYPE, y=PROPDMG, fill=EVTYPE)) +
+	geom_bar(stat="identity") + ggtitle(label="Wealth Impact - Property Damages") +
+	theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position="none")
+plotCrop = ggplot(data=majorCropImpact, aes(x=EVTYPE, y=CROPDMG, fill=EVTYPE)) +
+	geom_bar(stat="identity") + ggtitle(label="Wealth Impact - Crop Damages")     +
+	theme(axis.text.x=element_text(angle = -90, hjust = 0), legend.position="none")
+grid.newpage()
+pushViewport(viewport(layout = grid.layout(2, 1)))
+print(plotProp, vp = vplayout(1, 1))
+print(plotCrop, vp = vplayout(2, 1))
+```
+
+
+
+##	Conclusions
+Thus, we see from the above plots that tornados are in general the most damaging.
+For crops, the most damaging turns out to be hail.

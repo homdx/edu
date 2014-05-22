@@ -1,0 +1,121 @@
+# Reproducible Research: Peer Assessment 1
+
+
+## Loading and preprocessing the data
+```{r Initialization}
+unzip("activity.zip")
+activity = read.csv(file='activity.csv')
+```
+
+
+
+## What is mean total number of steps taken per day?
+```{r Interday, results='asis'}
+#	Daily activity rollup
+activityInterday = aggregate(x=activity$steps,
+							 by=list(date = activity$date),
+							 FUN=sum)
+names(activityInterday)[2] = "steps"
+
+#	Plot
+hist(activityInterday$steps, breaks=64, density=64,
+	 main="Total number of steps taken per day")
+
+#	Summary statistics
+meanActivityInterday   = mean(  activityInterday$steps, na.rm=TRUE)
+medianActivityInterday = median(activityInterday$steps, na.rm=TRUE)
+cat("Mean  \t=", meanActivityInterday,   "\n")
+cat("Median\t=", medianActivityInterday, "\n")
+```
+
+
+
+## What is the average daily activity pattern?
+```{r Intraday, results='asis'}
+#	Compute
+activityIntraday = aggregate(x=activity$steps,
+							 by=list(interval=activity$interval),
+							 FUN=function(x) mean(x, na.rm=TRUE))
+names(activityIntraday)[2] = "steps"
+
+#	Display
+plot(activityIntraday, type="l",
+	 main="Mean activity throught the day")
+cat("Interval having the maximum number of steps =",
+	which.max(activityIntraday$steps), "\n")
+```
+
+
+
+## Imputing missing values
+To replace missing values, we use the mean number of steps over all the days for that particular time interval.
+```{r Imputing, results='asis'}
+#	Total rows of NAs
+cat("Total number of missing rows =", sum(!complete.cases(activity)), "\n")
+
+#	Imputation using the mean of the 5 minute interval
+naIdx = !complete.cases(activity)
+activityImputed = activity
+activityImputed[naIdx, "steps"] = activityIntraday[
+	which(activityIntraday$interval == activityImputed$interval[naIdx]), "steps"]
+
+#	Aggregation
+activityInterdayImputed = aggregate(
+	x=activityImputed$steps,
+	by=list(date = activityImputed$date),
+	FUN=sum)
+names(activityInterdayImputed)[2] = "steps"
+
+#	Histogram
+hist(activityInterdayImputed$steps, breaks=64, density=64,
+	 main="Total number of steps taken per day")
+
+#	Summary statistics
+meanActivityInterdayImputed   = mean(  activityInterdayImputed$steps, na.rm=TRUE)
+medianActivityInterdayImputed = median(activityInterdayImputed$steps, na.rm=TRUE)
+cat("Mean after imputation  \t=", meanActivityInterdayImputed,   "\n")
+cat("Median after imputation\t=", medianActivityInterdayImputed, "\n")
+
+#	Comparison
+if (meanActivityInterday != meanActivityInterdayImputed) {
+	cat("The values of the mean for the imputed data is different.\n")
+}  else {
+	cat("The values of the mean for the imputed data are the same.\n")
+}
+
+if (medianActivityInterday != medianActivityInterdayImputed) {
+	cat("The values of the median for the imputed data is different.\n")
+}  else {
+	cat("The values of the median for the imputed data are the same.\n")
+}
+
+```
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
+```{r WeekdayWeekend, results='asis'}
+day = weekdays(as.Date(activityImputed$date), abbreviate=TRUE)
+daytype = sapply(X=day, FUN=function(d) {
+	ifelse(d == "Sat" || d == "Sun", "weekend", "weekday")
+})
+names(daytype) = NULL
+daytype = as.factor(daytype)
+activityImputed$daytype = daytype
+
+#	Aggregation
+activityImputedIntraday = aggregate(
+	x=activityImputed$steps,
+	by=list(interval=activityImputed$interval, daytype=activityImputed$daytype),
+	FUN=function(x) mean(x, na.rm=TRUE))
+names(activityImputedIntraday)[3] = "steps"
+
+#	Plotting
+par(mfrow=c(2,1))
+plot(x = activityImputedIntraday[, c(1,3)]
+	[which(activityImputedIntraday$daytype == "weekend"),],
+	 type="l", main="Weekend")
+plot(x = activityImputedIntraday[, c(1,3)]
+	 [which(activityImputedIntraday$daytype == "weekday"),],
+	 type="l", main="Weekday")
+```
