@@ -65,6 +65,98 @@
 \begin_body
 
 \begin_layout Section*
+Exercise 3
+\end_layout
+
+\begin_layout Standard
+Probabilities of characters in normal text
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Pr\left(Y=j\right)=0.015$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\Pr\left(Y=k\right)=0.045$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\implies\Pr\left(\left(Y=j\right)\vee\left(Y=k\right)\right)=\Pr\left(Y=j\right)+\Pr\left(Y=k\right)=0.06$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Part (a)
+\end_layout
+
+\begin_layout Standard
+The most basic classifier we can choose is the classifier on based only
+ on prior probabilities.
+ Since 
+\begin_inset Formula $\Pr\left(Y=j\right)<\Pr\left(Y=k\right)$
+\end_inset
+
+, let this classifier be 
+\begin_inset Formula $f\left(x\right)=k\ \forall x\in X$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Calculating risk: 
+\begin_inset Formula $\mathcal{R}\left(f\right)=\Pr\left(Y=j\ |\ \left(\left(Y=j\right)\wedge\left(Y=k\right)\right)\right)=\frac{\Pr\left(Y=j\right)}{\Pr\left(\left(Y=j\right)\vee\left(Y=k\right)\right)}=\frac{1}{4}<0.3$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Thus, the most basic classifier has a risk lower than the classifier being
+ sold.
+ So we would not buy the classifier being sold.
+\end_layout
+
+\begin_layout Standard
+The lowest probability of error if we do not look at the input data is 
+\begin_inset Formula $0.25$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection*
+Part (b)
+\end_layout
+
+\begin_layout Standard
+Again let us choose the most basic classifier, which just predicts 
+\begin_inset Formula $\sim j$
+\end_inset
+
+ without regard to the input data.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathcal{R}\left(f\right)=\Pr\left(Y=j\right)=0.015<0.2$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+By the same logic of Part (a), we would not buy the classifier being sold.
+\end_layout
+
+\begin_layout Section*
 Exercise 5
 \end_layout
 
@@ -105,70 +197,7 @@ Part (a)
 \end_layout
 
 \begin_layout Standard
-From the given data, we conclude the following:
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{S}\mid S\right)=0.85$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{S}\mid L\right)=0.05$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(S\right)=0.60$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(L\right)=1-\Pr\left(S\right)=1-0.60=0.40$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{S}\cap S\right)=\Pr\left(\hat{S}\mid S\right)\Pr\left(S\right)=0.85\times0.60=0.51$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{S}\cap L\right)=\Pr\left(\hat{S}\mid L\right)\Pr\left(L\right)=0.05\times0.40=0.02$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{S}\right)=\Pr\left(\hat{S}\cap S\right)+\Pr\left(\hat{S}\cap L\right)=0.51+0.02=0.53$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{L}\cap S\right)=\Pr\left(S\right)-\Pr\left(\hat{S}\cap S\right)=0.60-0.51=0.09$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\Pr\left(\hat{L}\cap L\right)=\Pr\left(L\right)-\Pr\left(\hat{S}\cap L\right)=0.40-0.02=0.38$
-\end_inset
-
-
+From the given data, we fill up the confusion matrix.
 \end_layout
 
 \begin_layout Standard
@@ -193,7 +222,7 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $S$
+\begin_inset Formula $\hat{S}$
 \end_inset
 
 
@@ -205,7 +234,7 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $L$
+\begin_inset Formula $\hat{L}$
 \end_inset
 
 
@@ -228,7 +257,7 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\hat{S}$
+\begin_inset Formula $S$
 \end_inset
 
 
@@ -240,7 +269,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.51
+\begin_inset Formula $0.51\left(=0.85\times0.6\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -249,7 +281,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.02
+\begin_inset Formula $0.09\left(=0.6-0.51\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -258,7 +293,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.53
+\begin_inset Formula $0.6$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -269,7 +307,7 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-\begin_inset Formula $\hat{L}$
+\begin_inset Formula $L$
 \end_inset
 
 
@@ -281,7 +319,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.09
+\begin_inset Formula $0.02\left(=0.4\times0.05\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -290,7 +331,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.38
+\begin_inset Formula $0.38\left(=0.4-0.02\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -299,7 +343,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.47
+\begin_inset Formula $0.4\left(=1-0.6\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -319,7 +366,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.60
+\begin_inset Formula $0.53\left(=0.51+0.02\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -328,7 +378,10 @@ From the given data, we conclude the following:
 \begin_inset Text
 
 \begin_layout Plain Layout
-0.40
+\begin_inset Formula $0.47\left(=1-0.53\right)$
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -374,7 +427,7 @@ Counting performance measures (2)
 
 \begin_layout Itemize
 False positive 
-\begin_inset Formula $=\Pr\left(\hat{S}\mid L\right)=\frac{\Pr\left(\hat{S}\cap L\right)}{\Pr\left(L\right)}=\frac{0.02}{0.40}=0.05$
+\begin_inset Formula $=\Pr\left(\hat{S}\cap L\right)=0.02$
 \end_inset
 
 
@@ -382,7 +435,7 @@ False positive
 
 \begin_layout Itemize
 False negative 
-\begin_inset Formula $=\Pr\left(\hat{L}\mid S\right)=\frac{\Pr\left(\hat{L}\cap S\right)}{\Pr\left(S\right)}=\frac{0.09}{0.60}=0.15$
+\begin_inset Formula $=\Pr\left(\hat{L}\cap S\right)=0.09$
 \end_inset
 
 

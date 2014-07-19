@@ -145,18 +145,24 @@ Exercise 3
 \end_layout
 
 \begin_layout Standard
-We just have to show that the square of the norm is a convex function.
+Let 
+\begin_inset Formula $f\left(w\right)=\left\Vert X\bm{w}-\bm{y}\right\Vert ^{2}$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
-By the definition of norm,
+We just have to show that the square of the norm is a convex function.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\left\Vert tx+\left(1-t\right)y\right\Vert  & \leq & \left\Vert tx\right\Vert +\left\Vert \left(1-t\right)y\right\Vert =t\left\Vert x\right\Vert +\left(1-t\right)\left\Vert y\right\Vert \\
-\implies\left\Vert tx+\left(1-t\right)y\right\Vert ^{2} & \leq & \left(t\left\Vert x\right\Vert +\left(1-t\right)\left\Vert y\right\Vert \right)^{2}\leq t^{2}\left\Vert x\right\Vert ^{2}+\left(1-t\right)^{2}\left\Vert y\right\Vert ^{2}
+\left\Vert \left(1-t\right)x+ty\right\Vert ^{2} & = & \left(1-t\right)^{2}\left\Vert x\right\Vert ^{2}+t^{2}\left\Vert y\right\Vert ^{2}+2t\left(1-t\right)\left\langle x,y\right\rangle \qquad\forall t\in\left[0,1\right]\\
+ & = & \left(1-t\right)\left\Vert x\right\Vert ^{2}+t\left\Vert y\right\Vert ^{2}-t\left(1-t\right)\left(\left\Vert x\right\Vert ^{2}+\left\Vert y\right\Vert ^{2}-2\left\langle x,y\right\rangle \right)\\
+ & = & \left(1-t\right)\left\Vert x\right\Vert ^{2}+t\left\Vert y\right\Vert ^{2}-t\left(1-t\right)\left\Vert x-y\right\Vert ^{2}\\
+ & \leq & \left(1-t\right)\left\Vert x\right\Vert ^{2}+t\left\Vert y\right\Vert ^{2}\qquad\mbox{Since \ensuremath{t\left(1-t\right)\geq0}and \ensuremath{\left\Vert \cdot\right\Vert ^{2}\geq0}}
 \end{eqnarray*}
 
 \end_inset
@@ -199,9 +205,12 @@ Thus, the problem can be reformulated as
 
 \begin_layout Standard
 \begin_inset Formula 
-\[
-w=\arg\min_{w}\left(e\right),\mbox{ where }e=\left(y-Xw\right)^{T}W\left(y-Xw\right)
-\]
+\begin{eqnarray*}
+w & = & \arg\min_{w}\left(e\right)\\
+\mbox{where }e & = & \left(y-Xw\right)^{T}W\left(y-Xw\right)\\
+ & = & \left(y^{T}-w^{T}X^{T}\right)W\left(y-Xw\right)\\
+ & = & y^{T}Wy-y^{T}WXw-w^{T}X^{T}Wy+w^{T}X^{T}WXw
+\end{eqnarray*}
 
 \end_inset
 
@@ -219,9 +228,10 @@ target "http://en.wikipedia.org/wiki/Matrix_calculus"
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
-\frac{\partial e}{\partial w} & = & \left(y-Xw\right)^{T}W\frac{\partial}{\partial w}\left(y-Xw\right)+\left(y-Xw\right)^{T}W^{T}\frac{\partial}{\partial w}\left(y-Xw\right)\\
- & = & 2\left(y-Xw\right)^{T}W^{T}\left(-X\right)\qquad\left(\mbox{Since }W^{T}=W\right)\\
- & = & 2\left(X^{T}W\left(Xw-y\right)\right)^{T}
+\frac{\partial e}{\partial w} & = & -\left(y^{T}WX\right)^{T}-X^{T}Wy+\left(X+X^{T}\right)w\\
+ & = & \left(X^{T}WX+\left(X^{T}WX\right)^{T}\right)w-X^{T}W^{T}y-X^{T}Wy\\
+ & = & 2\left(X^{T}WXw-X^{T}Wy\right)\qquad\left(\mbox{Since }W^{T}=W\right)\\
+ & = & 2X^{T}W\left(Xw-y\right)
 \end{eqnarray*}
 
 \end_inset
@@ -236,11 +246,9 @@ For minimum error:
 \begin_layout Standard
 \begin_inset Formula 
 \begin{eqnarray*}
- & \frac{\partial e}{\partial w} & =0^{T}\\
-\implies & 2\left(X^{T}W\left(Xw-y\right)\right)^{T} & =0^{T}\\
-\implies & X^{T}W\left(Xw-y\right) & =0\\
-\implies & X^{T}WXw & =X^{T}y\\
-\implies & w & =\left(X^{T}WX\right)^{-1}X^{T}y
+\frac{\partial e}{\partial w} & = & 0\\
+\implies X^{T}WXw & = & X^{T}Wy\\
+\implies w & = & \left(X^{T}WX\right)^{+}X^{T}Wy
 \end{eqnarray*}
 
 \end_inset

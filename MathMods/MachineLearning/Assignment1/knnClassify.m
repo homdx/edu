@@ -7,10 +7,10 @@ mTrain = size(train_data, 1);
 mTest  = size(test_data,  1);
 
 % size(dist) = mTrain x mTest
-x2 = sum(train_data .^ 2, 2);
-y2 = sum(test_data  .^ 2, 2);
+xx = sum(train_data .^ 2, 2);
+yy = sum(test_data  .^ 2, 2);
 xy = train_data * test_data';
-dist =  repmat(x2, [1  mTest]) + repmat(y2', [mTrain 1]) - 2*xy;
+dist =  repmat(xx, [1  mTest]) + repmat(yy', [mTrain 1]) - 2*xy;
 
 [~, sIdx] = sort(dist, 1);	% Find out the closest elements
 
