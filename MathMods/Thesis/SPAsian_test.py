@@ -25,7 +25,7 @@ import SPAsian
 
 r = 0.05
 n = 4
-eac = SPAsian.sp_asian_e_call(s0=100, k=90, sigma=0.5, q=0.0, n=n, t=1.0)
+eac = SPAsian.sp_asian_e_call(s0=100, k=90, sigma=0.5, q=0.0, t=1.0, n=n)
 
 def test_num_sp_i0_ii_eq1(self):
 	for i in range(n + 1):
