@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c138de9-1783-40d8-95da-6245ae227dfe" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+    <list default="true" id="1c138de9-1783-40d8-95da-6245ae227dfe" name="Default" comment="+ UB&#10;+ LB">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/results.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SPAsian.py" afterPath="$PROJECT_DIR$/SPAsian.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SPAsian_test.py" afterPath="$PROJECT_DIR$/SPAsian_test.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
@@ -32,12 +31,10 @@
       <file leaf-file-name="SPAsian.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/SPAsian.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0325" vertical-offset="2989" max-vertical-offset="3636">
-              <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.6025" vertical-offset="2351" max-vertical-offset="3888">
+              <caret line="159" column="60" selection-start-line="159" selection-start-column="60" selection-end-line="159" selection-end-column="60" />
               <folding>
-                <element signature="e#360#593#0" expanded="true" />
-                <element signature="e#4163#8228#0" expanded="true" />
-                <element signature="e#9269#9656#0" expanded="true" />
+                <element signature="e#6268#6844#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -60,15 +57,16 @@
         <option value="$PROJECT_DIR$/Tests.py" />
         <option value="$PROJECT_DIR$/SPAsian_test.py" />
         <option value="$PROJECT_DIR$/SPAsianE.py" />
+        <option value="$PROJECT_DIR$/results.txt" />
         <option value="$PROJECT_DIR$/SPAsian.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1" />
+    <option name="x" value="-4" />
     <option name="y" value="33" />
-    <option name="width" value="1278" />
-    <option name="height" value="766" />
+    <option name="width" value="1288" />
+    <option name="height" value="771" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -81,7 +79,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
-    <navigator proportions="" version="1">
+    <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -92,7 +90,29 @@
       <autoscrollFromSource />
       <sortByType />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Thesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Thesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Thesis" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="options.lastSelected" value="preferences.sourceCode" />
@@ -238,6 +258,40 @@
       <option name="USE_PARAM" value="false" />
       <method />
     </configuration>
+    <configuration default="true" type="docs" factoryName="Docutils task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Thesis" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="docs" factoryName="Sphinx task">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Thesis" />
+      <option name="docutils_input_file" value="" />
+      <option name="docutils_output_file" value="" />
+      <option name="docutils_params" value="" />
+      <option name="docutils_task" value="" />
+      <option name="docutils_open_in_browser" value="false" />
+      <method />
+    </configuration>
     <configuration default="false" name="SPAsian" type="PythonConfigurationType" factoryName="Python" singleton="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -307,7 +361,13 @@
       <option name="project" value="LOCAL" />
       <updated>1427164324345</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="+ American Asian call">
+      <created>1427873680275</created>
+      <option name="number" value="00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1427873680275</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -331,17 +391,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="33" width="1278" height="766" extended-state="6" />
+    <frame x="-4" y="33" width="1288" height="771" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32618684" sideWeight="0.49960223" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1662689" sideWeight="0.4973262" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.49960223" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1662689" sideWeight="0.4973262" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618684" sideWeight="0.49960223" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32872504" sideWeight="0.5003978" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32771823" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618684" sideWeight="0.49960223" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32872504" sideWeight="0.49960223" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16388226" sideWeight="0.49886104" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16388226" sideWeight="0.49886104" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32718894" sideWeight="0.49960223" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1662689" sideWeight="0.5026738" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -349,9 +410,8 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.47320062" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36906585" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32771823" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39816234" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -377,30 +437,92 @@
     <MESSAGE value="- Bug of p and (1-p)&#10;+ Unique averages (coarse)" />
     <MESSAGE value="* eps&#10;* Unique averages&#10;+ Function annotations&#10;+ Check: A_min &lt; A_max&#10;+ Dedicated display functions" />
     <MESSAGE value="* eps &#10;* Unique averages &#10;+ Function annotations &#10;+ Check: A_min &lt; A_max &#10;+ Dedicated display functions" />
-    <option name="LAST_COMMIT_MESSAGE" value="* eps &#10;* Unique averages &#10;+ Function annotations &#10;+ Check: A_min &lt; A_max &#10;+ Dedicated display functions" />
+    <MESSAGE value="+ American Asian call" />
+    <option name="LAST_COMMIT_MESSAGE" value="+ American Asian call" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/SPAsian.py</url>
-          <line>254</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="14" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/SPAsian.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3924">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4446">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6300">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="108" max-vertical-offset="3564">
+          <caret line="44" column="12" selection-start-line="44" selection-start-column="12" selection-end-line="44" selection-end-column="12" />
+          <folding>
+            <element signature="e#6268#6844#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SPAsian.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3636">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -410,9 +532,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3456">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -422,9 +542,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3132">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -434,9 +552,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="954">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -446,9 +562,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3708">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -458,9 +572,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2916">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -470,9 +582,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1116">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -482,9 +592,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1116">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -494,9 +602,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3024">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -506,9 +612,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="650" max-vertical-offset="1026">
           <caret line="198" column="52" selection-start-line="198" selection-start-column="52" selection-end-line="198" selection-end-column="52" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -518,9 +622,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3420">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -530,9 +632,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3600">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -542,9 +642,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1584">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -554,9 +652,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1512">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -566,9 +662,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -585,9 +679,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -597,9 +689,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -609,9 +699,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -621,9 +709,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -633,9 +719,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3870">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -645,9 +729,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -657,9 +739,7 @@
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3546">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -692,14 +772,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/results.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.9064935" vertical-offset="299" max-vertical-offset="756">
+          <caret line="36" column="33" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/SPAsian.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0325" vertical-offset="2989" max-vertical-offset="3636">
-          <caret line="328" column="0" selection-start-line="328" selection-start-column="0" selection-end-line="328" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.6025" vertical-offset="2351" max-vertical-offset="3888">
+          <caret line="159" column="60" selection-start-line="159" selection-start-column="60" selection-end-line="159" selection-end-column="60" />
           <folding>
-            <element signature="e#360#593#0" expanded="true" />
-            <element signature="e#4163#8228#0" expanded="true" />
-            <element signature="e#9269#9656#0" expanded="true" />
+            <element signature="e#6268#6844#0" expanded="true" />
           </folding>
         </state>
       </provider>
