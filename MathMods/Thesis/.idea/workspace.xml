@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c138de9-1783-40d8-95da-6245ae227dfe" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.py" afterPath="$PROJECT_DIR$/run.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
@@ -26,60 +27,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="tr_asian_singularpointssup.c" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tr_asian_singularpointssup.c" pinned="false" current-in-tab="true">
         <entry file="file://$USER_HOME$/src/premia-13/Src/mod/bs1d/bs1d_pad/tr_asian_singularpointssup.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4175" max-vertical-offset="8028">
+            <state vertical-scroll-proportion="0.1378446" vertical-offset="4175" max-vertical-offset="8028">
               <caret line="235" column="14" selection-start-line="235" selection-start-column="14" selection-end-line="235" selection-end-column="14" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tr_asian_singularpoints.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tr_asian_singularpoints.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
-              <caret line="11" column="28" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
-              <folding>
-                <element signature="e#391#6120#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tr_vanilla.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tr_vanilla.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="648">
-              <caret line="6" column="4" selection-start-line="6" selection-start-column="4" selection-end-line="6" selection-end-column="4" />
-              <folding>
-                <element signature="e#305#822#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tr_crr.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tr_crr.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="468">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding>
-                <element signature="e#129#352#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="run.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/run.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.2087379" vertical-offset="528" max-vertical-offset="1368">
-              <caret line="59" column="21" selection-start-line="59" selection-start-column="21" selection-end-line="59" selection-end-column="21" />
-              <folding>
-                <element signature="e#365#1243#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -440,7 +393,19 @@
       <option name="project" value="LOCAL" />
       <updated>1428575055082</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;MathMods/Thesis/run.py&#10;">
+      <created>1428575109899</created>
+      <option name="number" value="00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1428575109899</updated>
+    </task>
+    <task id="LOCAL-00012" summary="* Merge problems sorted">
+      <created>1428575267572</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1428575267572</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -464,8 +429,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="33" width="1288" height="771" extended-state="6" />
-    <editor active="false" />
+    <frame x="-4" y="33" width="1288" height="771" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32565284" sideWeight="0.49960223" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32465544" sideWeight="0.49960223" order="6" side_tool="false" content_ui="tabs" />
@@ -536,7 +501,9 @@
     <MESSAGE value="+ UB&#10;+ LB" />
     <MESSAGE value="+ Removal of close points; &#10;- pos(); &#10;* Definitions of p_u and p_d" />
     <MESSAGE value="* Function restructuring" />
-    <option name="LAST_COMMIT_MESSAGE" value="* Function restructuring" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'&#10;&#10;# Conflicts:&#10;#&#9;MathMods/Thesis/run.py&#10;" />
+    <MESSAGE value="* Merge problems sorted" />
+    <option name="LAST_COMMIT_MESSAGE" value="* Merge problems sorted" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -671,14 +638,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/src/premia-13/Src/mod/bs1d/bs1d_pad/tr_asian_singularpointssup.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="4175" max-vertical-offset="8028">
-          <caret line="235" column="14" selection-start-line="235" selection-start-column="14" selection-end-line="235" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tr_asian_singularpoints.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3564">
@@ -711,11 +670,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/run.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2087379" vertical-offset="528" max-vertical-offset="1368">
-          <caret line="59" column="21" selection-start-line="59" selection-start-column="21" selection-end-line="59" selection-end-column="21" />
+        <state vertical-scroll-proportion="0.9126214" vertical-offset="1046" max-vertical-offset="1530">
+          <caret line="81" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding>
-            <element signature="e#365#1243#0" expanded="true" />
+            <element signature="e#365#1179#0" expanded="true" />
+            <element signature="e#1423#1824#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/src/premia-13/Src/mod/bs1d/bs1d_pad/tr_asian_singularpointssup.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.1378446" vertical-offset="4175" max-vertical-offset="8028">
+          <caret line="235" column="14" selection-start-line="235" selection-start-column="14" selection-end-line="235" selection-end-column="14" />
+          <folding />
         </state>
       </provider>
     </entry>
