@@ -1,9 +1,11 @@
 __author__ = 'Sudip Sinha'
 
-import math
+
+from math import exp, sqrt
+
 
 # Computer
-macheps = 65536 * (7 / 3 - 4 / 3 - 1)
+mach_eps = 65536 * (7 / 3 - 4 / 3 - 1)
 n = 12
 
 # Market
@@ -17,11 +19,6 @@ q = 0.03
 # Derivative
 t = 1.
 k = 90.
-
-
-def pos(x: float) -> float:
-	"""Returns the positive part of x"""
-	return x if (x > 0) else 0
 
 
 def get_underlying_tree(s0: float, sigma: float, t: float, n: int) -> list:
@@ -47,21 +44,32 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
                   ) -> list:
 	"""Prices of an American Asian call option using the singular point method"""
 
+	# Time period
 	dt = t / n
-	R = math.exp((r - q) * dt)
-	u = math.exp(sigma * math.sqrt(dt))
-	d = 1 / u
-	p = (R - d) / (u - d)
-	# p = (1 - d) / (u - d)
+	# Effective interest rate
+	R = exp((r - q) * dt)
+
+	# Up and down factors
+	u = exp(sigma * sqrt(dt))
+	d = 1. / u
+
+	# Risk neutral probability, discounted by R
+	p_u = (R * u - 1) / (u * u - 1) / R
+	p_d = 1. / R - p_u
+
+	if p_u < 0. or p_u > 1.:
+		raise ValueError
+
+	# Create the list for singular points
 	sp = [[[]] * (i + 1) for i in range(n + 1)]
 
 	# Singular points for N(n,0)
 	a = s0/(n+1) * (1 - d**(n+1)) / (1-d)
-	sp[n][0] = [(a, pos(a - k))]
+	sp[n][0] = [(a, max(a - k, 0.))]
 
 	# Singular points for N(n,n)
 	a = s0/(n+1) * (1 - u**(n+1)) / (1-u)
-	sp[n][-1] = [(a, pos(a - k))]
+	sp[n][-1] = [(a, max(a - k, 0.))]
 
 	# Singular points for N(n,j)
 	for j in range(1, n):
@@ -91,17 +99,17 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 				b = ((i+2) * a - s0 * u**(-i+2*j-1)) / (i+1)
 
 				# Get b_up for b_up in [a_min, a_max]
-				if a_min - macheps <= b <= a_max + macheps:
+				if a_min - mach_eps <= b <= a_max + mach_eps:
 					b_up = ((i+1) * b + s0 * u**(-i+2*j+1)) / (i+2)
 					spi = sp[i+1][j+1]
 
 					v_b_up = 0
 					for kb in range(len(spi)):
 						if kb < len(spi)-1:
-							if spi[kb][0] - macheps < b_up < spi[kb][0] + macheps:
+							if spi[kb][0] - mach_eps < b_up < spi[kb][0] + mach_eps:
 								v_b_up = spi[kb][1]
 								break
-							if spi[kb][0] - macheps < b_up < spi[kb + 1][0]:
+							if spi[kb][0] - mach_eps < b_up < spi[kb + 1][0]:
 								v_b_up = ((spi[kb+1][1] - spi[kb][1]) /
 								          (spi[kb+1][0] - spi[kb][0]) *
 								          (b_up - spi[kb][0]) + spi[kb][1])
@@ -109,7 +117,7 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 						else:
 							v_b_up = spi[kb][1]
 							break
-					sp_b.append((b, (p * v_b_up + (1 - p) * v_a) / R))
+					sp_b.append((b, p_u * v_b_up + p_d * v_a))
 
 			#  'C'
 			sp_c = list()    # Initialize sp_c
@@ -117,21 +125,21 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 				c = ((i+2) * a - s0 * u**(-i+2*j+1)) / (i+1)
 
 				# Uniqueness: Verify that 'C' is not in the set of 'B'
-				if any((abs(sp_bi[0] - c) < macheps) for sp_bi in sp_b):
+				if any((abs(sp_bi[0] - c) < mach_eps) for sp_bi in sp_b):
 					continue
 
 				# Get c_dn for c_dn in [a_min, a_max]
-				if a_min - macheps <= c <= a_max + macheps:
+				if a_min - mach_eps <= c <= a_max + mach_eps:
 					c_dn = ((i+1) * c + s0 * u**(-i+2*j-1)) / (i+2)
 					spi = sp[i+1][j]
 
 					v_c_dn = 0
 					for kc in range(len(spi)):
 						if kc < len(spi)-1:
-							if spi[kc][0] - macheps < c_dn < spi[kc][0] + macheps:
+							if spi[kc][0] - mach_eps < c_dn < spi[kc][0] + mach_eps:
 								v_c_dn = spi[kc][1]
 								break
-							if spi[kc][0] - macheps < c_dn < spi[kc + 1][0]:
+							if spi[kc][0] - mach_eps < c_dn < spi[kc + 1][0]:
 								v_c_dn = ((spi[kc + 1][1] - spi[kc][1]) /
 								          (spi[kc + 1][0] - spi[kc][0]) *
 								          (c_dn - spi[kc][0]) + spi[kc][1])
@@ -139,24 +147,32 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 						else:
 							v_c_dn = spi[kc][1]
 							break
-					sp_c.append((c, (p * v_a + (1 - p) * v_c_dn) / R))
+					sp_c.append((c, p_u * v_a + p_d * v_c_dn))
 
 			# Aggregate 'B's and 'C's
 			sp_i_j = sorted(sp_b + sp_c, key=lambda spi: spi[0])
 
+			# Remove singular points very close to each other
+			l = 0
+			while l < len(sp_i_j)-1:
+				if sp_i_j[l+1][0] - sp_i_j[l][0] < mach_eps:
+					del sp_i_j[l+1]
+				else:
+					l += 1
+
 			# American
 			if am:
-				if a_max - k <= sp_i_j[-1][1] + macheps:
+				if a_max - k <= sp_i_j[-1][1] + mach_eps:
 					pass    # Same as the European case
-				elif sp_i_j[0][1] - macheps <= a_min - k:
+				elif sp_i_j[0][1] - mach_eps <= a_min - k:
 					sp_i_j = [(a_min, a_min - k), (a_max, a_max - k)]
 				else:
 					for l in range(len(sp_i_j)-1):    # TODO: Replace by binary search
-						if sp_i_j[l][1] - macheps < sp_i_j[l][0] - k < sp_i_j[l][1] + macheps:
+						if sp_i_j[l][1] - mach_eps < sp_i_j[l][0] - k < sp_i_j[l][1] + mach_eps:
 							sp_i_j = sp_i_j[0:l+1]
 							sp_i_j.append((a_max, a_max - k))
 							break
-						if (sp_i_j[l][0] - k <= sp_i_j[l][1] + macheps) and (sp_i_j[l+1][1] - macheps <= sp_i_j[l+1][0] - k):
+						if (sp_i_j[l][0] - k <= sp_i_j[l][1] + mach_eps) and (sp_i_j[l+1][1] - mach_eps <= sp_i_j[l+1][0] - k):
 							# Find the point of intersection
 							# x = ((a2 - a1) * k - (a2 * v1 - a1 * v2)) / ((A2 - v2) - (A1 - v1))
 							a_int = (((sp_i_j[l+1][0] - sp_i_j[l][0]) * k +
@@ -189,11 +205,11 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 				if not ub:    # Lemma 2
 					l = 1
 					while l < len(sp_i_j)-2:
-						slope1 = (sp_i_j[l][1] - sp_i_j[l-1][1]) / (sp_i_j[l][0] - sp_i_j[l-1][0])
-						slope2 = (sp_i_j[l+2][1] - sp_i_j[l+1][1]) / (sp_i_j[l+2][0] - sp_i_j[l+1][0])
-						x_bar = (((slope2 * sp_i_j[l+1][0] - slope1 * sp_i_j[l-1][0]) - (sp_i_j[l+1][1] - sp_i_j[l-1][1])) /
-						         (slope2 - slope1))
-						y_bar = slope1 * (x_bar - sp_i_j[l-1][0]) + sp_i_j[l-1][1]
+						m1 = (sp_i_j[l][1] - sp_i_j[l-1][1]) / (sp_i_j[l][0] - sp_i_j[l-1][0])
+						m2 = (sp_i_j[l+2][1] - sp_i_j[l+1][1]) / (sp_i_j[l+2][0] - sp_i_j[l+1][0])
+						x_bar = (((m2 * sp_i_j[l+1][0] - m1 * sp_i_j[l-1][0]) - (sp_i_j[l+1][1] - sp_i_j[l-1][1])) /
+						         (m2 - m1))
+						y_bar = m1 * (x_bar - sp_i_j[l-1][0]) + sp_i_j[l-1][1]
 						dlt = ((sp_i_j[l+1][1] - sp_i_j[l][1]) /
 						       (sp_i_j[l+1][0] - sp_i_j[l][0]) *
 						       (x_bar - sp_i_j[l][0]) +
@@ -222,4 +238,4 @@ def run_all_tests(ns: list, d: int=6) -> None:
 
 
 # Display the results
-run_all_tests([25, 50, 100, 200], d=6)
+run_all_tests([200], d=6)
