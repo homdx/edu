@@ -50,7 +50,7 @@ def show_results(n: int) -> None:
 			print('N({i},{j}): {tj}'.format(i=i, j=j, tj=tj))
 		print('-' * 64)
 
-	print('Price of the call = {prc}'.format(prc=sp[0][0][0][1]))
+	print('Price of the Asian call = {prc}'.format(prc=sp[0][0][0][1]))
 
 
 def run(ns: list, d: int=6) -> None:
