@@ -4,42 +4,9 @@ __author__ = 'Sudip Sinha'
 from math import exp, sqrt
 
 
-# Computer
-mach_eps = 65536 * (7 / 3 - 4 / 3 - 1)
-n = 25
-
-# Market
-r = 0.1
-
-# Underlying
-s0 = 100.
-sigma = 0.2
-q = 0.03
-
-# Derivative
-t = 1.
-k = 90.
-
-
-def get_underlying_tree(s0: float, sigma: float, t: float, n: int) -> list:
-	"""Generate the tree of stock prices"""
-
-	s = [[0] * (i+1) for i in range(n+1)]
-	s[0][0] = s0
-
-	dt = t / n
-	u = math.exp(sigma * math.sqrt(dt))
-
-	for i in range(1, n+1):
-		for j in range(i+1):
-			s[i][j] = s0 * u**(-i+2*j)
-
-	return s
-
-
 # @profile
 def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
-                  k: float, t:float, am: bool=True,    # Derivative
+                  k: float, t: float, am: bool=True,    # Derivative
                   n: int=16, h: float=0., ub: bool=True    # Computation
                   ) -> list:
 	"""Prices of an American Asian call option using the singular point method"""
@@ -91,7 +58,7 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 			a_max = s0 / (i+1) * ((1 - u**(j+1)) / (1-u) + u**(j-1) * (1 - d**(i-j)) / (1-d))
 
 			if a_min > a_max:
-				(a_min, a_max) = (a_max, a_min)    # Jugaad
+				(a_min, a_max) = (a_max, a_min)    # jugaad
 
 			# 'B'
 			sp_b = list()    # Initialize sp_b
@@ -150,7 +117,7 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 					sp_c.append((c, p_u * v_a + p_d * v_c_dn))
 
 			# Aggregate 'B's and 'C's
-			sp_i_j = sorted(sp_b + sp_c, key=lambda spi: spi[0])
+			sp_i_j = sorted(sp_b + sp_c, key=lambda sp_l: sp_l[0])
 
 			# Remove singular points very close to each other
 			l = 0
@@ -222,20 +189,3 @@ def sp_asian_call(s0: float, sigma: float, q: float,    # Underlying
 			sp[i][j] = sp_i_j
 
 	return sp
-
-
-def run_all_tests(ns: list, d: int=6) -> None:
-	"""Display short results for a list of 'n's."""
-
-	for n in ns:
-		# prc_ac = sp_asian_call(s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=n)[0][0][0][1]
-		prc_ub = sp_asian_call(s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=n, h=1e-5, ub=True)[0][0][0][1]
-		prc_lb = sp_asian_call(s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=n, h=1e-5, ub=False)[0][0][0][1]
-		if prc_lb <= prc_ub:
-			print('n={n:3}: lb={lb:.{d}f}, ub={ub:.{d}f}'.format(d=d, n=n, lb=prc_lb, ub=prc_ub))
-		else:
-			print('ERROR: n={n:3}: lb={lb:.{d}f}, ub={ub:.{d}f}'.format(d=d, n=n, lb=prc_lb, ub=prc_ub))
-
-
-# Display the results
-run_all_tests([200], d=6)

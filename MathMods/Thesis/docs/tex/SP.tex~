@@ -1,0 +1,202 @@
+\section{Introduction}
+\label{sec:intro}
+As we have seen in the earlier chapters, European and American options may be priced using the CRR and BS models. But for many path-dependent options, we cannot find a closed-form pricing formula in the BS model. One way to overcome this difficulty is the use of tree or lattice methods in the CRR model. But such methods are slow and very memory intensive owing to the exponential nature of the number of possible paths. Gaudenzi et al\cite{Gaudenzi2010} introduced a new method for pricing path-path dependent options in an efficient manner.
+
+
+\section{Existing methods}
+\label{sec:existing-methods}
+Ref: Forsyth et al (2002)
+\begin{itemize}
+\item American Asian options with arithmetic mean
+  \begin{itemize}
+  \item Tree based
+    \begin{itemize}
+    \item CRR binomial method
+    \item Hull and White (1993)
+    \item Barraquand and Pudet (1996)
+    \item Chalasani et al (1999a, b)
+    \end{itemize}
+  \item PDE based
+    \begin{itemize}
+    \item Vecer (2001)
+    \item D’Halluin et al (2005)
+    \end{itemize}
+  \end{itemize}
+\item American lookback options
+  \begin{itemize}
+  \item Hull and White (1993)
+  \item Barraquand and Pudet (1996)
+  \item Babbs (2000), using a `change of numeraire' approach, which cannot be applied to the fixed-strike case
+  \end{itemize}
+\end{itemize}
+
+
+\section{The Singular Points method}
+\label{sec:sing-points-meth}
+
+First we recollect some basic dfninitions, and derive simple results for upper and lower bound for the averages.
+
+
+\begin{dfn}[Arithmetic mean]
+  The arithmetic mean of the risky asset's prices $ (S_i)_{i \in [n]} $ is given by:
+  \begin{equation}
+    \label{eq:am}
+    A_{n} = \frac{\sum_{i=0}^n S_i}{n+1}
+  \end{equation}
+\end{dfn}
+
+
+\begin{dfn}[Path]
+  A path is a sequence $(j_i)_{i \in [n]}$ such that $j_{i+1} \in \{ j_i,j_i+1 \}$.
+\end{dfn}
+
+
+\begin{thm}
+  \label{thm:up-dn-path}
+  Let there be two paths $\alpha$ and $\beta$, such that $S_{i,j_i^\alpha} >= S_{i,j_i^\beta} \; \forall i$. Denote the corresponging averages by $A^\alpha$ and $A^\beta$, respectively. Then $ A^\alpha >= A^\beta $.
+\end{thm}
+
+\begin{proof}
+  Clearly if $S_{i,j_i^\alpha} = S_{i,j_i^\beta} \; \forall i$, then $A^\alpha = A^\beta$.
+
+  We only need to show the result in the case of inequality.
+  Let $ S_{i,j_i^\alpha} = S_{i,j_i^\beta} \; \forall i \in [n] \setminus \{l\} $, and $ S_{l,j_l^\alpha} > S_{l,j_l^\beta}$.
+
+  Now, from equation \ref{eq:am}, we have:
+  \begin{align*}
+    (n+1) A_{n,j}^\alpha &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\alpha} + \sum_{i=l+1}^{n} S_{i,j_i} \\
+    (n+1) A_{n,j}^\beta &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\beta} + \sum_{i=l+1}^{n} S_{i,j_i} \\
+    \implies (n+1) \left(A_{n,j}^\alpha - A_{n,j}^\beta\right) &= S_{l,j_l^\alpha} - S_{l,j_l^\beta} \\
+                         &= S_{l-1,j_{l-1}} u_l - S_{l-1,j_{l-1}} d_l \\
+                         &= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \\
+    \implies A_{n,j}^\alpha > A_{n,j}^\beta
+  \end{align*}
+\end{proof}
+
+
+\begin{rem}
+  The path $\alpha$ signifies a path above and $\beta$ signifies a path below in the usual depiction of the binomial tree. Thus, any path above  has a higher arithmetic mean than the one below.
+\end{rem}
+
+
+\begin{crr}
+  \label{crr:up-dn-path}
+  At each node $N(i,j)$, the following hold:
+  \begin{enumerate}
+  \item The maximum average possible $ A_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements.
+  \item The minimum average possible $ A_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements.
+  \end{enumerate}
+\end{crr}
+
+
+\begin{dfn}[Singular points, singular values]
+  Let $ P = \{ (x_i, y_i)  \}_{i \in [n]} $, $ n \in \mathbb{N} $ be a set of points such that $ a = x_1 < \dots < x_n < b $ and
+  \begin{equation*}
+    m_{i-1} = \frac{y_{i} - y_{i-1}}{x_{i} - x_{i-1}} \leq \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} = m_{i} \qquad \forall i \in \{ 2, \dots, n-1 \}
+  \end{equation*}
+  Let $ f:[a,b] \to \mathbb{R}_{0+} $, $ f(x) = y_1 + \sum_{i=1}^{n-1} (x_{i+1} \wedge x - x_{i} \wedge x) $ be the function obtained by linear interpolation of the points in P.
+  Then, the elmments of P are called \emph{singular points of f} and the abscissae $ \{ x_i \}_{i \in [n]} $ are called \emph{singular values of f}.
+\end{dfn}
+
+
+\begin{lmm}[Lemma 1]
+  TODO
+\end{lmm}
+
+
+\begin{lmm}[Lemma 2]
+  TODO
+\end{lmm}
+
+
+\begin{lmm}[Lemma 3]
+  TODO
+\end{lmm}
+
+
+\begin{lmm}[Lemma 4]
+  TODO
+\end{lmm}
+
+
+\section{Extensions}
+\label{sec:extensions}
+
+Let us recapitulate the conditions required for the singular points method to work in the case of Asian options with arithmetic mean.
+\begin{itemize}
+\item The ability to calculate the upper and lower bounds of the mean for all nodes of the tree.
+\item The recombinant nature of the tree for the underlying. Note that the tree for the option prices are \emph{not} recombinant.
+\item Convexity and piecewise-linearity of the price function on the mean of the underlying.
+\item Fixed volatility
+\end{itemize}
+
+Keeping these in mind, let us look at the possibility of extending the singular points method to the following cases:
+\begin{enumerate}
+\item Asian options with geometric mean and fixed volatility.
+\item Asian options with arithmetic mean and local volatility.
+\end{enumerate}
+
+
+\subsection{Pros and cons}
+\label{sec:sp-adv}
+
+\paragraph{Advantages}
+\begin{itemize}
+\item Fast -- Experimental order of complexity = $ O(n^3) $
+\item It allows us to specify an \emph{a priori} error bound.
+\end{itemize}
+
+
+\paragraph{Disadvantages}
+\begin{itemize}
+\item Very specific method -- only applicable to a few specific cases.
+\end{itemize}
+
+
+\subsection{Geometric mean and fixed volatility}
+\label{sec:gm-fixed-vol}
+
+In the case of geometric options, we have a closed form formula under the Black-Scholes market model. We try to extend the singular points method in this case.
+
+Firstly, we show that the result about the maximum and minimum paths still hold in the geometric case.
+
+\begin{dfn}[Geometric mean]
+  The geometric mean of the risky asset's prices $ (S_i)_{i \in [n]} $ is given by:
+  \begin{equation}
+    \label{eq:gm}
+    G_{n} = \left( \prod_{i=0}^n S_i \right) ^{\frac{1}{n+1}}
+  \end{equation}
+\end{dfn}
+
+
+\begin{lmm}
+  At each node $N(i,j)$, the following hold:
+  \begin{enumerate}
+  \item The maximum average possible $ G_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements.
+  \item The minimum average possible $ G_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements.
+  \end{enumerate}
+\end{lmm}
+
+\begin{proof}
+  The proof is the same as \ref{crr:up-dn-path}, with $A$ replaced by $G$ and relevant modifications.
+\end{proof}
+
+
+One of the central ideas behind the singular points method is that the price of the option is a convex, piecewise-linear function of the average $A$. But in the geometric case, this no longer holds true. For example, take a node $N(i,j)$ with $ i = n-1 $. The price function given by $ v_{i,j}(G) $, with $ G \in [G^{min},G^{max}] $, can be calculated by the discounted expectation value.
+\begin{align}
+  v_{i,j}(G) &= \frac{1}{R} \left[ p v_{i+1,j+1}(G_u) + (1-p) v_{i+1,j}(G_d) \right] \\
+  G_u &= \left( G^{i+1} S_0 u^{-i+2j+1} \right)^{\frac{1}{i+2}} \propto G^{\frac{i+1}{i+2}} \\
+  G_d &= \left( G^{i+1} S_0 u^{-i+2j-1} \right)^{\frac{1}{i+2}} \propto G^{\frac{i+1}{i+2}}
+\end{align}
+Clearly, the final function $ v_{i,j} $ is not linear in $G$. Rather it is piecewise-concave. Thus we cannot use the singular points method in this case.
+
+
+\subsection{Arithmetic mean with local volatility}
+\label{sec:am-local-vol}
+
+In this case, the tree for the underlying is not recombinant, so we do not have more than one singular point in one (non-recombining) node. Clearly, we cannot use the singular points method in this case.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

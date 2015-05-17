@@ -19,6 +19,8 @@ def vanilla_call(r: float,    # Market
 	p_u = (R * u - 1) / (u * u - 1) / R
 	p_d = 1. / R - p_u
 
+	print('DEBUG: dt={dt}, R={R}, u={u}, p_u={p_u}'.format(dt=dt, R=R, u=u, p_u=p_u))
+
 	tree = [[0] * (i+1) for i in range(n+1)]
 	for j in range(n+1):
 		tree[n][j] = max(s0 * u**(-n+2*j) - k, 0.)

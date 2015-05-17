@@ -1,3 +1,6 @@
+# ToDo: Low memory implementation
+
+
 __author__ = 'Sudip Sinha'
 
 
@@ -7,20 +10,20 @@ from math import exp, sqrt
 # @profile
 def sp_asian_call(r: float,    # Market
                   s0: float, sigma: float, q: float,    # Underlying
-                  k: float, t: float, am: bool=False,    # Derivative
-                  mach_eps = 65536 * (7 / 3 - 4 / 3 - 1), n: int=25, h: float=0., ub: bool=True    # Computation
+                  k: float, t: float, am: bool=True,    # Derivative
+                  n: int=25, h: float=0., ub: bool=True    # Computation
                   ) -> list:
-	"""Prices of an American Asian call option using the singular point method"""
-
+	"""Prices of an Asian call option using the singular point method"""
+	
 	# Time period
 	dt = t / n
 	# Effective interest rate
 	R = exp((r - q) * dt)
-
+	
 	# Up and down factors
 	u = exp(sigma * sqrt(dt))
 	d = 1. / u
-
+	
 	# Risk neutral probability, discounted by R
 	p_u = (R * u - 1) / (u * u - 1) / R
 	p_d = 1. / R - p_u
@@ -28,30 +31,33 @@ def sp_asian_call(r: float,    # Market
 	if p_u < 0. or p_u > 1.:
 		raise ValueError
 
-	# Create the list for singular points
-	sp = [[[]] * (i + 1) for i in range(n + 1)]
+	# Singular points for nodes N(i+1,*)
+
+	# Start from maturity
+	sp_ip = [[]] * (n + 1)
 
 	# Singular points for N(n,0)
 	a = s0/(n+1) * (1 - d**(n+1)) / (1-d)
-	sp[n][0] = [(a, max(a - k, 0.))]
+	sp_ip[0] = [(a, max(a - k, 0.))]
 
 	# Singular points for N(n,n)
 	a = s0/(n+1) * (1 - u**(n+1)) / (1-u)
-	sp[n][-1] = [(a, max(a - k, 0.))]
+	sp_ip[-1] = [(a, max(a - k, 0.))]
 
 	# Singular points for N(n,j)
 	for j in range(1, n):
 		a_min = s0 / (n+1) * ((1 - d**(n-j+1)) / (1-d) + d**(n-j-1) * (1 - u**j) / (1-u))
 		a_max = s0 / (n+1) * ((1 - u**(j+1)) / (1-u) + u**(j - 1) * (1 - d**(n-j)) / (1-d))
 		if k < a_min:
-			sp[n][j] = [(a_min, a_min - k), (a_max, a_max - k)]
+			sp_ip[j] = [(a_min, a_min - k), (a_max, a_max - k)]
 		elif k > a_max:
-			sp[n][j] = [(a_min, 0), (a_max, 0)]
+			sp_ip[j] = [(a_min, 0), (a_max, 0)]
 		else:
-			sp[n][j] = [(a_min, 0), (k, 0), (a_max, a_max - k)]
-
+			sp_ip[j] = [(a_min, 0), (k, 0), (a_max, a_max - k)]
+	
 	# Singular points for N(i,j) i != n
 	for i in range(n-1, -1, -1):
+		sp_i = [[]] * (i + 1)
 
 		for j in range(i+1):
 
@@ -63,13 +69,13 @@ def sp_asian_call(r: float,    # Market
 
 			# 'B'
 			sp_b = list()    # Initialize sp_b
-			for (a, v_a) in sp[i+1][j]:
+			for (a, v_a) in sp_ip[j]:
 				b = ((i+2) * a - s0 * u**(-i+2*j-1)) / (i+1)
 
 				# Get b_up for b_up in [a_min, a_max]
 				if a_min - mach_eps <= b <= a_max + mach_eps:
 					b_up = ((i+1) * b + s0 * u**(-i+2*j+1)) / (i+2)
-					spi = sp[i+1][j+1]
+					spi = sp_ip[j+1]
 
 					v_b_up = 0
 					for kb in range(len(spi)):
@@ -89,7 +95,7 @@ def sp_asian_call(r: float,    # Market
 
 			#  'C'
 			sp_c = list()    # Initialize sp_c
-			for (a, v_a) in sp[i+1][j+1]:
+			for (a, v_a) in sp_ip[j+1]:
 				c = ((i+2) * a - s0 * u**(-i+2*j+1)) / (i+1)
 
 				# # Uniqueness: Verify that 'C' is not in the set of 'B'
@@ -99,7 +105,7 @@ def sp_asian_call(r: float,    # Market
 				# Get c_dn for c_dn in [a_min, a_max]
 				if a_min - mach_eps <= c <= a_max + mach_eps:
 					c_dn = ((i+1) * c + s0 * u**(-i+2*j-1)) / (i+2)
-					spi = sp[i+1][j]
+					spi = sp_ip[j]
 
 					v_c_dn = 0
 					for kc in range(len(spi)):
@@ -117,19 +123,23 @@ def sp_asian_call(r: float,    # Market
 							break
 					sp_c.append((c, p_u * v_a + p_d * v_c_dn))
 
-			# Aggregate 'B's and 'C's
-			sp_i_j = sorted(sp_b + sp_c, key=lambda spi: spi[0])
-
-			# Remove singular points very close to each other
+			# Aggregate 'B's and 'C's.
+			sp_i_j = sorted(sp_b + sp_c, key=lambda sp_l: sp_l[0])
+			
+			# Remove singular points very close to each other.
 			l = 0
 			while l < len(sp_i_j)-1:
 				if sp_i_j[l+1][0] - sp_i_j[l][0] < mach_eps:
 					del sp_i_j[l+1]
-				else:
-					l += 1
+				l += 1
 
 			# American
 			if am:
+				try:
+					1 + sp_i_j[-1][1]
+				except IndexError:
+					print('DEBUG: SP({i},{j}) = {spij}'.format(i=i, j=j, spij=sp_i_j))
+					print('DEBUG: SP({ip},{j}) = {spipj}'.format(ip=i+1, j=j, spij=sp_i_j))
 				if a_max - k <= sp_i_j[-1][1] + mach_eps:
 					pass    # Same as the European case
 				elif sp_i_j[0][1] - mach_eps <= a_min - k:
@@ -187,6 +197,8 @@ def sp_asian_call(r: float,    # Market
 							del sp_i_j[l+1]
 						l += 1
 
-			sp[i][j] = sp_i_j
+			sp_i[j] = sp_i_j
 
-	return sp
+		sp_ip = sp_i
+
+	return sp_ip
