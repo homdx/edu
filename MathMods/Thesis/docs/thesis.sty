@@ -6,27 +6,63 @@
 \usepackage[margin=25mm]{geometry}
 %\usepackage{newtxtext}
 %\usepackage{gfsartemisia-euler}
-\usepackage[math]{iwona}
-\usepackage{eulervm}
+%\usepackage[math]{iwona}
+%\usepackage{eulervm}
+\usepackage{lmodern}
 \usepackage[T1]{fontenc}    % Better fonts
 \usepackage[utf8]{inputenc}    % For extended UTF8 support change to utf8x
 \usepackage[english]{babel}    % English hyphenation
+\usepackage{csquotes}    % Multilingual quotes
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
 \graphicspath{{img/}}    % Central repository for images
+\usepackage{booktabs}    % Better tables
 
-\usepackage[protrusion=true,expansion=true,final,babel]{microtype}    % many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
+% Set paragraph formatting
+\usepackage{parskip}    % Do not indent paragraphs, and put some linespace between paragraphs
+\linespread{1.1}    % Set more space between lines
 
-% % % example file to change the style of LaTeX
-% % % Tony Roberts May 2004
-% % % first colour for latex or pdflatex
-% % \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
-% % \else\usepackage[usenames,dvipsnames]{color}
-% % % and fix pdf colour problems
-% % \IfFileExists{pdfcolmk.sty}{\usepackage{pdfcolmk}}{} 
-% % \fi
+
+% Math
+\theoremstyle{plain}
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{crr}{Corollary}[thm]
+\newtheorem{prp}{Proposition}[chapter]
+\newtheorem{lmm}[thm]{Lemma}
+
+\theoremstyle{definition}
+\newtheorem{dfn}{Definition}[chapter]
+
+\theoremstyle{remark}
+\newtheorem*{rem}{Remark}
+
+% Number equations depending on the section
+\numberwithin{equation}{section}
+
+
+% Bibliography
+\usepackage[backend=bibtex,style=alphabetic]{biblatex}
+\addbibresource{thesis.bib}
+
+
+% Metadata
+\author{Sudip Sinha}
+\title{Singular Point method}
+\date{\today}
+
+
+% \usepackage[protrusion=true,expansion=true,final,babel]{microtype}    % many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
+
+ % % example file to change the style of LaTeX
+ % % Tony Roberts May 2004
+ % % first colour for latex or pdflatex
+ % \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+ % \else\usepackage[usenames,dvipsnames]{color}
+ % % and fix pdf colour problems
+ % \IfFileExists{pdfcolmk.sty}{\usepackage{pdfcolmk}}{} 
+ % \fi
 
 \usepackage{color}
 % My colors:
@@ -40,6 +76,9 @@
 \definecolor{myGreen}{rgb}{0,.4,0}    % Dark Green
 % \definecolor{myRed}{rgb}{.8,.1,.2}    % Too bright
 \definecolor{myRed}{rgb}{.5,0,.5}  % purple
+
+%% Format ToC
+%\usepackage{tocloft}
 
 % Format titles
 \usepackage{titlesec}
@@ -57,28 +96,23 @@
   {\thesubsection}{1em}{}
 
 
-\usepackage{lastpage}    % To get the last page number
-\usepackage{fancyhdr}    % Headers and footers
-\pagestyle{fancyplain}     % All pages have headers and footers
-% Convert chapter, section names in headers to normal case
-\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
-\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
-\fancyhf{}    % Blank out the default header and footer
-\fancyhf[HL]{\leftmark}
-\fancyhf[HR]{\rightmark}
-\fancyhf[FL]{Thesis}
-\fancyhf[FC]{\today}
-\fancyhf[FR]{{\Large\thepage} / \pageref{LastPage}}
-% Define the thickness of the decorative lines
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0.5pt}
+%\usepackage{lastpage}    % To get the last page number
+%\usepackage{fancyhdr}    % Headers and footers
+%\pagestyle{fancyplain}     % All pages have headers and footers
+%% Convert chapter, section names in headers to normal case
+%\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
+%\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
+%\fancyhf{}    % Blank out the default header and footer
+%\fancyhf[HL]{\leftmark}
+%\fancyhf[HR]{\rightmark}
+%\fancyhf[FL]{Thesis}
+%\fancyhf[FC]{\today}
+%\fancyhf[FR]{{\Large\thepage} / \pageref{LastPage}}
+%% Define the thickness of the decorative lines
+%\renewcommand{\headrulewidth}{0.5pt}
+%\renewcommand{\footrulewidth}{0.5pt}
 
-%\fancyhf[FL]{MathMods $\bullet$ 2015 May}
-
-
-\author{Sudip Sinha}
-\title{Singular Point method}
-\date{\today}
+%%%\fancyhf[FL]{MathMods $\bullet$ 2015 May}
 
 
 \usepackage[
@@ -90,9 +124,9 @@
   pdfpagelayout=OneColumn,    % Displays the document in one column; continuous scrolling.
   bookmarks=true,
   unicode=true,
-  colorlinks=false,
+  colorlinks=true,
   % backref=section,    % Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
-  % linktocpage=false,       % ToC, LoF, LoT place hyperlink on page number, rather than entry text
+  linktocpage=false,       % ToC, LoF, LoT place hyperlink on page number, rather than entry text
   % breaklinks=true,        % so long urls are correctly broken across lines
   % pagebackref=false,     % add page number in bibliography and link to position in document where cited
   % linkcolor=myRed,
@@ -100,53 +134,38 @@
   % citecolor=Black,
   % hyperfootnotes=false
 ]{hyperref}
-\usepackage[figure,table]{hypcap} % Correct a problem with hyperref
-\urlstyle{rm} %so it doesn't use a typewriter font for url's.
-
-\usepackage{booktabs}    % Horizontal rules in tables
+\usepackage[figure,table]{hypcap}    % Correct a problem with hyperref
+\urlstyle{rm}    %so it doesn't use a typewriter font for URLs
 
 
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% % title, sections, etc.
-
-\let\LaTeXtitle\title
-\renewcommand{\title}[1]{\LaTeXtitle{\color{myBlue}{\LARGE #1}}}
-\renewcommand{\abstractname}{\color{myBlue}Abstract}
-\renewcommand{\figurename}{\color{myBlue}Figure}
-\renewcommand{\tablename}{\color{myBlue}Table}
-
-
-% % % Make hyperlinks jump more accurately
-% % \makeatletter
-% % \newcommand\org@hypertarget{}
-% % \let\org@hypertarget\hypertarget
-% % \renewcommand\hypertarget[2]{%
-% %   \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
-% % } \makeatother 
-
-
-% % % Make `et al' emphasized
-% % \renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
-% %   \ifboolexpr{
-% %     test {\ifnumequal{\value{listcount}}{\value{liststop}}}
-% %     and
-% %     test \ifmorenames}
-% %   {\ifnumgreater{\value{liststop}}{1}
-% %     {\finalandcomma}
-% %     {}%
-% %     \andothersdelim\bibstring[\emph]{andothers}}{}}
-
-
-\theoremstyle{plain}
-\newtheorem{thm}{Theorem}[chapter]
-\newtheorem{crr}{Corollary}[thm]
-\newtheorem{prp}{Proposition}[chapter]
-\newtheorem{lmm}[thm]{Lemma}
-
-\theoremstyle{definition}
-\newtheorem{dfn}{Definition}[chapter]
-
-\theoremstyle{remark}
-\newtheorem*{rem}{Remark}
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%% % title, sections, etc.
+%
+%\let\LaTeXtitle\title
+%\renewcommand{\title}[1]{\LaTeXtitle{\color{myBlue}{\LARGE #1}}}
+%\renewcommand{\abstractname}{\color{myBlue}Abstract}
+%\renewcommand{\figurename}{\color{myBlue}Figure}
+%\renewcommand{\tablename}{\color{myBlue}Table}
+%
+%
+%% % % Make hyperlinks jump more accurately
+%% % \makeatletter
+%% % \newcommand\org@hypertarget{}
+%% % \let\org@hypertarget\hypertarget
+%% % \renewcommand\hypertarget[2]{%
+%% %   \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
+%% % } \makeatother 
+%
+%
+%% Make `et al' emphasized
+%\renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
+%  \ifboolexpr{
+%    test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+%    and
+%    test \ifmorenames}
+%  {\ifnumgreater{\value{liststop}}{1}
+%    {\finalandcomma}
+%    {}%
+%    \andothersdelim\bibstring[\emph]{andothers}}{}}

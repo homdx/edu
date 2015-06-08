@@ -40,8 +40,8 @@
     \node[term] (s) {$S_0$}; \\
     & \node[term] (d) {$S_1^d = S_0d$}; \\
   };
-  \draw[->,thick] (s) -- (u) node[midway,above] {$p$};
-  \draw[->] (s) -- (d) node[midway,below] {$1-p$};
+  \draw[->,thick] (s) -- (u) node[midway,above] {$p_u = p$};
+  \draw[->] (s) -- (d) node[midway,below] {$p_d = 1-p$};
 \end{tikzpicture}
 
 
@@ -101,8 +101,8 @@
     & & \node[term] (d2) {$S_0d^2$}; \\
   };
   % Lines out of s
-  \draw[->] (s) -- (u) node[midway,above] {$p_u$};
-  \draw[->] (s) -- (d) node[midway,below] {$p_d$};
+  \draw[->] (s) -- (u) node[midway,above] {$p_u^1$};
+  \draw[->] (s) -- (d) node[midway,below] {$p_d^1$};
   % Lines out of u
   \draw[->] (u) -- (u2) node[midway,above] {$p_u$};
   \draw[->] (u) -- (ud) node[midway,above] {$p_d$};
@@ -124,14 +124,14 @@
     & & \node[term] (d2) {$S_0d_1d_2$}; \\
   };
   % Lines out of s
-  \draw[->] (s) -- (u) node[midway,above] {$p_u$};
-  \draw[->] (s) -- (d) node[midway,below] {$p_d$};
+  \draw[->] (s) -- (u) node[midway,above] {$p_{u_1}$};
+  \draw[->] (s) -- (d) node[midway,below] {$p_{d_1}$};
   % Lines out of u
-  \draw[->] (u) -- (u2) node[midway,above] {$p_u$};
-  \draw[->] (u) -- (ud) node[midway,above] {$p_d$};
+  \draw[->] (u) -- (u2) node[midway,above] {$p_{u_2}$};
+  \draw[->] (u) -- (ud) node[midway,above] {$p_{d_2}$};
   % Lines out of d
-  \draw[->] (d) -- (du) node[midway,below] {$p_u$};
-  \draw[->] (d) -- (d2) node[midway,below] {$p_d$};
+  \draw[->] (d) -- (du) node[midway,below] {$p_{u_2}$};
+  \draw[->] (d) -- (d2) node[midway,below] {$p_{d_2}$};
 \end{tikzpicture}
 
 
@@ -139,22 +139,28 @@
 \begin{tikzpicture}
   \matrix[column sep=15mm,row sep=1mm] (tree) {
     & & \node[term] (u2) {$S_0u_1u_2$}; \\
+    & & \node {} ; \\
+    & & \node {} ; \\
+    & & \node {} ; \\
     & \node[nterm] (u) {$S_0u_1$}; & \\
     & & \node[term] (du) {$S_0d_1u_2$}; \\
     \node[term] (s) {$S_0$}; & & \\
     & & \node[term] (ud) {$S_0u_1d_2$}; \\
     & \node[nterm] (d) {$S_0d_1$}; & \\
+    & & \node {} ; \\
+    & & \node {} ; \\
+    & & \node {} ; \\
     & & \node[term] (d2) {$S_0d_1d_2$}; \\
   };
   % Lines out of s
-  \draw[->] (s) -- (u) node[midway,above] {$p_u$};
-  \draw[->] (s) -- (d) node[midway,below] {$p_d$};
+  \draw[->] (s) -- (u) node[midway,above] {$p_{u_1}$};
+  \draw[->] (s) -- (d) node[midway,below] {$p_{d_1}$};
   % Lines out of u
-  \draw[->] (u) -- (u2) node[midway,above] {$p_u$};
-  \draw[->] (u) -- (ud) node[midway,above] {$p_d$};
+  \draw[->] (u) -- (u2) node[midway,above] {$p_{u_2}$};
+  \draw[->] (u) -- (ud) node[midway,above] {$p_{d_2}$};
   % Lines out of d
-  \draw[->] (d) -- (du) node[midway,below] {$p_u$};
-  \draw[->] (d) -- (d2) node[midway,below] {$p_d$};
+  \draw[->] (d) -- (du) node[midway,below] {$p_{u_2}$};
+  \draw[->] (d) -- (d2) node[midway,below] {$p_{d_2}$};
 \end{tikzpicture}
 
 

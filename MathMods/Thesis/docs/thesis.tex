@@ -1,8 +1,7 @@
 \documentclass[12pt,a4paper]{amsbook}
 
 \usepackage{thesis}
-\usepackage[backend=bibtex,style=alphabetic]{biblatex}
-\addbibresource{thesis.bib}
+
 
 \begin{document}
 
@@ -11,15 +10,26 @@
 
 
 \tableofcontents
+\clearpage
 
 
 \section*{Notations}
+
+\subsection*{Mathematical}
 \begin{itemize}
 \item $ [n] = \{0, 1, 2, \dots, n\} $
 \item $ \mathbb{N} = \{ 1, 2, 3, \dots \} $
 \item $ \mathbb{N}_0 = \mathbb{N} \cup \{ 0 \} $
 \item $ \mathbb{R}_{0+} = [0, \infty) $
+\item $ a \wedge b = \inf(\{ a, b \}) $
+\item $ a \vee b = \sup(\{ a, b \}) $
 \end{itemize}
+
+\subsection*{General}
+\begin{description}
+	\item[CRR] The Cox-Ross-Rubinstein model
+	\item[BS] The Black-Scholes model
+\end{description}
 
 
 \chapter{Cox Ross Rubenstein model}
@@ -27,9 +37,9 @@
 \input{tex/CRR.tex}
 
 
-\chapter{Black Scholes model}
-\label{cha:bs}
-\input{tex/BS.tex}
+%\chapter{Black Scholes model}
+%\label{cha:bs}
+%\input{tex/BS.tex}
 
 
 \chapter{The Singular Points method}
