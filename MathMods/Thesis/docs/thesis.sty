@@ -6,16 +6,13 @@
 \usepackage[margin=25mm]{geometry}
 %\usepackage{newtxtext}
 %\usepackage{gfsartemisia-euler}
-%\usepackage[math]{iwona}
-%\usepackage{eulervm}
-\usepackage{lmodern}
+\usepackage[math]{iwona}
+\usepackage{eulervm}
+%\usepackage{lmodern}
 \usepackage[T1]{fontenc}    % Better fonts
 \usepackage[utf8]{inputenc}    % For extended UTF8 support change to utf8x
 \usepackage[english]{babel}    % English hyphenation
 \usepackage{csquotes}    % Multilingual quotes
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
 \usepackage{graphicx}
 \graphicspath{{img/}}    % Central repository for images
 \usepackage{booktabs}    % Better tables
@@ -28,15 +25,15 @@
 % Math
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[chapter]
-\newtheorem{crr}{Corollary}[thm]
+\newtheorem{crr}{Corollary}[chapter]
 \newtheorem{prp}{Proposition}[chapter]
-\newtheorem{lmm}[thm]{Lemma}
+\newtheorem{lmm}{Lemma}[chapter]
 
 \theoremstyle{definition}
 \newtheorem{dfn}{Definition}[chapter]
 
 \theoremstyle{remark}
-\newtheorem*{rem}{Remark}
+\newtheorem{rem}{Remark}[chapter]
 
 % Number equations depending on the section
 \numberwithin{equation}{section}
@@ -83,17 +80,20 @@
 % Format titles
 \usepackage{titlesec}
 \titleformat{\chapter}[frame]
-  {\fontfamily{gentium}\bfseries\scshape\huge\color{myRoyal}}
-  {Chapter \thechapter}{1em}{}
+	{\fontfamily{gentium}\bfseries\scshape\huge\color{myRoyal}}
+	{Chapter \thechapter}{1em}{}
 \titleformat{\section}
-  {\fontfamily{gentium}\bfseries\scshape\LARGE\color{myBlue}}
-  {\thesection}{1em}{}
+	{\fontfamily{gentium}\bfseries\scshape\LARGE\color{myBlue}}
+	{\thesection}{1em}{}
 \titleformat{\subsection}
-  {\fontfamily{gentium}\bfseries\scshape\Large\color{myDarkBlue}}
-  {\thesubsection}{1em}{}
+	{\fontfamily{gentium}\bfseries\scshape\Large\color{myDarkBlue}}
+	{\thesubsection}{1em}{}
 \titleformat{\subsubsection}
-  {\fontfamily{gentium}\bfseries\scshape\large\color{myDarkBlue}}
-  {\thesubsection}{1em}{}
+	{\fontfamily{gentium}\bfseries\large\color{myDarkBlue}}
+	{\thesubsection}{1em}{}
+\titleformat{\paragraph}
+	{\fontfamily{gentium}\bfseries}
+	{\theparagraph}{1em}{}
 
 
 %\usepackage{lastpage}    % To get the last page number

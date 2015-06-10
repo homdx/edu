@@ -1,21 +1,24 @@
 % !TeX root = ../thesis.tex
-\section{Introduction}
-\label{sec:intro}
-As we have seen in the earlier chapters, European and American options may be priced using the CRR and BS models. But for many path-dependent options, we cannot find a closed-form pricing formula in the BS model. One way to overcome this difficulty is the use of tree or lattice methods in the CRR model. But such methods are slow and very memory intensive owing to the exponential  number of possible paths. Gaudenzi et al\cite{Gaudenzi2010} introduced a new method for pricing path-path dependent options in an efficient manner. The following section is a study on this method.
 
-TODO: Push this dfn to an earlier chapter.
+\section{Introduction}
+\label{sec:sp-intro}
+As we have seen in the earlier chapters, European and American options may be priced using the CRR and BS models. Even though the BS model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options. The way out is by using numerical methods. A class of numerical methods use tree or lattice methods in the CRR model. One simple idea is to apply an explicit pricing scheme using CRR, which tends to BS as the number of time steps increases to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it impractical in terms of computability. A logical step would be to modify the basic CRR model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the `singular points method' for pricing certain path-dependent options in an efficient manner. The chapter is a study on this method.
+
+We will mainly focus on Asian options, in which the price is expressed as a function of some form of averaging on the underlying's price. Popular Asian options use the arithmetic or geometric means as the average. Again, Asian options may be exercised only at maturity (European) or at any time till the maturity (American). They may give the owner of the option the right to either sell (put) or buy (call). Theoretically, we may study either a call or a put, because the framework for the other one may be derived in the exact same way.
+
+TODO: Push this defn to an earlier chapter.
 \begin{dfn}[Path-dependent option]
 	A path-dependent option is an option for which the value of the option is dependent not only on the final value of the underlying, but also on the path taken to reach that value.
 \end{dfn}
 
-We will mainly focus on Asian options, in which the price is expressed as a function of some form of averaging on the underlying's price. Popular Asian options use the arithmetic or geometric means as the average. Again, Asian options may be exercised only at maturity (European) or at any time till the maturity (American).
-
-We cannot find a closed-form formula of an American Asian options, even under BS. The only way is to look at numerical methods. One of the simplest methods is to apply an explicit pricing scheme using CRR, which tends to BS as $ n \to \infty $. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it impractical in real-life. To overcome this, a lot of methods have been proposed. Some of these are as follows.
 
 
 \section{Existing methods}
 \label{sec:existing-methods}
+Before we go into the details of the singular points method, we shall look into the pre-existing methods, and discuss their advantages and disadvantages briefly.
+
 Ref: Forsyth et al (2002)
+
 \begin{itemize}
 \item American Asian options with arithmetic mean
 	\begin{itemize}
@@ -42,44 +45,55 @@ Ref: Forsyth et al (2002)
 
 TODO: Discuss the advantages and disadvantages of each method.
 
+
+
 \section{The Singular Points method}
-\label{sec:sing-points-meth}
+\label{sec:sp-method}
 
 The singular points method looks at the price of the option as a continuous function of the underlying's average at each node of the binomial tree.
 
 
-\begin{dfn}[Singular points and singular values]
-	Let $ P = \left( (x_i, y_i) \right)_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that
+\begin{dfn}[Singular points and singular values] \label{def:sp-sp}
+	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that
 	\begin{subequations} \label{eq:sp-conditions}
 	\begin{align}
 		a =& x_0 < x_1 < \dots < x_{n-1} < x_n = b \\
-		& y_0 < y_1 < \dots < y_{n-1} < y_n \\
 		\label{eq:sp-condition-slope}
 		m_{i} :=& \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} \leq \frac{y_{i+2} - y_{i+1}}{x_{i+2} - x_{i+1}} = m_{i+1} \qquad \forall i \in \{ 1, \dots, n-1 \}
 	\end{align}
 	\end{subequations}
 	
-	Let $ f:[a,b] \to \mathbb{R}_{0+} $, be the function obtained by linear interpolation of the points in P. From the definition of f and  \ref{eq:sp-condition-slope}, the function is continuous, piecewise-linear and convex.
+	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be the function obtained by linear interpolation of the points in $P$. From the definition of $f$ and  \ref{eq:sp-condition-slope}, the function is continuous, piecewise-linear and convex.
 	
-	Then, the elements of P are called \emph{singular points of f} and the abscissae $ \{ x_i \}_{i \in [n]} $ are called \emph{singular values of f}.
+	Then, the elements of $P$ are called \emph{singular points of $f$} and the abscissae $ \{ x_i \}_{i \in [n]} $ are called \emph{singular values of $f$}.
 \end{dfn}
 
 
-\begin{rem}
+\begin{rem} \label{rem:sp-characterisation}
 	We note that the singular points characterise such a function completely. This can be seen from the following representation of the function.
 	\begin{equation}
-	\label{eq:function-repr}
+	\label{eq:sp-function-repr}
 	f(x) = y_0 + \sum_{i=0}^{n-1} [ m_i \{ (x_{i+1} \wedge x) - (x_{i} \wedge x) \} ]
 	\end{equation}
 	Where $ m_i = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ (x_{i}, y_{i}) $ and $ (x_{i+1}, y_{i}) $.
 \end{rem}
 
+\begin{rem}
+	From the conditions \ref{eq:sp-conditions}, we get
+	\begin{equation*}
+		y_0 < y_1 < \dots < y_{n-1} < y_n
+	\end{equation*}
+	So it is equivalent to sort points using either abscissae or ordinates.
+\end{rem}
+
+
+
+\subsection{Upper and lower bounds}
 
 The following lemmas shall provide us with the necessary framework for upper and lower bounds for approximations on the functions generated by singular points.
 
-TODO: Ask: May I directly copy the lemmas from the paper?
 \begin{lmm}[Upper bound]
-	\label{lmm:ub}
+	\label{lmm:sp-ub}
 	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Then, if a point $ (x_j, y_j), j \in \{ 1, \dots, n-1\} $ is removed from the sequence, the function $ f_u: [a,b] \to \mathbb{R}_{0+} $ obtained by the new sequence $ (P_i)_{i \in [n] \setminus \{ j \}}) $ is also continuous, piecewise-linear and convex, and
 	\begin{equation}
 	f_u(x) \geq f(x) \qquad \forall x \in [a,b]
@@ -91,7 +105,7 @@ TODO: Ask: May I directly copy the lemmas from the paper?
 \end{proof}
 
 \begin{lmm}[Lower bound]
-	\label{lmm:lb}
+	\label{lmm:sp-lb}
 	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Let $ l_{j} $ be the line joining points $ P_{i-1} $ and $ P_{i} $. Similarly, let $ l_{j+1} $ be the line joining points $ P_{i+1} $ and $ P_{i+2} $. Denote the intersection of the lines $ l_{j} $ and $ l_{j+1} $ by $ \bar{P} = ( \bar{x}, \bar{y} ) $.
 
 	Then the function $ f_d: [a,b] \to \mathbb{R}_{0+} $ characterised by $ (P_0, \dots, P_{j-1}, \bar{P}, P_{j+2}, \dots, P_n) $ is also continuous, piecewise-linear and convex, and
@@ -103,34 +117,49 @@ TODO: Ask: May I directly copy the lemmas from the paper?
 	Graphical or analytical?
 \end{proof}
 
-Using the lemmas \ref{lmm:ub} and \ref{lmm:lb}, we may find the upper and lower bounds of functions characterised by singular points. This key property will be used later to reduce the memory requirement of the algorithm by removing points or edges from the function.
+The lemmas \ref{lmm:sp-ub} and \ref{lmm:sp-lb}, will be used later to reduce the memory requirement of the algorithm by removing points or edges to simplify the function and reduce memory requirements.
+
+
 
 \subsection{Fixed-strike European Asian options}
-In this case, the pay-off is given by the function $ (A_T - K)_+ $, where $ A_T $ is the arithmetic mean at maturity $T$.
+For this type of options, the pay-off at maturity is dependent only on the arithmetic mean  $ A_T $ at maturity $T$, and is given by the function
+\begin{equation} \label{eq:sp-price-eu-asian-am}
+	P_T = (A_T - K)_+
+\end{equation}
 We shall focus on this case in this section because it is the easiest to handle.
 
-In this case, in each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each such average. We shall show these points to satisfy condition \ref{eq:sp-conditions}, so they completely characterise a price function. Thus we not only look at the possible averages and corresponding prices, but on the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
+In each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each such average. We shall show these points to satisfy condition \ref{eq:sp-conditions}, so they completely characterise a price function. Thus we focus not on the averages and corresponding prices possible under a particular binomial tree, but on the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
 
-\subsection*{Some notations and conventions}
+
+
+\subsection{Some notations and conventions}
 Let the number of time steps be $n$. Let $i$ denote the highlighted time step, and $j$ represent the number of up movements. In this way, we may represent any node by $ N_{i,j} $.
 
 The price of the underlying at each node $ N_{i,j} $ is denoted by $ S_{i,j} $. Since there are $j$ up movements, there must be $ i-j $ down movements, and thus
-\begin{equation}
+\begin{equation} \label{eq:sp-am-ij}
 S_{i,j} = S_0 u^{j} d^{i-j} = S_0 u^{j} u^{-(i-j)} = S_0 u^{-i+2j} \qquad \forall i \in [n], \ \forall j \in [i]
 \end{equation}
+
 
 \begin{prp}
 	The number of paths to a node $ N_{i,j} $ is $ \binom{i}{j} $.
 \end{prp}
+
 \begin{proof}
 	At each point in a path, we may choose either an up movement or a down movement. To reach node $ N_{i,j} $, we much choose $j$ up movements among $i$ possibilities. The result follows immediately.
 \end{proof}
 
-First we recollect some basic definitions, and derive simple results for upper and lower bound for the averages.
+Any number of paths among the possible paths may give zero as the price for the option. We denote the effective number of singular points in a node by $ N_{i,j} $ by $ L_{i,j} $, where $ L_{i,j} \in \left[ \binom{i}{j} \right] $. The $ l^\mathrm{th} $ average (in ascending order) ($ l \in \{ 1, \dots, L_{i,j} \} $) is denoted by $ A_{i,j}^l $, and the corresponding price by $ P_{i,j}^l $. Thus the singular points characterising the price function are $ ( ( A_{i,j}^l, P_{i,j}^l ) )_{l \in \{ 1, \dots, L_{i,j} \} } $.
 
+\begin{dfn}[singular average and singular price]
+	In the particular case of Asian options with arithmetic mean, the $ A_{i,j}^l $s are called `singular averages' and the $ P_{i,j}^l $s are called `singular prices'.
+\end{dfn}
+
+
+We recall some basic definitions and derive simple results for the maximum and minimum attainable value of the averages on each node.
 
 \begin{dfn}[Arithmetic mean]
-	The arithmetic mean of a set of numbers $ \{( S_i \}_{i \in [n]} $ is given by:
+	The arithmetic mean of a set of numbers $ \{ S_i \}_{i \in [n]} $ is given by:
 	\begin{equation}
 	\label{eq:am}
 	A_{n} = \frac{\sum_{i=0}^n S_i}{n+1}
@@ -143,8 +172,8 @@ First we recollect some basic definitions, and derive simple results for upper a
 \end{dfn}
 
 
-\begin{thm}[Inequality of paths]
-	\label{thm:up-dn-path}
+\begin{thm}[Path inequality]
+	\label{thm:sp-up-dn-path}
 	Let there be two paths $\alpha$ and $\beta$, such that $S_{i,j_i^\alpha} >= S_{i,j_i^\beta} \; \forall i$. Denote the corresponding averages by $A^\alpha$ and $A^\beta$, respectively. Then $ A^\alpha >= A^\beta $.
 \end{thm}
 
@@ -160,7 +189,7 @@ First we recollect some basic definitions, and derive simple results for upper a
 	(n+1) A_{n,j}^\beta &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\beta} + \sum_{i=l+1}^{n} S_{i,j_i} \\
 	\implies (n+1) \left(A_{n,j}^\alpha - A_{n,j}^\beta\right) &= S_{l,j_l^\alpha} - S_{l,j_l^\beta} \\
 	&= S_{l-1,j_{l-1}} u_l - S_{l-1,j_{l-1}} d_l \\
-	&= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \\
+	&= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \qquad (u_l > d_l \text{ by definition}) \\
 	\implies A_{n,j}^\alpha > A_{n,j}^\beta
 	\end{align*}
 \end{proof}
@@ -172,64 +201,116 @@ First we recollect some basic definitions, and derive simple results for upper a
 
 
 \begin{crr}
-	\label{crr:up-dn-path}
+	\label{crr:sp-up-dn-path}
 	At each node $ N(i,j) $, the following hold:
 	\begin{enumerate}
-		\item The maximum average possible $ A_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements.
-		\begin{equation}
-		A_{i,j}^{\max} = \frac{S_0}{n+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{n-j-1}}{1-d} \right)
+		\item The minimum average possible $ A_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements, and
+		\begin{equation}  \label{eq:sp-Amin}
+		A_{i,j}^{\min} = \frac{S_0}{i+1} \left( \frac{1 - d^{i-j+1}}{1-d} + d^{i-j} u \frac{1 - u^{j}}{1-u} \right)
 		\end{equation}
-		\item The minimum average possible $ A_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements.
-		\begin{equation}
-		A_{i,j}^{\min} = \frac{S_0}{n+1} \left( \frac{1 - d^{n-j+1}}{1-d} + d^{n-j} u \frac{1 - u^{j}}{1-u} \right)
-		\end{equation}		
+		\item The maximum average possible $ A_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements, and
+		\begin{equation} \label{eq:sp-Amax}
+		A_{i,j}^{\max} = \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right)
+		\end{equation}
 	\end{enumerate}
 \end{crr}
 
 \begin{proof}
 	We show the proof only for the case of the maximum, since the case of the minimum can be shown using the exact same argument.
 	
-	From Theorem \ref{thm:up-dn-path}, the result about the maximum average attaining path holds directly, since there cannot be a path above the one given by $j$ up movements followed by $(i-j)$ down movements.
+	From Theorem \ref{thm:sp-up-dn-path}, the result about path with the maximum average holds directly, since there cannot be a path above the one given by $j$ up movements followed by $(i-j)$ down movements.
 	
 	The subsequent formula may be derived as follows.
 	\begin{align*}
-		(n+1) A_{i,j}^{\max} &= \underbrace{ ( S_0 + S_0 u + S_0 u^2 + \dots + S_0 u^j ) }_\textrm{up movement} + \underbrace{ ( S_0 u^j d + S_0 u^j d^2 + \dots + S_0 u^j d^{n-j} ) }_\textrm{down movement} \\
-		&= S_0 ( (1 + u + u^2 + \dots + u^j ) + u^j d ( 1 + d + \dots + d^{n-j-1} ) ) \\
-		&= S_0 \left( \sum_{k=0}^j u^k + u^j d \sum_{k=0}^{n-j-1} d^k \right) \\
-		&= S_0 \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{n-j-1}}{1-d} \right) \qquad \textrm{(Geometric series)} \\
-		\implies A_{i,j}^{\max} &= \frac{S_0}{n+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{n-j-1}}{1-d} \right)
+		(i+1) A_{i,j}^{\max} &= \underbrace{ ( S_0 + S_0 u + S_0 u^2 + \dots + S_0 u^j ) }_\text{up movement} + \underbrace{ ( S_0 u^j d + S_0 u^j d^2 + \dots + S_0 u^j d^{i-j} ) }_\text{down movement} \\
+		&= S_0 ( (1 + u + u^2 + \dots + u^j ) + u^j d ( 1 + d + \dots + d^{i-j-1} ) ) \\
+		&= S_0 \left( \sum_{k=0}^j u^k + u^j d \sum_{k=0}^{i-j-1} d^k \right) \\
+		&= S_0 \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right) \qquad \text{(Geometric series)} \\
+		\implies A_{i,j}^{\max} &= \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right)
 	\end{align*}
 \end{proof}
 
+The following table highlights the discussion above.
 
-\begin{tabular}{cll}
+\label{tab:sp-notations}
+\begin{tabular}{cccl} 
 	\toprule
-	Symbol & Range & Description \\
+	Symbol & Range & Formula & Description \\
 	\midrule
-	$ i $ & [n] & The highlighted time step \\
-	$ j $ & [i] & The number of up movements \\
-	$ N_{i,j} $ & & The node fixed by $ (i,j) $ \\
-	$ S_{i,j} $ & $ \mathbb{R}_{0+} $ & The value of the underlying at node $ N_{i,j} $. $ S_{i,j} = S_0 u^{-i+2j} $ \\
-	$ L_{i,j} $ & $ \left[ \binom{i}{j} \right] $ & Number of singular points in node $ N_{i,j} $ \\
-	$ A_{i,j}^l $ & $ \mathbb{R}_{0+} $ & The $ l^\mathrm{th} $ singular point of node $ N_{i,j} $, where $ l \in \{ 1, \dots, L \} $ \\
-	
+	$ i $ & $ [ n ] $ & & highlighted time step \\
+	$ j $ & $ [ i ] $ & & number of up movements \\
+	$ N_{i,j} $ & & & node fixed by $ (i,j) $ \\
+	$ S_{i,j} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-am-ij} & value of the underlying at node $ N_{i,j} $ \\
+	$ L_{i,j} $ & $ \left[ \binom{i}{j} \right] $ & & number of singular points in node $ N_{i,j} $ \\
+	$ l $ & $ \{ 1, \dots, L \} $ & & index for points in ascending order of averages \\
+	$ A_{i,j}^{\max} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-Amax} & maximum average attainable for node $ N_{i,j} $ \\
+	$ A_{i,j}^{\min} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-Amin} & minimum average attainable for node $ N_{i,j} $ \\
+	$ A_{i,j}^l $ & $ \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] $ & Eq \ref{eq:am} & $ l^\mathrm{th} $ singular average of node $ N_{i,j} $ \\
+	$ P_{i,j}^l $ & & & price corresponding to the average $ A_{i,j}^l $ \\
+	$ (A_{i,j}^l, P_{i,j}^l) $ & & & $ l^\mathrm{th} $ singular point of node $ N_{i,j} $ \\
 	\bottomrule
 \end{tabular}
 
 
 
-\begin{lmm}[Lemma 3]
-	TODO
+\subsubsection{At maturity}
+
+From equations \ref{eq:sp-Amax} and \ref{eq:sp-Amin}, putting $i = n$, we get
+\begin{align*}
+	A_{n,j}^{\min} &= \frac{S_0}{n+1} \left( \frac{1 - d^{n-j+1}}{1-d} + d^{n-j} u \frac{1 - u^{j}}{1-u} \right) \\
+	A_{n,j}^{\max} &= \frac{S_0}{n+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{n-j-1}}{1-d} \right)
+\end{align*}
+
+\paragraph{The price function}
+
+In defining the price function, we note that three cases may arise.
+\begin{itemize}
+	\item $ j \in \{ 0, n \} $ \\
+	There exists only one path to these nodes, so there is only one average, implying one price and one singular point.
+	
+	\item $ j \notin \{ 0, n \} \land K \in ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\	
+	The price function is characterised by three singular points ($ L_{i,j} = 3 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2, 3 \} } $, which are \\
+	\begin{equation} \label{eq:sp-price-maturity-kin}
+		\begin{aligned}
+		( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , 0 ) \\
+		( A_{n,j}^2 , P_{n,j}^2 ) &= ( K , 0 ) \\
+		( A_{n,j}^3 , P_{n,j}^3 ) &= ( A_{n,j}^{\max} , A_{n,j}^{\max} - K ) \\
+		\end{aligned}
+	\end{equation} \label{eq:sp-price-maturity-kout}
+	
+	\item $ j \notin \{ 0, n \} \land K \notin ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\
+	The price function is characterised by only two singular points ($ L_{i,j} = 2 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2 \} } $, which are \\
+	\begin{equation}
+		\begin{aligned}
+		( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ ) \\
+		( A_{n,j}^2 , P_{n,j}^2 ) &= ( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ ) \\
+		\end{aligned}
+	\end{equation}
+\end{itemize}
+
+\begin{lmm}[Price function at maturity]
+	At each node at maturity, the price function $ { v_{n,j}: \left[ A_{n,j}^{\min}, A_{n,j}^{\max} \right] \to \left[ ( A_{n,j}^{\min} - K )_+ , ( A_{n,j}^{\max} - K )_+ \right] } $ defined as $ v_{n,j}(A) = (A - K)_+ $ is continuous, piecewise-linear and convex.
 \end{lmm}
+\begin{proof}
+	The singular points satisfy the conditions \ref{eq:sp-conditions}. So for each $ A \in \left[ A_{n,j}^{\min}, A_{n,j}^{\max} \right] $, the price function ${ v_{n,j}(A) }$ characterised by the singular points is continuous, piecewise-linear and convex by remark \ref{rem:sp-characterisation}.
+\end{proof}
 
 
-\begin{lmm}[Lemma 4]
-	TODO
+
+\subsubsection{Before maturity}
+TODO
+\begin{lmm}[Price function at any node $ N_{i,j} $]
+	The price function ${ v_{i,j}: \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] \to \mathbb{R}_{0+} }$ is continuous, piecewise-linear and convex.
 \end{lmm}
+\begin{proof}
+	TODO
+\end{proof}
+TODO
+\clearpage
 
 
 \section{Extensions}
-\label{sec:extensions}
+\label{sec:sp-extensions}
 
 Let us recapitulate the conditions required for the singular points method to work in the case of Asian options with arithmetic mean.
 \begin{itemize}
@@ -246,26 +327,11 @@ Keeping these in mind, let us look at the possibility of extending the singular 
 \end{enumerate}
 
 
-\subsection{Pros and cons}
-\label{sec:sp-adv}
-
-\paragraph{Advantages}
-\begin{itemize}
-\item Fast -- Experimental order of complexity = $ O(n^3) $
-\item It allows us to specify an \emph{a priori} error bound.
-\end{itemize}
-
-
-\paragraph{Disadvantages}
-\begin{itemize}
-\item Very specific method -- only applicable to a few specific cases.
-\end{itemize}
-
 
 \subsection{Geometric mean and fixed volatility}
 \label{sec:gm-fixed-vol}
 
-In the case of geometric options, we have a closed form formula under the Black-Scholes market model. We try to extend the singular points method in this case.
+In the case of geometric options, we have a closed form formula under the Black-Scholes market model. We try to extend the singular points method.
 
 Firstly, we show that the result about the maximum and minimum paths still hold in the geometric case.
 
@@ -287,23 +353,44 @@ Firstly, we show that the result about the maximum and minimum paths still hold 
 \end{lmm}
 
 \begin{proof}
-	The proof is the same as \ref{crr:up-dn-path}, with $A$ replaced by $G$ and relevant modifications.
+	The proof is the same as \ref{crr:sp-up-dn-path}, with $A$ replaced by $G$ and relevant modifications.
 \end{proof}
 
 
-One of the central ideas behind the singular points method is that the price of the option is a convex, piecewise-linear function of the average $A$. But in the geometric case, this no longer holds true. For example, take a node $N(i,j)$ with $ i = n-1 $. The price function given by $ v_{i,j}(G) $, with $ G \in [G^{min},G^{max}] $, can be calculated by the discounted expectation value.
+One of the central ideas behind the singular points method is that the price of the option is a convex, piecewise-linear function of the average $A$. But in the geometric case, this no longer holds true. For example, take a node $N_{i,j}$ with $ i = n-1 $. The price function given by $ v_{i,j}(G) $, with $ G \in [G^{min},G^{max}] $, can be calculated by the discounted expectation value.
 \begin{align}
 	v_{i,j}(G) &= \frac{1}{R} \left[ p v_{i+1,j+1}(G_u) + (1-p) v_{i+1,j}(G_d) \right] \\
 	G_u &= \left( G^{i+1} S_0 u^{-i+2j+1} \right)^{\frac{1}{i+2}} \propto G^{\frac{i+1}{i+2}} \\
 	G_d &= \left( G^{i+1} S_0 u^{-i+2j-1} \right)^{\frac{1}{i+2}} \propto G^{\frac{i+1}{i+2}}
 \end{align}
 Clearly, the final function $ v_{i,j} $ is not linear in $G$. Rather it is piecewise-concave. Thus we cannot use the singular points method in this case.
+TODO: Insert a graph of the function here.
+
 
 
 \subsection{Arithmetic mean with local volatility}
 \label{sec:am-local-vol}
 
-In this case, the tree for the underlying is not recombinant, so we do not have more than one singular point in one (non-recombining) node. Clearly, we cannot use the singular points method in this case.
+In this case, the tree for the underlying is not recombinant, so we do not have more than one singular point in one (non-recombining) node. Clearly, we cannot use the singular points method.
+
+
+
+\section{Conclusion}
+\label{sec:sp-adv}
+
+We conclude the chapter by noting the pros and cons of the singular points method.
+\paragraph{Advantages}
+\begin{itemize}
+	\item Fast -- Experimental order of complexity = $ O(n^3) $
+	\item It allows us to specify an \emph{a priori} error bound.
+\end{itemize}
+
+
+\paragraph{Disadvantages}
+\begin{itemize}
+	\item Very specific method -- only applicable to a few specific cases.
+\end{itemize}
+
 
 %%% Local Variables:
 %%% mode: latex
