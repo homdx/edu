@@ -9,17 +9,17 @@
 \usepackage[math]{iwona}
 \usepackage{eulervm}
 %\usepackage{lmodern}
-\usepackage[T1]{fontenc}    % Better fonts
-\usepackage[utf8]{inputenc}    % For extended UTF8 support change to utf8x
-\usepackage[english]{babel}    % English hyphenation
-\usepackage{csquotes}    % Multilingual quotes
+\usepackage[T1]{fontenc}		% Better fonts
+\usepackage[utf8]{inputenc}		 % For extended UTF8 support change to utf8x
+\usepackage[english]{babel}		 % English hyphenation
+\usepackage{csquotes}		 % Multilingual quotes
 \usepackage{graphicx}
-\graphicspath{{img/}}    % Central repository for images
-\usepackage{booktabs}    % Better tables
+\graphicspath{{img/}}		 % Central repository for images
+\usepackage{booktabs}		 % Better tables
 
 % Set paragraph formatting
-\usepackage{parskip}    % Do not indent paragraphs, and put some linespace between paragraphs
-\linespread{1.1}    % Set more space between lines
+\usepackage{parskip}		% Do not indent paragraphs, and put some linespace between paragraphs
+\linespread{1.1}		% Set more space between lines
 
 
 % Math
@@ -34,6 +34,7 @@
 
 \theoremstyle{remark}
 \newtheorem{rem}{Remark}[chapter]
+\newtheorem{eg}{Example}[chapter]
 
 % Number equations depending on the section
 \numberwithin{equation}{section}
@@ -50,7 +51,36 @@
 \date{\today}
 
 
-% \usepackage[protrusion=true,expansion=true,final,babel]{microtype}    % many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
+% Figures
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,shapes.misc}
+
+\tikzset{
+	term/.style={
+		% The shape:
+		shape=ellipse,
+		% The size:
+		minimum size=6mm,
+		% The border:
+		very thick,
+		draw=red!50!black!50, % 50% red and 50% black,
+		% and that mixed with 50% white
+		% The filling:
+		top color=white, % a shading that is white at the top...
+		bottom color=red!50!black!20 % and something else at the bottom
+	}}
+
+\tikzset{
+	nterm/.style={
+		% The shape:
+		rectangle,minimum size=6mm,rounded corners=3mm,
+		% The rest
+		very thick,draw=black!30,
+		top color=black!05,bottom color=black!10,
+		font=\ttfamily}}
+
+
+% \usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
 
  % % example file to change the style of LaTeX
  % % Tony Roberts May 2004
@@ -64,15 +94,15 @@
 \usepackage{color}
 % My colors:
 % See http://web.njit.edu/~kevin/rgb.txt.html for possibilities
-\definecolor{myDarkBlue}{rgb}{.1,0,.2}  
-\definecolor{myBlue}{rgb}{.1,.1,.5}  
-\definecolor{myRoyal}{rgb}{.2,.2,.8}  
+\definecolor{myDarkBlue}{rgb}{.1,0,.2}	
+\definecolor{myBlue}{rgb}{.1,.1,.5}	 
+\definecolor{myRoyal}{rgb}{.2,.2,.8}	
 % \definecolor{myGreen}{rgb}{0,.35,.1}
-% \definecolor{myGreen}{rgb}{0,.5,.25}  % Too bright
-% \definecolor{myGreen}{rgb}{0,.4,.2}    % Still too bright
-\definecolor{myGreen}{rgb}{0,.4,0}    % Dark Green
-% \definecolor{myRed}{rgb}{.8,.1,.2}    % Too bright
-\definecolor{myRed}{rgb}{.5,0,.5}  % purple
+% \definecolor{myGreen}{rgb}{0,.5,.25}	% Too bright
+% \definecolor{myGreen}{rgb}{0,.4,.2}		 % Still too bright
+\definecolor{myGreen}{rgb}{0,.4,0}		% Dark Green
+% \definecolor{myRed}{rgb}{.8,.1,.2}		% Too bright
+\definecolor{myRed}{rgb}{.5,0,.5}	 % purple
 
 %% Format ToC
 %\usepackage{tocloft}
@@ -96,13 +126,13 @@
 	{\theparagraph}{1em}{}
 
 
-%\usepackage{lastpage}    % To get the last page number
-%\usepackage{fancyhdr}    % Headers and footers
-%\pagestyle{fancyplain}     % All pages have headers and footers
+%\usepackage{lastpage}		% To get the last page number
+%\usepackage{fancyhdr}		% Headers and footers
+%\pagestyle{fancyplain}			% All pages have headers and footers
 %% Convert chapter, section names in headers to normal case
 %\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
 %\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
-%\fancyhf{}    % Blank out the default header and footer
+%\fancyhf{}		 % Blank out the default header and footer
 %\fancyhf[HL]{\leftmark}
 %\fancyhf[HR]{\rightmark}
 %\fancyhf[FL]{Thesis}
@@ -116,26 +146,26 @@
 
 
 \usepackage[
-  pdfusetitle,    % Use PDF title
-  pdfauthor={Sudip Sinha},    % Sets the document information Author field
-  pdfsubject={Masters Thesis},    % Sets the document information Subject field
-  pdfkeywords={derivative, option, pricing, Cox Ross Rubenstein, CRR, Black Scholes, BS},    % Sets the document information Keywords field
-  pdfstartview=FitBH,    % Fits the width of the page bounding box to the window - replace by FitH.
-  pdfpagelayout=OneColumn,    % Displays the document in one column; continuous scrolling.
-  bookmarks=true,
-  unicode=true,
-  colorlinks=true,
-  % backref=section,    % Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
-  linktocpage=false,       % ToC, LoF, LoT place hyperlink on page number, rather than entry text
-  % breaklinks=true,        % so long urls are correctly broken across lines
-  % pagebackref=false,     % add page number in bibliography and link to position in document where cited
-  % linkcolor=myRed,
-  % urlcolor=myGreen,
-  % citecolor=Black,
-  % hyperfootnotes=false
+	pdfusetitle,		% Use PDF title
+	pdfauthor={Sudip Sinha},		% Sets the document information Author field
+	pdfsubject={Masters Thesis},		% Sets the document information Subject field
+	pdfkeywords={derivative, option, pricing, Cox Ross Rubenstein, CRR, Black Scholes, BS},		 % Sets the document information Keywords field
+	pdfstartview=FitBH,		 % Fits the width of the page bounding box to the window - replace by FitH.
+	pdfpagelayout=OneColumn,		% Displays the document in one column; continuous scrolling.
+	bookmarks=true,
+	unicode=true,
+	colorlinks=true,
+	% backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
+	linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
+	% breaklinks=true,				% so long urls are correctly broken across lines
+	% pagebackref=false,		 % add page number in bibliography and link to position in document where cited
+	% linkcolor=myRed,
+	% urlcolor=myGreen,
+	% citecolor=Black,
+	% hyperfootnotes=false
 ]{hyperref}
-\usepackage[figure,table]{hypcap}    % Correct a problem with hyperref
-\urlstyle{rm}    %so it doesn't use a typewriter font for URLs
+\usepackage[figure,table]{hypcap}		 % Correct a problem with hyperref
+\urlstyle{rm}		 %so it doesn't use a typewriter font for URLs
 
 
 
@@ -155,17 +185,17 @@
 %% % \newcommand\org@hypertarget{}
 %% % \let\org@hypertarget\hypertarget
 %% % \renewcommand\hypertarget[2]{%
-%% %   \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
+%% %	 \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
 %% % } \makeatother 
 %
 %
 %% Make `et al' emphasized
 %\renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
-%  \ifboolexpr{
-%    test {\ifnumequal{\value{listcount}}{\value{liststop}}}
-%    and
-%    test \ifmorenames}
-%  {\ifnumgreater{\value{liststop}}{1}
-%    {\finalandcomma}
-%    {}%
-%    \andothersdelim\bibstring[\emph]{andothers}}{}}
+%	 \ifboolexpr{
+%		 test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+%		 and
+%		 test \ifmorenames}
+%	 {\ifnumgreater{\value{liststop}}{1}
+%		 {\finalandcomma}
+%		 {}%
+%		 \andothersdelim\bibstring[\emph]{andothers}}{}}

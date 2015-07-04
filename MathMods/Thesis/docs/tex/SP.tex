@@ -15,6 +15,9 @@ TODO: Push this defn to an earlier chapter.
 
 \section{Existing methods}
 \label{sec:existing-methods}
+
+TODO: Mention PREMIA somewhere.
+
 Before we go into the details of the singular points method, we shall look into the pre-existing methods, and discuss their advantages and disadvantages briefly.
 
 Ref: Forsyth et al (2002)
@@ -50,20 +53,20 @@ TODO: Discuss the advantages and disadvantages of each method.
 \section{The Singular Points method}
 \label{sec:sp-method}
 
-The singular points method looks at the price of the option as a continuous function of the underlying's average at each node of the binomial tree.
+The price of an Asian option at each instance is a continous function of the average of the underlying's value. Since the number of paths to a node in a binomial tree is finite, we have that at each node of the underlying's binomial tree, the option price may be represented as a piecewise-linear, continous, convex function of the average. We shall develop the theoretical idea in this section. In the subsequent section, we shall see that the nature of the function allows us to make approximations with \emph{a priori} error bounds.
 
 
 \begin{dfn}[Singular points and singular values] \label{def:sp-sp}
 	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that
 	\begin{subequations} \label{eq:sp-conditions}
-	\begin{align}
-		a =& x_0 < x_1 < \dots < x_{n-1} < x_n = b \\
-		\label{eq:sp-condition-slope}
-		m_{i} :=& \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} \leq \frac{y_{i+2} - y_{i+1}}{x_{i+2} - x_{i+1}} = m_{i+1} \qquad \forall i \in \{ 1, \dots, n-1 \}
-	\end{align}
+		\begin{align}
+			a =& x_0 < x_1 < \dots < x_{n-1} < x_n = b \\
+			\label{eq:sp-condition-slope}
+			m_{i} :=& \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} \leq \frac{y_{i+2} - y_{i+1}}{x_{i+2} - x_{i+1}} = m_{i+1} \qquad \forall i \in \{ 1, \dots, n-1 \}
+		\end{align}
 	\end{subequations}
 	
-	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be the function obtained by linear interpolation of the points in $P$. From the definition of $f$ and  \ref{eq:sp-condition-slope}, the function is continuous, piecewise-linear and convex.
+	Let $ f:[a,b] \to [0, \infty) $ be the function obtained by linear interpolation of the points in $P$. From the definition of $f$ and	 \ref{eq:sp-condition-slope}, the function is continuous, piecewise-linear and convex.
 	
 	Then, the elements of $P$ are called \emph{singular points of $f$} and the abscissae $ \{ x_i \}_{i \in [n]} $ are called \emph{singular values of $f$}.
 \end{dfn}
@@ -72,8 +75,8 @@ The singular points method looks at the price of the option as a continuous func
 \begin{rem} \label{rem:sp-characterisation}
 	We note that the singular points characterise such a function completely. This can be seen from the following representation of the function.
 	\begin{equation}
-	\label{eq:sp-function-repr}
-	f(x) = y_0 + \sum_{i=0}^{n-1} [ m_i \{ (x_{i+1} \wedge x) - (x_{i} \wedge x) \} ]
+		\label{eq:sp-function-repr}
+		f(x) = y_0 + \sum_{i=0}^{n-1} [ m_i \{ (x_{i+1} \wedge x) - (x_{i} \wedge x) \} ]
 	\end{equation}
 	Where $ m_i = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ (x_{i}, y_{i}) $ and $ (x_{i+1}, y_{i}) $.
 \end{rem}
@@ -94,9 +97,9 @@ The following lemmas shall provide us with the necessary framework for upper and
 
 \begin{lmm}[Upper bound]
 	\label{lmm:sp-ub}
-	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Then, if a point $ (x_j, y_j), j \in \{ 1, \dots, n-1\} $ is removed from the sequence, the function $ f_u: [a,b] \to \mathbb{R}_{0+} $ obtained by the new sequence $ (P_i)_{i \in [n] \setminus \{ j \}}) $ is also continuous, piecewise-linear and convex, and
+	Let $ f:[a,b] \to [0, \infty) $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Then, if a point $ (x_j, y_j), j \in \{ 1, \dots, n-1\} $ is removed from the sequence, the function $ f_u: [a,b] \to [0, \infty) $ obtained by the new sequence $ (P_i)_{i \in [n] \setminus \{ j \}}) $ is also continuous, piecewise-linear and convex, and
 	\begin{equation}
-	f_u(x) \geq f(x) \qquad \forall x \in [a,b]
+		f_u(x) \geq f(x) \qquad \forall x \in [a,b]
 	\end{equation}
 \end{lmm}
 
@@ -106,23 +109,23 @@ The following lemmas shall provide us with the necessary framework for upper and
 
 \begin{lmm}[Lower bound]
 	\label{lmm:sp-lb}
-	Let $ f:[a,b] \to \mathbb{R}_{0+} $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Let $ l_{j} $ be the line joining points $ P_{i-1} $ and $ P_{i} $. Similarly, let $ l_{j+1} $ be the line joining points $ P_{i+1} $ and $ P_{i+2} $. Denote the intersection of the lines $ l_{j} $ and $ l_{j+1} $ by $ \bar{P} = ( \bar{x}, \bar{y} ) $.
+	Let $ f:[a,b] \to [0, \infty) $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Let $ l_{j} $ be the line joining points $ P_{i-1} $ and $ P_{i} $. Similarly, let $ l_{j+1} $ be the line joining points $ P_{i+1} $ and $ P_{i+2} $. Denote the intersection of the lines $ l_{j} $ and $ l_{j+1} $ by $ \bar{P} = ( \bar{x}, \bar{y} ) $.
 
-	Then the function $ f_d: [a,b] \to \mathbb{R}_{0+} $ characterised by $ (P_0, \dots, P_{j-1}, \bar{P}, P_{j+2}, \dots, P_n) $ is also continuous, piecewise-linear and convex, and
+	Then the function $ f_d: [a,b] \to [0, \infty) $ characterised by $ (P_0, \dots, P_{j-1}, \bar{P}, P_{j+2}, \dots, P_n) $ is also continuous, piecewise-linear and convex, and
 	\begin{equation}
-	f_d(x) \leq f(x) \qquad \forall x \in [a,b]
+		f_d(x) \leq f(x) \qquad \forall x \in [a,b]
 	\end{equation}
 \end{lmm}
 \begin{proof}
 	Graphical or analytical?
 \end{proof}
 
-The lemmas \ref{lmm:sp-ub} and \ref{lmm:sp-lb}, will be used later to reduce the memory requirement of the algorithm by removing points or edges to simplify the function and reduce memory requirements.
+The lemmas \ref{lmm:sp-ub} and \ref{lmm:sp-lb}, will be used later to reduce the memory requirement of the algorithm by removing points or edges to simplify the function.
 
 
 
 \subsection{Fixed-strike European Asian options}
-For this type of options, the pay-off at maturity is dependent only on the arithmetic mean  $ A_T $ at maturity $T$, and is given by the function
+For this type of options, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $T$ and a fixed constant $K$, and is given by the function
 \begin{equation} \label{eq:sp-price-eu-asian-am}
 	P_T = (A_T - K)_+
 \end{equation}
@@ -137,7 +140,7 @@ Let the number of time steps be $n$. Let $i$ denote the highlighted time step, a
 
 The price of the underlying at each node $ N_{i,j} $ is denoted by $ S_{i,j} $. Since there are $j$ up movements, there must be $ i-j $ down movements, and thus
 \begin{equation} \label{eq:sp-am-ij}
-S_{i,j} = S_0 u^{j} d^{i-j} = S_0 u^{j} u^{-(i-j)} = S_0 u^{-i+2j} \qquad \forall i \in [n], \ \forall j \in [i]
+	S_{i,j} = S_0 u^{j} d^{i-j} = S_0 u^{j} u^{-(i-j)} = S_0 u^{-i+2j} \qquad \forall i \in [n], \ \forall j \in [i]
 \end{equation}
 
 
@@ -161,8 +164,8 @@ We recall some basic definitions and derive simple results for the maximum and m
 \begin{dfn}[Arithmetic mean]
 	The arithmetic mean of a set of numbers $ \{ S_i \}_{i \in [n]} $ is given by:
 	\begin{equation}
-	\label{eq:am}
-	A_{n} = \frac{\sum_{i=0}^n S_i}{n+1}
+		\label{eq:am}
+		A_{n} = \frac{\sum_{i=0}^n S_i}{n+1}
 	\end{equation}
 \end{dfn}
 
@@ -170,6 +173,60 @@ We recall some basic definitions and derive simple results for the maximum and m
 \begin{dfn}[Path]
 	A path is a sequence $(j_i)_{i \in [n]}$ such that $j_{i+1} \in \{ j_i,j_i+1 \}$.
 \end{dfn}
+
+\begin{eg}
+	See Figure \ref{fig:paths}.
+\end{eg}
+
+
+\begin{figure}
+	% Recombining 4-step binomial tree for Cox-Ross-Rubinstein model
+	\begin{tikzpicture}
+		\matrix[column sep=10mm,row sep=1mm] (tree){
+			& & & & \node[term] (u4) {$S_0u^4$}; \\
+			& & & \node[nterm] (u3) {$S_0u^3$}; & \\
+			& & \node[nterm] (u2) {$S_0u^2$}; & & \node[term] (u3d) {$S_0u^3d$}; \\
+			& \node[nterm] (u) {$S_0u$}; & & \node[nterm] (u2d) {$S_0u^2d$};\\
+			\node[term] (s) {$S_0$}; & & \node[nterm] (ud) {$S_0ud$}; & & \node[term] (u2d2) {$S_0u^2d^2$}; \\
+			& \node[nterm] (d) {$S_0d$}; & &	\node[nterm] (ud2) {$S_0ud^2$};\\
+			& & \node[nterm] (d2) {$S_0d^2$}; & & \node[term] (ud3) {$S_0ud^3$}; \\
+			& & & \node[nterm] (d3) {$S_0d^3$}; & \\
+			& & & & \node[term] (d4) {$S_0d^4$}; \\
+		};
+		% Lines out of s
+		\draw[->,red,ultra thick] (s) -- (u) node[midway,above] {$p_u$};
+		\draw[->,blue,thick] (s) -- (d) node[midway,below] {$p_d$};
+		% Lines out of u
+		\draw[->,red,ultra thick] (u) -- (u2) node[midway,above] {$p_u$};
+		\draw[->,gray] (u) -- (ud) node[midway,above] {$p_d$};
+		% Lines out of d
+		\draw[->,blue,thick] (d) -- (ud) node[midway,below] {$p_u$};
+		\draw[->,gray] (d) -- (d2) node[midway,below] {$p_d$};
+		% Lines out of u2
+		\draw[->,gray] (u2) -- (u3) node[midway,above] {$p_u$};
+		\draw[->,red,ultra thick] (u2) -- (u2d) node[midway,above] {$p_d$};
+		% Lines out of ud
+		\draw[->,gray] (ud) -- (u2d) node[midway,above] {$p_u$};
+		\draw[->,blue,thick] (ud) -- (ud2) node[midway,below] {$p_d$};
+		% Lines out of d2
+		\draw[->,gray] (d2) -- (ud2) node[midway,below] {$p_u$};
+		\draw[->,gray] (d2) -- (d3) node[midway,below] {$p_d$};
+		% Lines out of u3
+		\draw[->,gray] (u3) -- (u4) node[midway,above] {$p_u$};
+		\draw[->,gray] (u3) -- (u3d) node[midway,above] {$p_d$};
+		% Lines out of u2d
+		\draw[->,red,ultra thick] (u2d) -- (u3d) node[midway,above] {$p_u$};
+		\draw[->,gray] (u2d) -- (u2d2) node[midway,above] {$p_d$};
+		% Lines out of ud2
+		\draw[->,gray] (ud2) -- (u2d2) node[midway,below] {$p_u$};
+		\draw[->,blue,thick] (ud2) -- (ud3) node[midway,below] {$p_d$};
+		% Lines out of d3
+		\draw[->,gray] (d3) -- (ud3) node[midway,below] {$p_u$};
+		\draw[->,gray] (d3) -- (d4) node[midway,below] {$p_d$};
+	\end{tikzpicture}
+	\caption{Two paths shown using red/thicker and blue/thick arrows. The other arrows are in grey/thin.}
+	\label{fig:paths}
+\end{figure}
 
 
 \begin{thm}[Path inequality]
@@ -185,18 +242,18 @@ We recall some basic definitions and derive simple results for the maximum and m
 	
 	Now, from equation \ref{eq:am}, we have:
 	\begin{align*}
-	(n+1) A_{n,j}^\alpha &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\alpha} + \sum_{i=l+1}^{n} S_{i,j_i} \\
-	(n+1) A_{n,j}^\beta &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\beta} + \sum_{i=l+1}^{n} S_{i,j_i} \\
-	\implies (n+1) \left(A_{n,j}^\alpha - A_{n,j}^\beta\right) &= S_{l,j_l^\alpha} - S_{l,j_l^\beta} \\
-	&= S_{l-1,j_{l-1}} u_l - S_{l-1,j_{l-1}} d_l \\
-	&= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \qquad (u_l > d_l \text{ by definition}) \\
-	\implies A_{n,j}^\alpha > A_{n,j}^\beta
+		(n+1) A_{n,j}^\alpha &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\alpha} + \sum_{i=l+1}^{n} S_{i,j_i} \\
+		(n+1) A_{n,j}^\beta &= \sum_{i=0}^{l-1} S_{i,j_i} + S_{l,j_l^\beta} + \sum_{i=l+1}^{n} S_{i,j_i} \\
+		\implies (n+1) \left(A_{n,j}^\alpha - A_{n,j}^\beta\right) &= S_{l,j_l^\alpha} - S_{l,j_l^\beta} \\
+												 &= S_{l-1,j_{l-1}} u_l - S_{l-1,j_{l-1}} d_l \\
+												 &= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \qquad (u_l > d_l \text{ by definition}) \\
+		\implies A_{n,j}^\alpha > A_{n,j}^\beta
 	\end{align*}
 \end{proof}
 
 
 \begin{rem}
-	The path $\alpha$ signifies a path `above' and $\beta$ a path `below' in the usual depiction of the binomial tree (the up movement shown above the down movement). Thus, any path above  has a higher arithmetic mean than the one below.
+	The path $\alpha$ signifies a path `above' and $\beta$ a path `below' in the usual depiction of the binomial tree (the up movement shown above the down movement). Thus, any path above	 has a higher arithmetic mean than the one below.
 \end{rem}
 
 
@@ -204,13 +261,13 @@ We recall some basic definitions and derive simple results for the maximum and m
 	\label{crr:sp-up-dn-path}
 	At each node $ N(i,j) $, the following hold:
 	\begin{enumerate}
-		\item The minimum average possible $ A_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements, and
-		\begin{equation}  \label{eq:sp-Amin}
-		A_{i,j}^{\min} = \frac{S_0}{i+1} \left( \frac{1 - d^{i-j+1}}{1-d} + d^{i-j} u \frac{1 - u^{j}}{1-u} \right)
+	\item The minimum average possible $ A_{i,j}^{\min} $ is attained by the path corresponding to the path corresponding to the path with $(i-j)$ down movements followed by $j$ up movements, and
+		\begin{equation}	\label{eq:sp-Amin}
+			A_{i,j}^{\min} = \frac{S_0}{i+1} \left( \frac{1 - d^{i-j+1}}{1-d} + d^{i-j} u \frac{1 - u^{j}}{1-u} \right)
 		\end{equation}
-		\item The maximum average possible $ A_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements, and
+	\item The maximum average possible $ A_{i,j}^{\max} $ is attained by the path corresponding to the path with $j$ up movements followed by $(i-j)$ down movements, and
 		\begin{equation} \label{eq:sp-Amax}
-		A_{i,j}^{\max} = \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right)
+			A_{i,j}^{\max} = \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right)
 		\end{equation}
 	\end{enumerate}
 \end{crr}
@@ -223,34 +280,37 @@ We recall some basic definitions and derive simple results for the maximum and m
 	The subsequent formula may be derived as follows.
 	\begin{align*}
 		(i+1) A_{i,j}^{\max} &= \underbrace{ ( S_0 + S_0 u + S_0 u^2 + \dots + S_0 u^j ) }_\text{up movement} + \underbrace{ ( S_0 u^j d + S_0 u^j d^2 + \dots + S_0 u^j d^{i-j} ) }_\text{down movement} \\
-		&= S_0 ( (1 + u + u^2 + \dots + u^j ) + u^j d ( 1 + d + \dots + d^{i-j-1} ) ) \\
-		&= S_0 \left( \sum_{k=0}^j u^k + u^j d \sum_{k=0}^{i-j-1} d^k \right) \\
-		&= S_0 \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right) \qquad \text{(Geometric series)} \\
+												 &= S_0 ( (1 + u + u^2 + \dots + u^j ) + u^j d ( 1 + d + \dots + d^{i-j-1} ) ) \\
+												 &= S_0 \left( \sum_{k=0}^j u^k + u^j d \sum_{k=0}^{i-j-1} d^k \right) \\
+												 &= S_0 \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right) \qquad \text{(Geometric series)} \\
 		\implies A_{i,j}^{\max} &= \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right)
 	\end{align*}
 \end{proof}
 
 The following table highlights the discussion above.
 
-\label{tab:sp-notations}
-\begin{tabular}{cccl} 
-	\toprule
-	Symbol & Range & Formula & Description \\
-	\midrule
-	$ i $ & $ [ n ] $ & & highlighted time step \\
-	$ j $ & $ [ i ] $ & & number of up movements \\
-	$ N_{i,j} $ & & & node fixed by $ (i,j) $ \\
-	$ S_{i,j} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-am-ij} & value of the underlying at node $ N_{i,j} $ \\
-	$ L_{i,j} $ & $ \left[ \binom{i}{j} \right] $ & & number of singular points in node $ N_{i,j} $ \\
-	$ l $ & $ \{ 1, \dots, L \} $ & & index for points in ascending order of averages \\
-	$ A_{i,j}^{\max} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-Amax} & maximum average attainable for node $ N_{i,j} $ \\
-	$ A_{i,j}^{\min} $ & $ \mathbb{R}_{0+} $ & Eq \ref{eq:sp-Amin} & minimum average attainable for node $ N_{i,j} $ \\
-	$ A_{i,j}^l $ & $ \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] $ & Eq \ref{eq:am} & $ l^\mathrm{th} $ singular average of node $ N_{i,j} $ \\
-	$ P_{i,j}^l $ & & & price corresponding to the average $ A_{i,j}^l $ \\
-	$ (A_{i,j}^l, P_{i,j}^l) $ & & & $ l^\mathrm{th} $ singular point of node $ N_{i,j} $ \\
-	\bottomrule
-\end{tabular}
-
+\begin{table}
+	\centering
+	\caption{Summary of notations}
+	\label{tab:sp-notation}
+	\begin{tabular}{cccl}
+		\toprule
+		Symbol & Range & Formula & Description \\
+		\midrule
+		$ i $ & $ [ n ] $ & & highlighted time step \\
+		$ j $ & $ [ i ] $ & & number of up movements \\
+		$ N_{i,j} $ & & & node fixed by $ (i,j) $ \\
+		$ S_{i,j} $ & $ [0, \infty) $ & Eq \ref{eq:sp-am-ij} & value of the underlying at node $ N_{i,j} $ \\
+		$ L_{i,j} $ & $ \left[ \binom{i}{j} \right] $ & & number of singular points in node $ N_{i,j} $ \\
+		$ l $ & $ \{ 1, \dots, L \} $ & & index for points in ascending order of averages \\
+		$ A_{i,j}^{\max} $ & $ [0, \infty) $ & Eq \ref{eq:sp-Amax} & maximum average attainable for node $ N_{i,j} $ \\
+		$ A_{i,j}^{\min} $ & $ [0, \infty) $ & Eq \ref{eq:sp-Amin} & minimum average attainable for node $ N_{i,j} $ \\
+		$ A_{i,j}^l $ & $ \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] $ & Eq \ref{eq:am} & $ l^\mathrm{th} $ singular average of node $ N_{i,j} $ \\
+		$ P_{i,j}^l $ & & & price corresponding to the average $ A_{i,j}^l $ \\
+		$ (A_{i,j}^l, P_{i,j}^l) $ & & & $ l^\mathrm{th} $ singular point of node $ N_{i,j} $ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
 
 
 \subsubsection{At maturity}
@@ -265,25 +325,25 @@ From equations \ref{eq:sp-Amax} and \ref{eq:sp-Amin}, putting $i = n$, we get
 
 In defining the price function, we note that three cases may arise.
 \begin{itemize}
-	\item $ j \in \{ 0, n \} $ \\
+\item $ j \in \{ 0, n \} $ \\
 	There exists only one path to these nodes, so there is only one average, implying one price and one singular point.
 	
-	\item $ j \notin \{ 0, n \} \land K \in ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\	
+\item $ j \notin \{ 0, n \} $ and $ K \in ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\	
 	The price function is characterised by three singular points ($ L_{i,j} = 3 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2, 3 \} } $, which are \\
 	\begin{equation} \label{eq:sp-price-maturity-kin}
 		\begin{aligned}
-		( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , 0 ) \\
-		( A_{n,j}^2 , P_{n,j}^2 ) &= ( K , 0 ) \\
-		( A_{n,j}^3 , P_{n,j}^3 ) &= ( A_{n,j}^{\max} , A_{n,j}^{\max} - K ) \\
+			( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , 0 ) \\
+			( A_{n,j}^2 , P_{n,j}^2 ) &= ( K , 0 ) \\
+			( A_{n,j}^3 , P_{n,j}^3 ) &= ( A_{n,j}^{\max} , A_{n,j}^{\max} - K ) \\
 		\end{aligned}
 	\end{equation} \label{eq:sp-price-maturity-kout}
 	
-	\item $ j \notin \{ 0, n \} \land K \notin ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\
+\item $ j \notin \{ 0, n \} $ and $ K \notin ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\
 	The price function is characterised by only two singular points ($ L_{i,j} = 2 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2 \} } $, which are \\
 	\begin{equation}
 		\begin{aligned}
-		( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ ) \\
-		( A_{n,j}^2 , P_{n,j}^2 ) &= ( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ ) \\
+			( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ ) \\
+			( A_{n,j}^2 , P_{n,j}^2 ) &= ( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ ) \\
 		\end{aligned}
 	\end{equation}
 \end{itemize}
@@ -300,7 +360,7 @@ In defining the price function, we note that three cases may arise.
 \subsubsection{Before maturity}
 TODO
 \begin{lmm}[Price function at any node $ N_{i,j} $]
-	The price function ${ v_{i,j}: \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] \to \mathbb{R}_{0+} }$ is continuous, piecewise-linear and convex.
+	The price function ${ v_{i,j}: \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] \to [0, \infty) }$ is continuous, piecewise-linear and convex.
 \end{lmm}
 \begin{proof}
 	TODO
@@ -381,14 +441,14 @@ In this case, the tree for the underlying is not recombinant, so we do not have 
 We conclude the chapter by noting the pros and cons of the singular points method.
 \paragraph{Advantages}
 \begin{itemize}
-	\item Fast -- Experimental order of complexity = $ O(n^3) $
-	\item It allows us to specify an \emph{a priori} error bound.
+\item Fast -- Experimental order of complexity = $ O(n^3) $
+\item It allows us to specify an \emph{a priori} error bound.
 \end{itemize}
 
 
 \paragraph{Disadvantages}
 \begin{itemize}
-	\item Very specific method -- only applicable to a few specific cases.
+\item Very specific method -- only applicable to a few specific cases.
 \end{itemize}
 
 
