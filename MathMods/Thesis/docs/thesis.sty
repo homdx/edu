@@ -4,11 +4,11 @@
 \ProvidesPackage{thesis}
 
 \usepackage[margin=25mm]{geometry}
-%\usepackage{newtxtext}
-%\usepackage{gfsartemisia-euler}
+% \usepackage{newtxtext}
+% \usepackage{gfsartemisia-euler}
 \usepackage[math]{iwona}
 \usepackage{eulervm}
-%\usepackage{lmodern}
+% \usepackage{lmodern}
 \usepackage[T1]{fontenc}		% Better fonts
 \usepackage[utf8]{inputenc}		 % For extended UTF8 support change to utf8x
 \usepackage[english]{babel}		 % English hyphenation
@@ -21,6 +21,9 @@
 \usepackage{parskip}		% Do not indent paragraphs, and put some linespace between paragraphs
 \linespread{1.1}		% Set more space between lines
 
+% Set ToC and bookmark depths
+\setcounter{tocdepth}{2}
+% \setcounter{secnumdepth}{3}
 
 % Math
 \theoremstyle{plain}
@@ -41,7 +44,7 @@
 
 
 % Bibliography
-\usepackage[backend=bibtex,style=alphabetic]{biblatex}
+\usepackage[backend=biber,style=alphabetic]{biblatex}
 \addbibresource{thesis.bib}
 
 
@@ -52,8 +55,9 @@
 
 
 % Figures
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric,shapes.misc}
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows,shapes.geometric,shapes.misc}
 
 \tikzset{
 	term/.style={
@@ -82,14 +86,14 @@
 
 % \usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
 
- % % example file to change the style of LaTeX
- % % Tony Roberts May 2004
- % % first colour for latex or pdflatex
- % \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
- % \else\usepackage[usenames,dvipsnames]{color}
- % % and fix pdf colour problems
- % \IfFileExists{pdfcolmk.sty}{\usepackage{pdfcolmk}}{} 
- % \fi
+% % example file to change the style of LaTeX
+% % Tony Roberts May 2004
+% % first colour for latex or pdflatex
+% \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+% \else\usepackage[usenames,dvipsnames]{color}
+% % and fix pdf colour problems
+% \IfFileExists{pdfcolmk.sty}{\usepackage{pdfcolmk}}{} 
+% \fi
 
 \usepackage{color}
 % My colors:
@@ -105,97 +109,97 @@
 \definecolor{myRed}{rgb}{.5,0,.5}	 % purple
 
 %% Format ToC
-%\usepackage{tocloft}
+% \usepackage{tocloft}
 
 % Format titles
 \usepackage{titlesec}
 \titleformat{\chapter}[frame]
-	{\fontfamily{gentium}\bfseries\scshape\huge\color{myRoyal}}
-	{Chapter \thechapter}{1em}{}
+{\fontfamily{gentium}\bfseries\scshape\huge\color{myRoyal}}
+{Chapter \thechapter}{1em}{}
 \titleformat{\section}
-	{\fontfamily{gentium}\bfseries\scshape\LARGE\color{myBlue}}
-	{\thesection}{1em}{}
+{\fontfamily{gentium}\bfseries\scshape\LARGE\color{myBlue}}
+{\thesection}{1em}{}
 \titleformat{\subsection}
-	{\fontfamily{gentium}\bfseries\scshape\Large\color{myDarkBlue}}
-	{\thesubsection}{1em}{}
+{\fontfamily{gentium}\bfseries\scshape\Large\color{myDarkBlue}}
+{\thesubsection}{1em}{}
 \titleformat{\subsubsection}
-	{\fontfamily{gentium}\bfseries\large\color{myDarkBlue}}
-	{\thesubsection}{1em}{}
+{\fontfamily{gentium}\bfseries\large\color{myDarkBlue}}
+{\thesubsection}{1em}{}
 \titleformat{\paragraph}
-	{\fontfamily{gentium}\bfseries}
-	{\theparagraph}{1em}{}
+{\fontfamily{gentium}\bfseries}
+{\theparagraph}{1em}{}
 
 
-%\usepackage{lastpage}		% To get the last page number
-%\usepackage{fancyhdr}		% Headers and footers
-%\pagestyle{fancyplain}			% All pages have headers and footers
+% \usepackage{lastpage}		% To get the last page number
+% \usepackage{fancyhdr}		% Headers and footers
+% \pagestyle{fancyplain}			% All pages have headers and footers
 %% Convert chapter, section names in headers to normal case
-%\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
-%\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
-%\fancyhf{}		 % Blank out the default header and footer
-%\fancyhf[HL]{\leftmark}
-%\fancyhf[HR]{\rightmark}
-%\fancyhf[FL]{Thesis}
-%\fancyhf[FC]{\today}
-%\fancyhf[FR]{{\Large\thepage} / \pageref{LastPage}}
+% \renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
+% \renewcommand{\sectionmark}[1]{ \markright{#1}{} }
+% \fancyhf{}		 % Blank out the default header and footer
+% \fancyhf[HL]{\leftmark}
+% \fancyhf[HR]{\rightmark}
+% \fancyhf[FL]{Thesis}
+% \fancyhf[FC]{\today}
+% \fancyhf[FR]{{\Large\thepage} / \pageref{LastPage}}
 %% Define the thickness of the decorative lines
-%\renewcommand{\headrulewidth}{0.5pt}
-%\renewcommand{\footrulewidth}{0.5pt}
+% \renewcommand{\headrulewidth}{0.5pt}
+% \renewcommand{\footrulewidth}{0.5pt}
 
-%%%\fancyhf[FL]{MathMods $\bullet$ 2015 May}
+%%% \fancyhf[FL]{MathMods $\bullet$ 2015 May}
 
 
 \usepackage[
-	pdfusetitle,		% Use PDF title
-	pdfauthor={Sudip Sinha},		% Sets the document information Author field
-	pdfsubject={Masters Thesis},		% Sets the document information Subject field
-	pdfkeywords={derivative, option, pricing, Cox Ross Rubenstein, CRR, Black Scholes, BS},		 % Sets the document information Keywords field
-	pdfstartview=FitBH,		 % Fits the width of the page bounding box to the window - replace by FitH.
-	pdfpagelayout=OneColumn,		% Displays the document in one column; continuous scrolling.
-	bookmarks=true,
-	unicode=true,
-	colorlinks=true,
-	% backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
-	linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
-	% breaklinks=true,				% so long urls are correctly broken across lines
-	% pagebackref=false,		 % add page number in bibliography and link to position in document where cited
-	% linkcolor=myRed,
-	% urlcolor=myGreen,
-	% citecolor=Black,
-	% hyperfootnotes=false
+pdfusetitle,		% Use PDF title
+pdfauthor={Sudip Sinha},		% Sets the document information Author field
+pdfsubject={Masters Thesis},		% Sets the document information Subject field
+pdfkeywords={derivative, option, pricing, Cox Ross Rubenstein, CRR, Black Scholes, BS},		 % Sets the document information Keywords field
+pdfstartview=FitBH,		 % Fits the width of the page bounding box to the window - replace by FitH.
+pdfpagelayout=OneColumn,		% Displays the document in one column; continuous scrolling.
+bookmarks=true,
+unicode=true,
+colorlinks=true,
+% backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
+linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
+% breaklinks=true,				% so long urls are correctly broken across lines
+% pagebackref=false,		 % add page number in bibliography and link to position in document where cited
+% linkcolor=myRed,
+% urlcolor=myGreen,
+% citecolor=Black,
+% hyperfootnotes=false
 ]{hyperref}
 \usepackage[figure,table]{hypcap}		 % Correct a problem with hyperref
 \urlstyle{rm}		 %so it doesn't use a typewriter font for URLs
 
 
 
-%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% 
 %% % title, sections, etc.
-%
-%\let\LaTeXtitle\title
-%\renewcommand{\title}[1]{\LaTeXtitle{\color{myBlue}{\LARGE #1}}}
-%\renewcommand{\abstractname}{\color{myBlue}Abstract}
-%\renewcommand{\figurename}{\color{myBlue}Figure}
-%\renewcommand{\tablename}{\color{myBlue}Table}
-%
-%
+% 
+% \let\LaTeXtitle\title
+% \renewcommand{\title}[1]{\LaTeXtitle{\color{myBlue}{\LARGE #1}}}
+% \renewcommand{\abstractname}{\color{myBlue}Abstract}
+% \renewcommand{\figurename}{\color{myBlue}Figure}
+% \renewcommand{\tablename}{\color{myBlue}Table}
+% 
+% 
 %% % % Make hyperlinks jump more accurately
 %% % \makeatletter
 %% % \newcommand\org@hypertarget{}
 %% % \let\org@hypertarget\hypertarget
 %% % \renewcommand\hypertarget[2]{%
-%% %	 \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
+%% % \Hy@raisedlink{\org@hypertarget{#1}{}}#2%
 %% % } \makeatother 
-%
-%
-%% Make `et al' emphasized
-%\renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
+%		
+%		
+%%	 Make `et al' emphasized
+%		\renewbibmacro*{name:andothers}{% Based on name:andothers from biblatex.def
 %	 \ifboolexpr{
-%		 test {\ifnumequal{\value{listcount}}{\value{liststop}}}
-%		 and
-%		 test \ifmorenames}
+%	 test {\ifnumequal{\value{listcount}}{\value{liststop}}}
+%	 and
+%	 test \ifmorenames}
 %	 {\ifnumgreater{\value{liststop}}{1}
-%		 {\finalandcomma}
-%		 {}%
-%		 \andothersdelim\bibstring[\emph]{andothers}}{}}
+%	 {\finalandcomma}
+%	 {}%
+%	 \andothersdelim\bibstring[\emph]{andothers}}{}}
