@@ -25,7 +25,7 @@ def sp_asian_call(r: float,    # Market
 	p_u = (R * u - 1) / (u * u - 1) / R
 	p_d = 1. / R - p_u
 
-	if p_u < 0. or p_u > 1.:
+	if ( p_u < 0. ) or ( p_d < 0. ) or ( p_u > 1. / R ) or ( p_d > 1. / R ):
 		raise ValueError
 
 	# Create the list for singular points
