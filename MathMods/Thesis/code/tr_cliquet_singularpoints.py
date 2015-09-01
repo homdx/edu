@@ -1,7 +1,7 @@
 __author__ = 'Sudip Sinha'
 
 
-from math import exp, sqrt, ceil, floor, log
+from math import exp, sqrt, ceil, floor, log, factorial
 
 
 # Market
@@ -9,7 +9,7 @@ r = 0.03
 
 # Underlying
 # s0 = 50.
-sigma = 0.2
+sigma = 0.02
 q = 0.0
 
 # Derivative
@@ -21,10 +21,8 @@ nobs = 5
 # am = False
 
 # Computation
-m = 1000
-# mach_eps = 65536 * (7 / 3 - 4 / 3 - 1)
+m = 50
 # h = 1e-4
-# ub = True
 
 
 # @profile
@@ -33,68 +31,76 @@ def sp_cliquet(
 		m : int, nobs : int,
 		f_loc : float, f_glob : float,
 		c_loc : float, c_glob : float,
-		mach_eps = 65536 * (7/3 - 4/3 - 1)) -> float:
+		mach_eps = 65536 * ( 7/3 - 4/3 - 1 ) ) -> float:
 	"""Prices of an Cliquet call option using the singular point method"""
 
 	# Time period for each option
-	dt = t / nobs
+	n = m * nobs
+	dt = t / n
+	assert dt < ( sigma ** 2 / ( r - q ) ** 2 ), "p_u must be a probability!"
 
 	# Checks
 	f_glob = max( nobs * f_loc, f_glob )
 	c_glob = min( nobs * c_loc, c_glob )
 
-	# Singular points for maturity
+	# Singular points for maturity (go to the future)
 	sp_i = [(nobs * f_loc, f_glob), (f_glob, f_glob), (c_glob, c_glob), (nobs * c_loc, c_glob)]
-	print(sp_i)
+	if f_glob == nobs * f_loc:
+		sp_i = sp_i[1:]
+	if c_glob == nobs * c_loc:
+		sp_i = sp_i[:-1]
+	# print(sp_i)
 
-	# Unique volatility and rates of interest assumed
+	# Unique sigma, r, f_loc and c_loc
 	unique_r = True
 	unique_v = True
 	unique_fc = True
 
 	if unique_r:
-		R = exp((r - q) * dt)    # Effective interest rate
+		R_nobs = exp( ( r - q ) * t / nobs )    # Effective interest rate for visible time periods
+		R_n = exp( ( r - q ) * t / n )    # Effective interest rate for computational time periods
 
 	if unique_v:
 		# Up and down factors
-		u = exp(sigma * sqrt(dt))
+		u = exp( sigma * sqrt( dt ) )
 		# d = 1. / u
 
 	if unique_r and unique_v:
 		# Risk neutral probability, discounted by R
-		p_u = ( R * u - 1 ) / ( u * u - 1 )
+		p_u = ( R_n * u - 1 ) / ( u * u - 1 )
 		p_d = 1. - p_u
-
-		if p_u < 0. or p_d < 0. or p_u > 1. or p_d > 1.:
-			raise ValueError
+		# print('p_u = {p_u}'.format(p_u = p_u))
+		assert 0. <= p_u <= 1. and 0. <=  p_d <= 1., "p_u and p_d must be valid probabilities."
 
 	if unique_fc:
 		# Possible range of return
-		j_min = floor( log( f_loc + 1 ) / ( 2 * sigma * sqrt(dt)) + m / 2 )
-		j_max = ceil ( log( c_loc + 1 ) / ( 2 * sigma * sqrt(dt)) + m / 2 )
+		j_min = max( 0, floor( log( f_loc + 1 ) / ( 2 * sigma * sqrt(dt)) + m / 2 ) )    # Questions here.
+		j_max = min( m, ceil ( log( c_loc + 1 ) / ( 2 * sigma * sqrt(dt)) + m / 2 ) )    # Questions here.
 		j0 = j_max - j_min
-	print('m = {m}, j_min = {j_min}, j_max = {j_max}'.format(m = m, j_min = j_min, j_max = j_max))
+		# print('m = {m}, j_min = {j_min}, j_max = {j_max}'.format(m = m, j_min = j_min, j_max = j_max))
 
-	# TODO: Put condition: If all are unique...
-	# ret denotes R'
-	ret = [0 for i in range( j0 + 1 )]
-	ret[0] = f_loc
-	ret[j0] = c_loc
-	for j in range(1, j0):
-		ret[j] = u ** ( -m + 2 * ( j + j_min )) - 1
+	if unique_v and unique_r and unique_fc:
+		# prb denotes p'
+		prb = [ 0 for j in range( j0 + 1 ) ]
+		prb[0] = 0
+		for j in range( 0, j_min + 1 ):
+			prb[0] += choose( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
+		prb[j0] = 0
+		for j in range( j_max, m + 1 ):
+			prb[j0] += choose( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
+		for j in range( j_min + 1, j_max ):
+			prb[j - j_min] = choose( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
+		# print('sum(prb) = {p}'.format(p = sum(prb)))
+		assert abs(sum(prb) - 1.) < mach_eps, "Sum of PMF must be unity."
 
-	# prb denotes p'
-	prb = [0 for i in range( j0 + 1 )]
-	prb[0] = 0
-	for j in range(0, j_min + 1):
-		prb[0] += combn( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
-	prb[j0] = 0
-	for j in range( j_max, m + 1 ):
-		prb[j0] += combn( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
-	for j in range( 1, j0 ):
-		prb[j] = combn( m, j ) * ( p_u ** j ) * ( p_d ** ( m - j ) )
+		# ret denotes R'
+		ret = [ 0 for j in range( j0 + 1 ) ]
+		ret[0] = f_loc
+		ret[j0] = c_loc
+		for j in range( j_min + 1, j_max ):
+			ret[j - j_min] = u ** ( -m + 2 * j ) - 1
 
-	# Go back in time, one step at a time.
+	# Come back from the future, one step at a time.
 	for i in range( nobs - 1, -1, -1 ):
 		sp = []
 
@@ -129,7 +135,7 @@ def sp_cliquet(
 								 ( sp_i[idx + 1][0] - sp_i[idx][0] ) * \
 								 ( rszp - sp_i[idx][0] )
 				v += prb[k] * vk
-			v /= R
+			v /= R_nobs
 			sp.append( (b, v) )
 
 		sp_i = sp
@@ -137,14 +143,20 @@ def sp_cliquet(
 	return(sp_i[0][1])
 
 
-def factorial(n):
-	f = 1
-	for i in range( 2, n + 1 ):
-		f *= i
-	return f
+# def choose(n: int, r: int):
+# 	assert ( type(n) == int and type(r) == int and 0 <= r <= n ), "'n' and 'r' must be non-negative integers"
+#
+# 	if r > ( n / 2 ):
+# 		r = n - r
+# 	c = 1
+# 	for i in range( r ):
+# 		c *= ( n - i ) / ( r - i )
+# 	return c
 
 
-def combn(n: int, r: int):
+def choose(n: int, r: int):
+	assert ( type(n) == int and type(r) == int and 0 <= r <= n ), "'n' and 'r' must be non-negative integers"
+
 	if r > ( n / 2 ):
 		r = n - r
 	c = 1
