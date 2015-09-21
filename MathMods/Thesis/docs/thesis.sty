@@ -25,6 +25,8 @@
 \setcounter{tocdepth}{2}
 % \setcounter{secnumdepth}{3}
 
+
+
 % Math
 \theoremstyle{plain}
 \newtheorem{thm}{Theorem}[chapter]
@@ -42,6 +44,22 @@
 % Number equations depending on the section
 \numberwithin{equation}{section}
 
+% Differential operators
+\usepackage{commath}
+
+% Floor and ceil functions
+\newcommand\floor[1]{\left\lfloor#1\right\rfloor}
+\newcommand\ceil[1]{\left\lceil#1\right\rceil}
+
+% Align math cells
+\newcommand*\rightmathcell[1]{\omit\hfil$\displaystyle#1$}
+\newcommand*\centermathcell[1]{\omit\hfil$\displaystyle#1$\hfil\ignorespaces}
+
+
+
+% Code
+\usepackage[ruled,vlined,noend,linesnumbered]{algorithm2e}
+% \usepackage{minted}
 
 % Bibliography
 \usepackage[backend=biber,style=alphabetic]{biblatex}

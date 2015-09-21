@@ -1,0 +1,527 @@
+% !TeX root = ../thesis.tex
+
+\section{Introduction}
+\label{sec:sp-clq-intro}
+
+A `cliquet option' or a `ratchet option' is an exotic option consisting of a series of consecutive forward start options. The first such option is active immediately, and once it expires the second comes into existence, and so on. Each option is struck at-the-money when it becomes active. Therefore, such an option periodically settles and resets its strike price at the level of the underlying during the time of settlement. Investors can opt to receive their payout either when each option expires or wait until the entire time has elapsed.
+
+Usually, the return on a cliquet option is capped and floored. The capping and flooring may be local or global (or both). The motivation behind bounding the return is to provide the investor safety against downside risks, yet allowing significant upside potential. Consequently, the investor is also constrained from having unbounded gains. Capping the maximum ensures that the payoff is never too extreme and therefore that the value of the contract is not too outrageous. Some variants of cliquet options are as follows:
+\begin{description}
+	\item[Reverse cliquet] Amounts to a cash flow minus a capped cliquet of puts.
+	\item[Digital cliquet] The forward-starting options are digital options.
+\end{description}
+
+\paragraph{Example}
+For example, a three-year cliquet option with a strike of 1,000 would expire worthless on the first year if the underlying was to be 900. This value (900) would then be the new strike price for the following year and should the underlying on the settlement be 1,200, the contract holder would receive a payout and the strike would reset to this new level. Higher volatility provides better conditions for investors to earn profits.
+
+%[taken directly from wikipedia, investopedia]
+
+
+\paragraph{Literature review}
+[ToDo] The literature for pricing of cliquet options is primarily based on partial differential equations (PDE) techniques. Notable mentions include Wilmott's[TODO:reference] finite difference (FD) approach in a non-linear uncertain volatility model (UVM) in 2002. Later, Windcliff et al.[TODO:reference] explored a variety of modelling alternatives including jump diffusion models, local volatility and UVM models, again using finite differences
+methods in 2006.
+
+\paragraph{Lattice method}
+Gaudenzi \textit{et al}\cite{Gaudenzi2011} introduced a discrete method for pricing cliquet options in a binomial Cox Ross Rubinstein model [TODO:reference]. This Singular Points method is faster than the alternative lattice based approaches available, while retaining a fair bit of flexibility to handle varying volatilities and rates of interest. Most of the chapter is inspired from the former paper.
+
+
+\section{Cliquet contracts and models}
+\label{sec:sp-clq-models}
+
+Notation review: In this and the following sections, we will use the notation $ [n] := \{ 0, 1, \dots, n \} $.
+
+We consider a market model, in which the price of the underlying risky asset is governed by the Black-Scholes stochastic differential equation.
+\begin{subequations}
+	\label{eq:black-scholes}
+	\begin{align}
+		\frac{\dif S_t}{S_t} &= (r - q) \dif t + \sigma \dif B_t \\
+		S_0 &= s_0		
+	\end{align}
+\end{subequations}
+where the quantities are as follows
+\begin{description}
+	\item[$ S_t $] Price of the underlying risky asset at time $t$.
+	\item[$B_t$] A standard Brownian motion under the risk-neutral probability measure $Q$.
+	\item[$ r > 0 $] Rate of interest
+	\item[$ q \ge 0 $] Continuous divident yield
+	\item[$ \sigma > 0 $] Volatility of the risky asset
+\end{description}
+
+Solving the equation, at any time $ t $, the price of the underlying risky asset is
+\begin{equation*}
+	\label{eq:sp-clq-risky-prc}
+	S_t = s_0 e^{ ( (r - q) - \frac{\sigma^2}{2} )t + \sigma B_t }
+\end{equation*}
+
+Let $T$ be the maturity of the cliquet contract. Let the payoffs depend on the $ N $ preordained observation times $ t_1, t_2, \dots, t_{N} $ ($ t_0 = 0 $). At these observation times, the value of the underlying are $ ( S_i )_i, S_i = S_{t_i}, i \in \left[ N \right] $. The returns for the time interval $ ( t_{i-1}, t_i ] $ are given by
+\begin{equation}
+	\label{eq:sp-clq-return}
+	R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1
+\end{equation}
+
+During each time interval, the return is capped and floored locally by the quantities $ C_{loc} $ and $ F_{loc} $. In other words, we consider the quantity $ \max \{ F_{loc}, \min \{ C_{loc}, R_i \} \} $ rather than the return itself. The sum of these quantities till time $t_i$ is called the `running sum' and is given by
+\begin{equation}
+	\label{eq:sp-clq-rsz}
+	Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \}
+\end{equation}
+
+We also consider a global cap $ C_{glob} $ and floor $ F_{glob} $. Thus, the expression for the payoff finally becomes
+\begin{equation}
+	\label{eq:sp-clq-rsz}
+	\mathrm{payoff} = \mathrm{notional} \cdot \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \}
+\end{equation}
+
+For ease of notation, we take $ \mathrm{notional} = 1 $.
+
+We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C_{loc} $. Similarly, the case $ F_{glob} < N F_{loc} $ is equivalent to $ F_{glob} = N F_{loc} $. We simply say
+\begin{subequations}
+	\label{eq:sp-clq-update-glob}
+	\begin{align*}
+		F_{glob} &= \max \{ N F_{loc}, F_{glob} \}  \\
+		C_{glob} &= \min \{ N C_{loc}, C_{glob} \}
+	\end{align*}
+\end{subequations}
+
+
+Now, we consider the binomial approach in order to price the cliquet option in the Black-Scholes framework. Let the number of intervals be $n$ and the corresponding time step be $ \Delta T = \frac{T}{n} $. Then the lognormal diffusion process is approximated by the Cox-Ross-Rubinstein binomial process.
+\begin{equation}
+	\label{eq:sp-clq-risky-iid-binom-rvs}
+	\tilde{S}_j = s_0 \prod_{k = 1}^j Y_k \qquad \forall j \in [n]
+\end{equation}
+where the random variables $Y_k$ are independent and identically distributed with values in $ \{ d, u \} $, representing a down and up movement, respectively. Let $p$ be the probability of an up movement of the asset, that is, $ p = \Pr( Y_n = u ) $. The Cox-Ross-Rubinstein corresponds to the choice $ u = 1/d = e^{ \sigma \sqrt{ \Delta T } } $. Thus,
+\begin{equation}
+	\label{eq:sp-clq-pu}
+	p = \frac{ e^{r \Delta T} - d }{ u - d } = \frac{ e^{r \Delta T} - e^{ -\sigma \sqrt{ \Delta T } } }{ e^{ \sigma \sqrt{ \Delta T } } - e^{ -\sigma \sqrt{ \Delta T } } }
+\end{equation}
+
+We assume that the difference between two observation times is constant and we denote by $m$ the number of steps of the binomial tree in every period (so that the total number of steps of the binomial tree is $ n = m N $).
+
+To recapitulate, the following table highlights the notations in a concise manner.
+[TODO]
+
+
+
+\section{The Singular Points method for cliquet options}
+\label{sec:sp-clq-sp}
+
+The binomial method may always be used to price any option, including path-dependent ones. The binomial method looks through all possible paths of the underlying in order to price the option. The number of possible paths are $ 2 ^ {m N} $. Thus, the method is inherently extremely computationally expensive due to the exponential dependence of the number of paths on $m$ and $ N $. The theoretical computational complexity is $ O( m^{N} ) $, as in Page 128 of \cite{Gaudenzi2011}.
+
+A modification of the Singular Points method described in the previous chapter solves this problem for cliquet options by the process of approximation. The method of approximation selectively removes certain paths that would be normally considered, but which do not affect the result in a significant manner. This may be done by putting an \emph{a priori} error bound while removing points. The method turns out to be significantly faster and memory efficient compared to known binomial techniques. Moreover, its flexible is evinced by the fact that it is adaptable for varying interest rate and volatility in each observational period.
+
+In this section, we will note some elementary definitions and results, and give a detailed exposition of the method. The reader is advised to keep in mind the notation introduced in section \ref{sec:sp-asian-notations} of chapter \ref{cha:sp-asian}.
+
+\begin{dfn}[Singular points and singular values]
+	\label{def:sp-clq-sp}
+	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that $ a = x_0 < x_1 < \dots < x_{n-1} < x_n = b \forall i \in [n] $
+	
+	Let $ f:[a,b] \to [0, \infty) $ be the function obtained by linear interpolation of the points in $P$. The definition of $f$ ensures that the function is continuous and piecewise-linear.
+	
+	Then, the elements of $P$ are called \emph{singular points of $f$} and the abscissae $ \{ x_i \}_{i \in [n]} $ are called \emph{singular values of $f$}.
+\end{dfn}
+
+
+\begin{rem} \label{rem:sp-asian-characterisation}
+	We note that the singular points characterise such a function completely. This can be seen from the following representation of the function.
+	\begin{equation}
+		\label{eq:sp-asian-function-repr}
+		f(x) = y_0 + \sum_{i=1}^n [ m_i ( \min \{x_{i}, x \} - \min \{ x_{i-1}, x \} ) ]
+	\end{equation}
+	Where $ m_{i+1} = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ (x_{i}, y_{i}) $ and $ (x_{i+1}, y_{i}) $.
+\end{rem}
+
+\begin{rem}
+	Note that there is no mention of convexity in the foregoing discussion, since the price function in the cliquet case is not necessarily convex, as opposed to the Asian case. The problem comes from the fact that due to the presence of a global cap, the price function at maturity is no longer convex (see Figure \ref{fig:sp-clq-maturity}). Since the algorithm starts from maturity, it follows that we cannot assume convexity at any point of time. It was primarily the convexity of the price functions in the Asian case that allowed us to obtain simple upper and lower bounds of the exact binomial price. Nevertheless, in the case of cliquet options, the singular points approach still provides an efficient binomial framework, even in the absence of convexity of the price functions, as we shall see.
+\end{rem}
+
+
+
+\subsection{The method}
+\label{subsec:sp-clq-method}
+
+Our aim is to look at every possible value taken by the running sum $Z$ within the bounds $ [ F_{loc}, C_{loc} ] $ for each time interval $ t_1, \dots, t_{N} $. If we know the price function at maturity, we may use a backward procedure (in time) in order to obtain a continuous representation of the cliquet price as a piecewise-linear function of the running sum $Z$. Since it is piecewise-linear and continuous, the function may be represented using its singular points. Thus, we see an evolution of singular points as we go back in time. Since the number of singular points may be significantly high for any computer, we shall introduce an error controlled approximation procedure to reduce the number of singular points.
+
+Let the number of singular points at each observational time $ t_i $ be $ L_{i} $, where $ i \in \{ 1, \dots, N \} $. For each singular point $ l \in \{ 1, \dots, L_i \} $, the abscissa is called the \emph{singular running sum} $ Z_i^l $ and the ordinate is called the \emph{singular price} $ P_i^l $. Thus, the singular points are denoted by
+\begin{equation*}
+	( Z_i^l, P_i^l ) \qquad \forall l \in \{ 1, \dots, L_i \}
+\end{equation*}
+
+
+\paragraph{At maturity}
+At maturity ($ t_{N{obs}} = T $), for every running sum $Z$, the price of the cliquet option $ V_{N}(Z) $ as function of $Z$, is given by
+\begin{equation}
+	\label{eq:sp-clq-vnobs-maturity}
+	V_{N}(Z) = \max \{ Fglob, \min\{ Cglob, Z \} \}
+\end{equation}
+
+We note the following.
+\begin{enumerate}
+	\item $ V_{N}(Z) $ is a continuous and piecewise-linear function 
+	\item $ V_{N}(Z) $ is defined in the interval $ [ N F_{loc}, N C_{loc} ] $
+	\item There are only four points where the function changes slope, namely $ N F_{loc} $, $ F_{glob} $, $ C_{glob} $ and $ N C_{loc} $. This is because if $ Z < F_{glob} $, the price is constant. Same can be said about $ Z > C_{glob} $. Thus the four numbers enumerated above form the complete set of singular running sums at maturity ($ L_N = 4 $).
+\end{enumerate}
+
+Focusing further on point 3 above, we note down the singular running sums and corresponding prices.
+\begin{table}[h]
+	\label{tab:sp-clq-maturity}
+	\centering
+	\caption{Singular points at maturity}
+	\begin{tabular}{ccc}
+		\toprule
+		$l$  &  $ Z_{N}^l $  &  $ P_{N}^l $ \\
+		\midrule
+		1  &  $ N F_{loc} $  &  $ F_{glob} $ \\
+		2  &  $ F_{glob} $  &  $ F_{glob} $ \\
+		3  &  $ C_{glob} $  &  $ C_{glob} $ \\
+		4  &  $ N C_{loc} $  &  $ C_{glob} $ \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+A more visual representation of the price function at maturity is given in Figure \ref{fig:sp-clq-maturity}.
+\begin{figure}
+	\centering
+	
+	\definecolor{cqcqcq}{rgb}{0.7529411764705882,0.7529411764705882,0.7529411764705882}
+	\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+	\definecolor{qqqqff}{rgb}{0.,0.,1.}
+	\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+	\draw[->,color=black] (0.,0.) -- (9.,0.);
+	\foreach \x in {,1.,2.,3.,4.,5.,6.,7.,8.}
+	\draw[shift={(\x,0)},color=black] (0pt,2pt) -- (0pt,-2pt);
+	\draw[color=black] (8.77813297657717,0.054247335995569544) node [anchor=south west] { Z};
+	\draw[->,color=black] (0.,0.) -- (0.,5.);
+	\foreach \y in {,1.,2.,3.,4.}
+	\draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt);
+	\draw[color=black] (0.06780919373316127,4.698691618151926) node [anchor=west] { P};
+	\clip(-0.5,-0.5) rectangle (9.,5.);
+	\draw [line width=1.2pt] (1.,1.)-- (2.,1.);
+	\draw [line width=1.2pt] (2.,1.)-- (7.,4.);
+	\draw [line width=1.2pt] (7.,4.)-- (8.,4.);
+	\draw [line width=0.4pt,color=cqcqcq] (1.,1.)-- (1.,0.);
+	\draw [line width=0.4pt,color=cqcqcq] (2.,1.)-- (2.,0.);
+	\draw [line width=0.4pt,color=cqcqcq] (7.,4.)-- (7.,0.);
+	\draw [line width=0.4pt,color=cqcqcq] (8.,4.)-- (8.,0.);
+	\draw [line width=0.4pt,color=cqcqcq] (1.,1.)-- (0.,1.);
+	\draw [line width=0.4pt,color=cqcqcq] (7.,4.)-- (0.,4.);
+	\begin{scriptsize}
+	\draw [fill=qqqqff] (1.,1.) circle (1.5pt);
+	\draw[color=qqqqff] (0.9258283422770954,1.3896041224221845) node {$S_1$};
+	\draw [fill=qqqqff] (2.,1.) circle (1.5pt);
+	\draw[color=qqqqff] (1.7666623445682952,1.3896041224221845) node {$S_2$};
+	\draw [fill=qqqqff] (7.,4.) circle (1.5pt);
+	\draw[color=qqqqff] (7.204959681967829,3.5594975622449665) node {$S_3$};
+	\draw [fill=qqqqff] (8.,4.) circle (1.5pt);
+	\draw[color=qqqqff] (8.181412071725351,3.6001830642416435) node {$S_4$};
+	\draw [fill=xdxdff] (1.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (0.5732205348646567,-0.31918696143825614) node {$F_{loc} N$};
+	\draw [fill=xdxdff] (2.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (2.254888539447056,-0.31918696143825614) node {$F_{glob}$};
+	\draw [fill=xdxdff] (7.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (6.526867744636216,-0.31918696143825614) node {$C_{glob}$};
+	\draw [fill=xdxdff] (8.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (8.452648846657995,-0.3463106294360409) node {$C_{loc} N$};
+	\draw [fill=xdxdff] (0.,1.) circle (1.5pt);
+	\draw[color=xdxdff] (-0.050624047480426926,0.73863609047535) node {$F_{glob}$};
+	\draw [fill=xdxdff] (0.,4.) circle (1.5pt);
+	\draw[color=xdxdff] (-0.07774772497369145,3.7358014042305676) node {$C_{glob}$};
+	\end{scriptsize}
+	\end{tikzpicture}
+	
+	\caption{The price function at maturity}
+	\label{fig:sp-clq-maturity}
+\end{figure}
+
+
+\paragraph{The penultimate time step}
+
+We consider the time step $ N - 1 $. If the running sum at time $ t_{N - 1} $ is denoted by $ Z $, then the corresponding price depends on the possible returns of the underlying asset during the time interval $ [ t_{N - 1}, T ] $.
+
+We revisit equation \ref{eq:sp-clq-return} once more. Now we note that since the number of time steps in each interval is $m$, there will be $m$ up movements or down movements of the asset. Thus, there are $ m + 1 $ possible outcomes, given by $ S_i = u^{-m + 2j} S_{i-1}, j \in [m] $. Corresponding to these cases, there are also $ m + 1 $ returns, given by
+\begin{equation}
+	\label{eq:sp-clq-return-final}
+	R_j = u^{-m + 2j} - 1 \qquad j \in [m]
+\end{equation}
+
+Since the probability of an up movement in time $ \Delta T $ is $p$ (refer equation \ref{eq:sp-clq-pu}), we have that the probability of each return is distributed binomially, and is given by
+\begin{equation}
+	\label{eq:sp-clq-prb-binom}
+	p_j = \binom{m}{j} p^j (1-p)^{m-j}
+\end{equation}
+
+The above derivations assume that the there has been no local flooring or capping of the returns. In the case of such bounds, the actual possibilities are fewer in number, and we need to put bounds on $j$. We can do this in the following fashion.
+
+In the case of a local floor, we must have
+\begin{alignat*}{9}
+	                 &&  F_{loc}  \quad & \ge \quad  u^{ -m + 2 j_{\min} } - 1 && \\
+	\implies  \qquad &&  \log(F_{loc} + 1)  \quad & \ge \quad  ( -m + 2 j_{\min} ) \log(u)  &&  \qquad \qquad \dots (\log \text{is monotonic}) \\
+	\implies  \qquad &&  \frac{\log(F_{loc} + 1)}{\log(u)}  \quad & \ge \quad  ( -m + 2 j_{\min} )  &&  \qquad \qquad \dots (u > 1 \implies \log(u) > 0) \\
+	\implies  \qquad &&  j_{\min}  \quad & \le \quad  \frac{ \log(F_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2}  &&  \qquad \qquad \dots (u = e^{ \sigma \Delta T }) \\
+	\implies  \qquad &&  j_{\min}  \quad & = \quad  \floor{ \frac{ \log(F_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  &&  \qquad \qquad \dots (j \in [m]) \\
+\end{alignat*}
+Where $ \floor{\cdot} $ denotes the floor function.
+
+Similarly, in the case of local cap, we have
+\begin{alignat*}{9}
+	                 &&  C_{loc}  \quad & \le \quad  u^{ -m + 2 j_{\max} } - 1 && \\
+	\implies \qquad  &&  \log(C_{loc} + 1)  \quad & \le \quad  ( -m + 2 j_{\max} ) \log(u)  &&  \qquad \qquad \dots (\log \text{is monotonic}) \\
+	\implies \qquad  &&  \frac{\log(C_{loc} + 1)}{\log(u)}  \quad & \le \quad  ( -m + 2 j_{\max} )  &&  \qquad \qquad \dots (u > 1 \implies \log(u) > 0) \\
+	\implies \qquad  &&  j_{\max}  \quad & \ge \quad  \frac{ \log(C_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2}  &&  \qquad \qquad \dots (u = e^{ \sigma \Delta T }) \\
+	\implies \qquad  &&  j_{\max}  \quad & = \quad  \ceil{ \frac{ \log(C_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  &&  \qquad \qquad \dots (j \in [m]) \\
+\end{alignat*}
+Where $ \ceil{\cdot} $ denotes the ceiling function.
+
+We represent by $ j_0 $ the number of possibilities of the return after enforcing the local floor and cap. Summarising
+\begin{subequations}
+	\label{eq:sp-clq-j-mix-max}
+	\begin{align}
+		j_{\min} &= \floor{ \frac{ \log(F_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  \\
+		j_{\max} &= \ceil { \frac{ \log(C_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  \\
+		j_0 &= j_{\max} - j_{\min}
+	\end{align}
+\end{subequations}
+
+$ \forall j \le j_{\min} $, the return is $ F_{loc} $, and $ \forall j \ge j_{\max} $, the return is $ C_{loc} $. For the other indices, the return remains unchanged.
+
+For ease of implementation, we shift the indices from $ \{ j_{\min}, \dots, j_{\max} \} $ to $ \{ 0, \dots, j_0 \} $ by putting $ j' = j - j_{\min} $. Table \ref{tab:sp-clq-shift} highlights the shifted indices, and the corresponding returns and probabilities.
+\begin{table}[h]
+	\label{tab:sp-clq-shift}
+	\centering
+	\caption{Shifted returns and probabilities}
+	\begin{tabular}{cccc}
+		\toprule
+		Range$(j)$  &  $ j' $  &  $ R_j' $  &  $ p_j' $  \\
+		\midrule
+		$ j \le j_{\min} $  &  $ 0 $  &  $ F_{loc} $  &  $ \sum_{k=0}^{j_{\min}} p_k $  \\
+		$ \{ j_{\min} + 1, \dots, j_{\max} - 1 \} $  &  $ j - j_{\min} $ &  $ R_{j + j_{\min}} $  &  $ p_{j + j_{\min}} $  \\
+		$ j \ge j_{\max} $  &  $ j_0 $  &  $ C_{loc} $  &  $ \sum_{k=j_{\max}}^{m} p_k $  \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+
+Now we focus on how to determine the price function at time $ t_{N - 1} $. Recall that at maturity, the function $ V_{N}(Z) $ giving the price of the cliquet option as a function of the running sum $ Z $ at maturity, is the piecewise linear function whose singular points are presented in Table \ref{tab:sp-clq-maturity}. At the penultimate time step $ t_{N - 1} $, we must have $ Z \in [ (N-1) F_{loc}, (N-1) C_{loc} ] $. Note that $ Z $ is the running sum till the penultimate time step. The price function at this time is given as a discounted conditional expectation of the price function at maturity given the information at penultimate time. Thus
+\begin{equation}
+	\label{eq:sp-clq-penultimate}
+	V_{N-1} (Z) = e^{- m \Delta T} \sum_{j=0}^{j_0} \left[ p_j' V_{N} (Z + R_j') \right]
+\end{equation}
+
+Since $ V_{N} $ is piecewise-linear and continuous, and the above is just a linear combination of such functions, the resulting function is also piecewise-linear and continuous, and thus may be completely represented by singular points. The next logical step is of course to figure out a method to compute these singular points.
+
+From equation \ref{eq:sp-clq-penultimate}, we note that each singular point $ l $ at maturity may have $ j_0 + 1 $ possible returns, given by
+\begin{equation}
+	\label{eq:sp-clq-b}
+	B_{l,j} = Z_N^l - R_j' \qquad j \in [j_0]
+\end{equation}
+
+Then the maximum number of singular points at time $ t_{N-1} $ is $ ( j_0 + 1 ) L_N $. But not all the running sums at time $ t_{N-1} $ would belong to the interval $ [ (N-1) F_{loc}, (N-1) C_{loc} $. All the $ B_{l,j} $ which belong to the interval become the abscissa of a singular point at time $ t_{N-1} $. The corresponding singular price is determined by formula \ref{eq:sp-clq-penultimate}. The term $ V_{N} (B_{l,j} + R_k') $, required by the formula, is computed using linearity of the price function at maturity. We just need to figure out the interval $ l_0 $ such that $ ( B_{l,j} + R_k' ) \in [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $, and evaluate $ V_{N} (B_{l,j} + R_k') $ by linear interpolation of the extrema. Such an interpolation gives not an approximation by the exact value due to the piecewise-linear nature of the original function.
+
+Finally, the singular points thus obtained are sorted in ascending order on the basis of the running sums. This ordered sequence of singular points $ ( ( Z_{N-1}^l, P_{N-1}^l ) )_l , l \in \{ 1, \dots, L_{N-1} \} $ completely characterises the price function at time $ V_{N-1}(Z) $.
+
+
+\paragraph{At all times}
+The previous argument may be applied iteratively in a backward fashion at each step $ N-2, N-3, \dots, 1, 0 $ to obtain the singular points at each time step. At time 0, there is only one singular point $ (0, P_0^1) $, and $ P_0^1 $ provides the exact binomial price of the cliquet option. The equivalence of this price and the exact binomial price is proved in Proposition \ref{thm:sp-clq-equality}.
+
+
+
+\begin{prp}[Equality of price obtained by the singular points method and the binomial price]
+	\label{thm:sp-clq-equality}
+	TODO
+\end{prp}
+
+
+[TODO] Insert remark 2
+
+
+\subsection{Approximation}
+[TODO] Refer Figure \ref{fig:sp-clq-approx}.
+
+\begin{figure}
+	\centering
+	
+	\definecolor{ffqqqq}{rgb}{1.,0.,0.}
+	\definecolor{cqcqcq}{rgb}{0.7529411764705882,0.7529411764705882,0.7529411764705882}
+	\definecolor{xdxdff}{rgb}{0.49019607843137253,0.49019607843137253,1.}
+	\definecolor{qqqqff}{rgb}{0.,0.,1.}
+	\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+	\draw[->,color=black] (0.,0.) -- (12.,0.);
+	\foreach \x in {,1.,2.,3.,4.,5.,6.,7.,8.,9.,10.,11.}
+	\draw[shift={(\x,0)},color=black] (0pt,2pt) -- (0pt,-2pt);
+	\draw[color=black] (11.72949725895975,0.0665249798016828) node [anchor=south west] { Z};
+	\draw[->,color=black] (0.,0.) -- (0.,8.);
+	\foreach \y in {,1.,2.,3.,4.,5.,6.,7.}
+	\draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt);
+	\draw[color=black] (0.08315626418944566,7.641135707448683) node [anchor=west] { P};
+	\clip(-0.5,-0.5) rectangle (12.,8.);
+	\draw [line width=2.pt,color=qqqqff] (1.,1.)-- (2.,1.);
+	\draw [line width=1.2pt] (2.,1.)-- (3.,1.75);
+	\draw [line width=1.2pt] (3.,1.75)-- (4.,2.);
+	\draw [color=cqcqcq] (1.,1.)-- (1.,0.);
+	\draw [color=cqcqcq] (2.,1.)-- (2.,0.);
+	\draw [color=cqcqcq] (3.,1.75)-- (3.,0.);
+	\draw [color=cqcqcq] (4.,2.)-- (4.,0.);
+	\draw [color=cqcqcq] (1.,1.)-- (0.,1.);
+	\draw [line width=1.2pt] (4.,2.)-- (6.,2.75);
+	\draw [line width=1.2pt] (8.,4.)-- (9.,5.);
+	\draw [line width=2.pt,color=qqqqff] (9.,5.)-- (10.,7.);
+	\draw [color=cqcqcq] (6.,2.75)-- (6.,0.);
+	\draw [color=cqcqcq] (9.,5.)-- (9.,0.);
+	\draw [color=cqcqcq] (11.,7.)-- (11.,0.);
+	\draw [line width=1.2pt] (6.,2.75)-- (8.,4.);
+	\draw [color=cqcqcq] (8.,4.)-- (8.,0.);
+	\draw [color=cqcqcq] (10.,7.)-- (10.,0.);
+	\draw [line width=2.pt,color=qqqqff] (10.,7.)-- (11.,7.);
+	\draw [line width=2.pt,color=qqqqff] (2.,1.)-- (9.,5.);
+	\draw [line width=1.2pt,dash pattern=on 4pt off 4pt,color=ffqqqq] (2.,1.)-- (10.,7.);
+	\draw [line width=1.6pt,dotted,color=qqqqff] (6.004094596374262,3.288054055071007)-- (6.,2.75);
+	\draw [color=cqcqcq] (10.,7.)-- (0.,7.);
+	\draw [line width=1.6pt,dotted,color=ffqqqq] (7.999695997451529,5.499771998088647)-- (8.,4.);
+	\begin{scriptsize}
+	\draw [fill=qqqqff] (1.,1.) circle (1.5pt);
+	\draw[color=qqqqff] (0.9857079256833694,1.3545251161896577) node {$S_1$};
+	\draw [fill=qqqqff] (2.,1.) circle (1.5pt);
+	\draw[color=qqqqff] (1.8339018204157151,1.40441885104092) node {$S_2$};
+	\draw [fill=qqqqff] (3.,1.75) circle (1.5pt);
+	\draw[color=qqqqff] (2.9149332548785085,2.0530374041073274) node {$S_3$};
+	\draw [fill=qqqqff] (4.,2.) circle (1.5pt);
+	\draw[color=qqqqff] (4.21217097623386,1.8201999748014375) node {$S_4$};
+	\draw [fill=xdxdff] (1.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (0.9191829143318129,-0.3917556036045157) node {$Z_1$};
+	\draw [fill=xdxdff] (2.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (1.950320590280939,-0.35849311370367437) node {$Z_2$};
+	\draw [fill=xdxdff] (3.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (2.948195760554287,-0.35849311370367437) node {$Z_3$};
+	\draw [fill=xdxdff] (4.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (3.9294396779897456,-0.3917556036045157) node {$Z_4$};
+	\draw [fill=xdxdff] (0.,1.) circle (1.5pt);
+	\draw[color=xdxdff] (0.05435776676157797,0.8888502575778783) node {$F_{glob}$};
+	\draw [fill=xdxdff] (0.,7.) circle (1.5pt);
+	\draw[color=xdxdff] (0.021095261085799705,6.8262047048780685) node {$C_{glob}$};
+	\draw [fill=qqqqff] (6.,2.75) circle (1.5pt);
+	\draw[color=qqqqff] (6.1413963054290015,2.5519747526199485) node {$S_5$};
+	\draw [fill=qqqqff] (8.,4.) circle (1.5pt);
+	\draw[color=qqqqff] (8.153777898813587,3.8159493688519217) node {$S_6$};
+	\draw [fill=qqqqff] (9.,5.) circle (1.5pt);
+	\draw[color=qqqqff] (9.201546827600602,4.847086555778005) node {$S_7$};
+	\draw [fill=qqqqff] (10.,7.) circle (1.5pt);
+	\draw[color=qqqqff] (10.16615949219817,6.809573459927647) node {$S_8$};
+	\draw [fill=qqqqff] (11.,7.) circle (1.5pt);
+	\draw[color=qqqqff] (11.197297168147298,6.792942214977227) node {$S_9$};
+	\draw [fill=xdxdff] (6.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (5.95845252421222,-0.3418618687532536) node {$Z_5$};
+	\draw [fill=xdxdff] (8.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (7.954202864758916,-0.35849311370367437) node {$Z_6$};
+	\draw [fill=xdxdff] (9.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (8.952078035032265,-0.37512435865409505) node {$Z_7$};
+	\draw [fill=xdxdff] (11.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (10.897934617065292,-0.37512435865409505) node {$Z_9$};
+	\draw [fill=xdxdff] (10.,0.) circle (1.5pt);
+	\draw[color=xdxdff] (9.933321952467724,-0.35849311370367437) node {$Z_8$};
+	\draw[color=qqqqff] (6.607071384889897,3.849211858752763) node {$V_1$};
+	\draw[color=ffqqqq] (5.675721225968106,3.9822618183561285) node {$V_2$};
+	\draw [color=qqqqff] (6.004094596374262,3.288054055071007)-- ++(-1.5pt,-1.5pt) -- ++(3.0pt,3.0pt) ++(-3.0pt,0) -- ++(3.0pt,-3.0pt);
+	\draw[color=qqqqff] (6.340971339483671,3.0841745910334106) node {$\le$ h};
+	\draw [color=ffqqqq] (7.999695997451529,5.499771998088647)-- ++(-1.5pt,-1.5pt) -- ++(3.0pt,3.0pt) ++(-3.0pt,0) -- ++(3.0pt,-3.0pt);
+	\draw[color=ffqqqq] (8.30345917435459,4.847086555778005) node {>h};
+	\end{scriptsize}
+	\end{tikzpicture}
+	
+	\caption{Approximation procedure: Elimination of points $ S_3 $ to $ S_6 $ gives function $ V_1 $ (bold, blue), which has maximum error $ \le h $. Elimination of points $ S_3 $ to $ S_7 $ gives function $ V_2 $ (dashed, red), which has maximum error $ > h $. Thus we choose $ V_1 $ as the  approximation function.}
+	\label{fig:sp-clq-approx}
+\end{figure}
+
+
+
+
+\section{The program}
+\label{sec:sp-clq-program}
+
+\subsection{Algorithm}
+[TODO: Include approximation procedure]
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	
+	\KwIn{\\
+		\qquad \emph{Contract details}  \\
+		\qquad \quad time to maturity: $ T $ \\
+		\qquad \quad number of observations: $ N $ \\
+		\qquad \quad local floor and cap: $ F_{loc}, C_{loc} $  \\
+		\qquad \quad global floor and cap: $ F_{glob}, C_{glob} $ \\
+		
+		\qquad \emph{Details of the underlying asset}  \\
+		\qquad \quad initial price: $ s_0 $  \\
+		\qquad \quad volatility: $ \sigma $  \\
+		\qquad \quad continuous dividend rate: $ q $  \\
+		
+		\qquad \emph{Market parameters} -- spot interest rate: $ r $ \\
+		
+		\qquad \emph{Computational parameters} -- time steps within each observed period: $ m $ \\
+	}
+	
+	\KwOut{The price of the option at the initial time}
+	
+	\Begin{
+		Update $ F_{glob} $ and $ C_{glob} $ using Equations \ref{eq:sp-clq-update-glob}. \;
+		
+		Set $ \Delta T, u, p $ from the formulae in Section \ref{sec:sp-clq-models}. \;
+		
+		Compute the returns and probabilities using Equation \ref{eq:sp-clq-return-final} and Equation \ref{eq:sp-clq-prb-binom}. \;
+		
+		Compute $ j_{\min}, j_{\max}, j_0 $ (Equations \ref{eq:sp-clq-j-mix-max}) and shifted returns (Table \ref{tab:sp-clq-shift}). \;
+		
+		\tcp{$ S_i $ and $ S_+ $ denotes the current ($ i^{\mathrm{th}} $) and next ($ (i+1)^{\mathrm{th}} $) list of singular points.}
+		
+		$ S_N \leftarrow \{ (N F_{loc}, F_{glob}), (F_{glob}, F_{glob}), (C_{glob}, C_{glob}), (N C_{loc}, C_{glob}) \} $ \tcp{Table \ref{tab:sp-clq-maturity}.}
+				
+		$ S_+ \leftarrow S_N $ \;
+		
+		\For{$ i \in \{ N-1, \dots, 0 \} $}{
+			$ S_i \leftarrow \emptyset, \qquad L_+ \leftarrow \mathrm{length}(S_+) $ \;
+			
+			\ForAll{$ (l, j) \in [L_+] \times [j_0 + 1] $}{
+				Compute $ B_{l,j} $ using Equation \ref{eq:sp-clq-b}, replacing $ N $ by $ i $. \;
+				
+				\If{ $ ( B_{l,j} + R_k' ) \notin [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $ } {
+					Continue \tcp*{to the next item in the loop}
+				}
+				
+				Find $ l_0 $ such that $ ( B_{l,j} + R_k' ) \in [ Z_{i+1}^{l_0}, Z_{i+1}^{l_0 + 1} ] $. \;
+				
+				Evaluate $ V_{i+1} (B_{l,j} + R_k') $ by linear interpolation of the extrema. \;
+				
+				Evaluate $ V_{i}(B_{l,j}) $ by using Equation \ref{eq:sp-clq-penultimate}, replacing $ N $ by $ i $. \;
+				
+				$ S_i \leftarrow S_i \cup (B_{l,j}, V_{N-1}(B_{l,j})) $ \;
+			}
+			
+			$ S_+ \leftarrow S_i $ \;
+		}
+		\KwRet{$ (S_i)_{1,2} $ \tcp*{Singular price at time 0} }
+	}
+	
+	\caption{The Singular Points method for cliquet options}
+\end{algorithm}
+
+\paragraph{Analysis of algorithm}
+[TODO if time permits] Consider computational complexity, space complexity.
+
+
+\subsection{Implementation}
+The algorithm was implemented in Python 3 (v3.4.3).
+
+<TODO: The actual implementation goes here>
+%\inputminted[tabsize=2]{python}{../code/tr_cliquet_singularpoints.py}
+%\label{lst:sp-clq}
+
+
+\section{Numerical results}
+\label{sec:sp-clq-results}
+
+
+\section{Conclusions}
+
+
+%%% Local Variables:
+%%% LaTeX-command: "latex -shell-escape"
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

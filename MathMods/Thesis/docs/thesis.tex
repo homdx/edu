@@ -17,30 +17,27 @@
 % Dedication if any, else empty
 
 
-\input{tex/title.tex}
+%\input{tex/Title.tex}
 
 
-\tableofcontents
-\clearpage
+%\tableofcontents
+%\clearpage
+%
+%
+%\section*{Notations}
+%
+%\subsection*{Mathematical}
+%\begin{itemize}
+%\item $ [n] = \{0, 1, 2, \dots, n\} $
+%\item $ \mathbb{N} = \{ 1, 2, 3, \dots \} $, $\mathbb{N}_0 = \mathbb{N} \cup \{ 0 \} $
+%\end{itemize}
+%
+%\subsection*{General}
+%\begin{description}
+%\item[CRR] The Cox-Ross-Rubinstein model
+%\item[BS] The Black-Scholes model
+%\end{description}
 
-
-\section*{Notations}
-
-\subsection*{Mathematical}
-\begin{itemize}
-\item $ [n] = \{0, 1, 2, \dots, n\} $
-\item $ \mathbb{N} = \{ 1, 2, 3, \dots \} $, $\mathbb{N}_0 = \mathbb{N} \cup \{ 0 \} $
-\item $ a \wedge b = \inf(\{ a, b \}) $
-\item $ a \vee b = \sup(\{ a, b \}) $
-\end{itemize}
-
-\subsection*{General}
-\begin{description}
-\item[CRR] The Cox-Ross-Rubinstein model
-\item[BS] The Black-Scholes model
-\end{description}
-
-% List of figures (can be in the backmatter too)
 % Preface chapter
 
 
@@ -56,17 +53,22 @@
 % \input{tex/BS.tex}
 
 
-\chapter{The Singular Points method}
-\label{cha:sp}
-\input{tex/SP.tex}
+%\chapter[Asian options]{The Singular Points method applied to Asian options}
+%\label{cha:sp-asian}
+%\input{tex/Asian.tex}
+
+\chapter[Cliquet options]{The Singular Points method applied to Cliquet options}
+\label{cha:sp-cliquet}
+\input{tex/Cliquet.tex}
 
 
 \appendix
 
 
 \backmatter
+% List of figures (can be in the backmatter too)
+%\listofalgorithms
 
-% \bibliography{thesis}
 \printbibliography
 
 

@@ -9,13 +9,15 @@
             <option name="CONTINUATION_INDENT_SIZE" value="8" />
             <option name="TAB_SIZE" value="4" />
             <option name="USE_TAB_CHARACTER" value="true" />
-            <option name="SMART_TABS" value="false" />
+            <option name="SMART_TABS" value="true" />
             <option name="LABEL_INDENT_SIZE" value="0" />
             <option name="LABEL_INDENT_ABSOLUTE" value="false" />
             <option name="USE_RELATIVE_INDENTS" value="false" />
             <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true" />
           </value>
         </option>
+        <option name="LINE_SEPARATOR" value="&#10;" />
+        <option name="RIGHT_MARGIN" value="80" />
         <Python>
           <option name="SPACE_WITHIN_BRACES" value="true" />
           <option name="SPACE_AFTER_PY_COLON" value="false" />
@@ -32,6 +34,7 @@
           <option name="SPACE_WITHIN_BRACKETS" value="true" />
           <indentOptions>
             <option name="USE_TAB_CHARACTER" value="true" />
+            <option name="SMART_TABS" value="true" />
             <option name="KEEP_INDENTS_ON_EMPTY_LINES" value="true" />
           </indentOptions>
         </codeStyleSettings>
