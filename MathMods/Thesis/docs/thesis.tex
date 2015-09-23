@@ -1,3 +1,8 @@
+% !TeX root = thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
+
 \documentclass[12pt,a4paper]{amsbook}
 
 \usepackage{thesis}
@@ -11,19 +16,27 @@
 % Half-title
 
 % Title page
+\input{tex/title.tex}
+
+%A path-dependent option is a type of exotic option in which the price of the option depends not only on the price of the underlying asset at maturity, but also on the history of the asset's price till that point. Some typical examples of popular exotic options are Asian options, lookback options, barrier option, digital options, etc.
+%
+%In the Black-Scholes market model, it is not possible to find closed-form analytical formulae for the prices of many exotic options. Thus we need fast numerical algorithms to determine the fair price of such options. Such algorithms may be clustered into groups. Some algorithms utilise the converence of the Cox-Ross-Rubinstein prices to the Black-Scholes prices as a limit when the time step is reduced. Other algorithms use numerical methods to solve the Black-Scholes stochastic differential equation. Other use Monte Carlo methods...
+%
+%Under the Cox-Ross-Rubinstein model, Gaudenzi \emph{et al}\cite{Gaudenzi2010} introduced the Singular Points method. It is a numerical method to price American Lookback options and American Asian options with arithmetic mean. In each node of the binomial tree of the underlying risky asset, the price is represented as a continuous function of the path-dependent parameter. An advantage of this method over pre-existing methods is its low order of computational and space complexity. It is convergent, and allows us to set \emph{a priori} upper and lower bounds on the error.
+%
+%In the master's thesis, we try to extend the method to include the case of American Asian options with geometric mean. I would also like to look into the possibility of extending the method to account for local volatility.
+
+%Research is what I’m doing when I don’t know what I’m doing. — Wernher von Braun
 
 % Information (copyright notice, ISBN, etc.)
 
 % Dedication if any, else empty
 
+\tableofcontents
 
-%\input{tex/Title.tex}
-
-
-%\tableofcontents
 %\clearpage
-%
-%
+
+
 %\section*{Notations}
 %
 %\subsection*{Mathematical}
@@ -43,24 +56,29 @@
 
 \mainmatter
 
-% \chapter{Cox Ross Rubenstein model}
-% \label{cha:crr}
-% \input{tex/CRR.tex}
+\chapter{Prologue}
+\label{cha:prologue}
+\input{tex/prologue.tex}
 
+\chapter{Cox Ross Rubinstein model}
+\label{cha:crr}
+\input{tex/crr.tex}
 
-% \chapter{Black Scholes model}
-% \label{cha:bs}
-% \input{tex/BS.tex}
+\chapter{Black Scholes model}
+\label{cha:bs}
+\input{tex/bs.tex}
 
-
-%\chapter[Asian options]{The Singular Points method applied to Asian options}
-%\label{cha:sp-asian}
-%\input{tex/Asian.tex}
+\chapter[Asian options]{The Singular Points method applied to Asian options}
+\label{cha:sp-asian}
+\input{tex/asian.tex}
 
 \chapter[Cliquet options]{The Singular Points method applied to Cliquet options}
 \label{cha:sp-cliquet}
-\input{tex/Cliquet.tex}
+\input{tex/cliquet.tex}
 
+\chapter{Epilogue}
+\label{cha:epilogue}
+%\input{tex/epilogue.tex}
 
 \appendix
 

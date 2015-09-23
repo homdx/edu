@@ -7,19 +7,28 @@
 
 
 \tikzset{
-  term/.style={
-    % The shape:
-    shape=rectangle,rounded corners=3mm,
-    % The size:
-    minimum size=6mm,
-    % The border:
-    very thick,
-    draw=red!50!black!50, % 50% red and 50% black,
-    % and that mixed with 50% white
-    % The filling:
-    top color=white, % a shading that is white at the top...
-    bottom color=red!50!black!20 % and something else at the bottom
-  }}
+	header/.style={
+		% The shape:
+		rectangle,minimum size=6mm,
+		% The rest
+		draw=black!10,
+		font=\ttfamily
+	}}
+
+\tikzset{
+	term/.style={
+		% The shape:
+		shape=rectangle,rounded corners=3mm,
+		% The size:
+		minimum size=6mm,
+		% The border:
+		very thick,
+		draw=red!50!black!50, % 50% red and 50% black,
+		% and that mixed with 50% white
+		% The filling:
+		top color=white, % a shading that is white at the top...
+		bottom color=red!50!black!20 % and something else at the bottom
+	}}
 
 \tikzset{
 	nterm/.style={
@@ -38,11 +47,12 @@
 % Binomial tree
 \begin{tikzpicture}
 	\matrix (tree) [column sep=25mm, row sep=1mm]{
-		& \node[term] (u) {$S_1^u = S_0u$}; \\
-		\node[term] (s) {$S_0$}; \\
-		& \node[term] (d) {$S_1^d = S_0d$}; \\
+		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $}; \\
+		&  \node[term] (u) {$S_1^u = S_0u$}; \\
+		\node[term] (s) {$S_0$};  &  \\
+		&  \node[term] (d) {$S_1^d = S_0d$}; \\
 	};
-	\draw[->,thick] (s) -- (u) node[midway,above] {$p_u = p$};
+	\draw[->] (s) -- (u) node[midway,above] {$p_u = p$};
 	\draw[->] (s) -- (d) node[midway,below] {$p_d = 1-p$};
 \end{tikzpicture}
 
@@ -93,7 +103,7 @@
 \end{tikzpicture}
 
 
-% Recombining 4-step binomial tree for Cox-Ross-Rubinstein model
+% Recombining 4-step binomial tree with highlighted paths
 \begin{tikzpicture}
 	\matrix[column sep=10mm,row sep=1mm] (tree){
 		& & & & \node[term] (u4) {$S_0u^4$}; \\
@@ -149,8 +159,8 @@
 		& & \node[term] (d2) {$S_0d^2$}; \\
 	};
 	% Lines out of s
-	\draw[->] (s) -- (u) node[midway,above] {$p_u^1$};
-	\draw[->] (s) -- (d) node[midway,below] {$p_d^1$};
+	\draw[->] (s) -- (u) node[midway,above] {$p_u$};
+	\draw[->] (s) -- (d) node[midway,below] {$p_d$};
 	% Lines out of u
 	\draw[->] (u) -- (u2) node[midway,above] {$p_u$};
 	\draw[->] (u) -- (ud) node[midway,above] {$p_d$};

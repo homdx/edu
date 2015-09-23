@@ -1,4 +1,7 @@
 % !TeX root = ../thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
 
 \section{Introduction}
 \label{sec:sp-clq-intro}
@@ -11,10 +14,10 @@ Usually, the return on a cliquet option is capped and floored. The capping and f
 	\item[Digital cliquet] The forward-starting options are digital options.
 \end{description}
 
-\paragraph{Example}
-For example, a three-year cliquet option with a strike of 1,000 would expire worthless on the first year if the underlying was to be 900. This value (900) would then be the new strike price for the following year and should the underlying on the settlement be 1,200, the contract holder would receive a payout and the strike would reset to this new level. Higher volatility provides better conditions for investors to earn profits.
+\begin{eg} %[TODO: taken directly from wikipedia, investopedia]
+	A three-year cliquet option with a strike of 1000 would expire worthless on the first year if the underlying was to be 900. This value (900) would then be the new strike price for the following year and should the underlying on the settlement be 1200, the contract holder would receive a payout and the strike would reset to this new level. Higher volatility provides better conditions for investors to earn profits.
+\end{eg}
 
-%[taken directly from wikipedia, investopedia]
 
 
 \paragraph{Literature review}
@@ -333,7 +336,15 @@ The previous argument may be applied iteratively in a backward fashion at each s
 
 
 \subsection{Approximation}
-[TODO] Refer Figure \ref{fig:sp-clq-approx}.
+
+The method demonstrated in Section \ref{subsec:sp-clq-method} gives us the actual binomial price of the cliquet option. But as was mentioned earlier, the computational complexity of the method is theoretically the same as that of the binomial method, which is $ m^{N} $. But contrary to the binomial method, the singular point method enables us to use precise, efficient and controlled approximation to accelerate the procedure significantly. Thus its efficacy become apparent when we have time and memory constraints, or we wish to substantially increase the number of intermediate time steps.
+
+The prime idea of the approximation procedure is to remove singular points in a controlled manner in order to simplify the computations. To this end, we fix a given maximal level $ h > 0 $ of the error in each period. Now, we eliminate singular points in a fashion so that the function after deletion of the points ($ \tilde{V}_i $) is different from the original function by less than ($ h $) at each point. This may be achieved as follows.
+
+Start with the point $ ( Z_i^1, P_i^1 ) $. Find the largest index $ l > 1 $ such that the distances between the straight line joining $ ( Z_i^1, P_i^1 ) $ and $ ( Z_i^l, P_i^l ) $ and the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $ are always less than $ h $. Note that this, coupled with the fact that the original function is piecewise-linear, ensures that the differences in the values of the functions for any value of the running sum would be bounded over by $ h $. Now delete the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $. The point $ ( Z_i^l, P_i^l ) $ now becomes the second singular point, and we continue the procedure iteratively starting with this point till we cover all the points. Figure \ref{fig:sp-clq-approx} elaborates on this graphically.
+
+Since at each $ N $ the upper bound for the error is $ h $, if we repeat the approximation procedure at every observational time, the total error infused in the price of the option is bounded by $ Nh $.
+
 
 \begin{figure}
 	\centering
@@ -430,6 +441,14 @@ The previous argument may be applied iteratively in a backward fashion at each s
 \end{figure}
 
 
+\begin{rem}[Comparison with Asian options]
+	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section [TODO: reference] of Chapter \ref{cha:sp-asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
+\end{rem}
+
+The following proposition tells us that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model.
+
+[TODO: Proposition 2]
+
 
 
 \section{The program}
@@ -437,6 +456,7 @@ The previous argument may be applied iteratively in a backward fashion at each s
 
 \subsection{Algorithm}
 [TODO: Include approximation procedure]
+
 \begin{algorithm}[H]
 	\DontPrintSemicolon
 	
@@ -506,7 +526,9 @@ The previous argument may be applied iteratively in a backward fashion at each s
 
 
 \subsection{Implementation}
-The algorithm was implemented in Python 3 (v3.4.3).
+The algorithm was implemented in Python 3.5.0 (2015-09-13).
+The system specifications are as follows
+[TODO: Shift this to some common region for both Asian and cliquet]
 
 <TODO: The actual implementation goes here>
 %\inputminted[tabsize=2]{python}{../code/tr_cliquet_singularpoints.py}

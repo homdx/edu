@@ -1,3 +1,8 @@
+% !TeX root = thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
+
 % Inspired and copied a lot of code from my.
 % http://web.stanford.edu/~chadj/latex2.html
 
@@ -9,17 +14,20 @@
 \usepackage[math]{iwona}
 \usepackage{eulervm}
 % \usepackage{lmodern}
-\usepackage[T1]{fontenc}		% Better fonts
-\usepackage[utf8]{inputenc}		 % For extended UTF8 support change to utf8x
-\usepackage[english]{babel}		 % English hyphenation
+\usepackage[T1]{fontenc}    % Better fonts
+\usepackage[utf8]{inputenc}	   % For extended UTF8 support change to utf8x
+\usepackage[english]{babel}	   % English hyphenation
 \usepackage{csquotes}		 % Multilingual quotes
+\usepackage{booktabs}    % Better tables
+\usepackage{mathtools}    % Includes AMSMath and provides more benefits
+
+% Graphics
 \usepackage{graphicx}
-\graphicspath{{img/}}		 % Central repository for images
-\usepackage{booktabs}		 % Better tables
+\graphicspath{{img/}}    % Central repository for images
 
 % Set paragraph formatting
-\usepackage{parskip}		% Do not indent paragraphs, and put some linespace between paragraphs
-\linespread{1.1}		% Set more space between lines
+\usepackage{parskip}    % Do not indent paragraphs, and put some linespace between paragraphs
+\linespread{1.1}    % Set more space between lines
 
 % Set ToC and bookmark depths
 \setcounter{tocdepth}{2}
@@ -56,10 +64,10 @@
 \newcommand*\centermathcell[1]{\omit\hfil$\displaystyle#1$\hfil\ignorespaces}
 
 
-
 % Code
 \usepackage[ruled,vlined,noend,linesnumbered]{algorithm2e}
-% \usepackage{minted}
+%\usepackage{minted}
+
 
 % Bibliography
 \usepackage[backend=biber,style=alphabetic]{biblatex}
@@ -78,9 +86,17 @@
 \usetikzlibrary{arrows,shapes.geometric,shapes.misc}
 
 \tikzset{
+	header/.style={
+		% The shape:
+		rectangle,minimum size=6mm,
+		% The rest
+		draw=black!10,
+	}}
+
+\tikzset{
 	term/.style={
 		% The shape:
-		shape=ellipse,
+		shape=rectangle,rounded corners=3mm,
 		% The size:
 		minimum size=6mm,
 		% The border:
@@ -91,7 +107,7 @@
 		top color=white, % a shading that is white at the top...
 		bottom color=red!50!black!20 % and something else at the bottom
 	}}
-
+	
 \tikzset{
 	nterm/.style={
 		% The shape:
@@ -99,7 +115,7 @@
 		% The rest
 		very thick,draw=black!30,
 		top color=black!05,bottom color=black!10,
-		font=\ttfamily}}
+	}}
 
 
 % \usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
@@ -116,36 +132,56 @@
 \usepackage{color}
 % My colors:
 % See http://web.njit.edu/~kevin/rgb.txt.html for possibilities
-\definecolor{myDarkBlue}{rgb}{.1,0,.2}	
-\definecolor{myBlue}{rgb}{.1,.1,.5}	 
-\definecolor{myRoyal}{rgb}{.2,.2,.8}	
+\definecolor{myDarkBlue}{rgb}{.1,0,.2}
+\definecolor{myBlue}{rgb}{.1,.1,.5}
+\definecolor{myRoyal}{rgb}{.15,.15,.75}
 % \definecolor{myGreen}{rgb}{0,.35,.1}
-% \definecolor{myGreen}{rgb}{0,.5,.25}	% Too bright
-% \definecolor{myGreen}{rgb}{0,.4,.2}		 % Still too bright
-\definecolor{myGreen}{rgb}{0,.4,0}		% Dark Green
-% \definecolor{myRed}{rgb}{.8,.1,.2}		% Too bright
-\definecolor{myRed}{rgb}{.5,0,.5}	 % purple
+% \definecolor{myGreen}{rgb}{0,.5,.25}    % Too bright
+% \definecolor{myGreen}{rgb}{0,.4,.2}    % Still too bright
+\definecolor{myGreen}{rgb}{0,.4,0}    % Dark Green
+% \definecolor{myRed}{rgb}{.8,.1,.2}    % Too bright
+\definecolor{myRed}{rgb}{.4,0,0}    % purple
 
-%% Format ToC
-% \usepackage{tocloft}
+% Format ToC
+% There is a problem with the AMS classes -- the ToC overlaps
+% http://tex.stackexchange.com/questions/20527/table-of-contents-section-number-and-title-overlapping
+% If we use tocloft, we get a lot of errors, but at the end it gives the correct output.
+%\usepackage{tocloft}
+
 
 % Format titles
 \usepackage{titlesec}
+
 \titleformat{\chapter}[frame]
-{\fontfamily{gentium}\bfseries\scshape\huge\color{myRoyal}}
+{\fontfamily{gentium}\bfseries\scshape\Huge\color{myRoyal}}
 {Chapter \thechapter}{1em}{}
+
 \titleformat{\section}
-{\fontfamily{gentium}\bfseries\scshape\LARGE\color{myBlue}}
+{\fontfamily{gentium}\bfseries\scshape\Large\color{myBlue}}
 {\thesection}{1em}{}
+
 \titleformat{\subsection}
-{\fontfamily{gentium}\bfseries\scshape\Large\color{myDarkBlue}}
+{\fontfamily{gentium}\bfseries\scshape\large\color{myDarkBlue}}
 {\thesubsection}{1em}{}
+
 \titleformat{\subsubsection}
 {\fontfamily{gentium}\bfseries\large\color{myDarkBlue}}
 {\thesubsection}{1em}{}
-\titleformat{\paragraph}
-{\fontfamily{gentium}\bfseries}
+
+\titleformat{\paragraph}[runin]
+{\fontfamily{gentium}\bfseries\color{myRed}}
 {\theparagraph}{1em}{}
+
+\titleformat{\subparagraph}[runin]
+{\fontfamily{gentium}\itshape\color{myRed}}
+{\theparagraph}{1em}{}
+
+\titlespacing*{\chapter} {0pt}{50pt}{40pt}
+\titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+\titlespacing*{\subsection} {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\subsubsection}{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+\titlespacing*{\paragraph} {0pt}{3.25ex plus 1ex minus .2ex}{1em}
+\titlespacing*{\subparagraph} {\parindent}{3.25ex plus 1ex minus .2ex}{1em}
 
 
 % \usepackage{lastpage}		% To get the last page number

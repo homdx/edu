@@ -1,18 +1,18 @@
 from math import exp, log, sqrt, erf, pi
 
-n = 2
-t = 6 / 12
-s0 = 50
+n = 3
+t = 3 / 12
+s0 = 2400
 sigma = 0.25
-r = 1.0125	# This is capital R
+r = 1. + 0.1 / 12	# This is capital R
 
 
 def crr(n, t, s0, r, sigma):
 	dt = t / n
-	#if sigma != 0.:
-		#u = r * exp( sigma * sqrt(dt))
-		#d = r * exp(-sigma * sqrt(dt))
-	(u, d) = (1.06, 0.95)
+	if sigma != 0.:
+		u = r * exp( sigma * sqrt(dt))
+		d = r * exp(-sigma * sqrt(dt))
+	# (u, d) = (1.06, 0.95)
 	p = (r - d) / (u - d)
 	undlyn = ''
 	eu_str = ''
@@ -29,13 +29,13 @@ def crr(n, t, s0, r, sigma):
 			s[n-i+2*j][i] = s0 * d**j * u**(i-j)
 
 	for j in range (0, n+1):
-		eu[n-i+2*j][i] = (s[n-i+2*j][i] - 51) * (s[n-i+2*j][i] > 51)	# = max((s[n-i+2*j][i] - 51), 0)
-		am[n-i+2*j][i] = (s[n-i+2*j][i] - 51) * (s[n-i+2*j][i] > 51)
+		eu[n-i+2*j][i] = (2700 - s[n-i+2*j][i]) * (2200 <= s[n-i+2*j][i] <= 2700)	# = max((s[n-i+2*j][i] - 51), 0)
+		am[n-i+2*j][i] = (2700 - s[n-i+2*j][i]) * (2200 <= s[n-i+2*j][i] <= 2700)
 	for i in range(n-1, -1, -1):
 		for j in range (0, i+1):
 			eu[n-i+2*j][i] = (p * eu[n-i+2*j-1][i+1] + (1-p) * eu[n-i+2*j+1][i+1]) / r
 			am[n-i+2*j][i] = max((p * eu[n-i+2*j-1][i+1] + (1-p) * eu[n-i+2*j+1][i+1]) / r,
-					     (s[n-i+2*j][i] - 51) * (s[n-i+2*j][i] > 51))
+					     (2700 - s[n-i+2*j][i]) * (2200 <= s[n-i+2*j][i] <= 2700))
 
 	for row in s:
 		for val in row:
@@ -43,7 +43,7 @@ def crr(n, t, s0, r, sigma):
 				# For the number of digits, use {5, ..., 12}
 				undlyn += '{val:.2f}'.format(val=val) + '\t'
 			else:
-				undlyn += 1 * '\t'
+				undlyn += 2 * '\t'
 		undlyn += '\n'
 	for row in eu:
 		for val in row:
@@ -51,7 +51,7 @@ def crr(n, t, s0, r, sigma):
 				# For the number of digits, use {5, ..., 12}
 				eu_str += '{val:.3f}'.format(val=val) + '\t'
 			else:
-				eu_str += 1 * '\t'
+				eu_str += 2 * '\t'
 		eu_str += '\n'
 	for row in am:
 		for val in row:
@@ -59,7 +59,7 @@ def crr(n, t, s0, r, sigma):
 				# For the number of digits, use {5, ..., 12}
 				am_str += '{val:.3f}'.format(val=val) + '\t'
 			else:
-				am_str += 1 * '\t'
+				am_str += 2 * '\t'
 		am_str += '\n'
 
 	print('Underlying\n' + undlyn)

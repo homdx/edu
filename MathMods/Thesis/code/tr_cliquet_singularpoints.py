@@ -21,7 +21,7 @@ N = 8
 # am = False
 
 # Computation
-m = 200
+m = 5
 # h = 1e-4
 
 
@@ -31,7 +31,7 @@ def sp_cliquet(
 		m : int, N : int,
 		f_loc : float, f_glob : float,
 		c_loc : float, c_glob : float,
-		mach_eps = 65536 * ( 7/3 - 4/3 - 1 ) ) -> float:
+		h : float = 0., mach_eps = 65536 * ( 7/3 - 4/3 - 1 ) ) -> float:
 	"""Prices of an Cliquet call option using the singular point method"""
 
 	err_p = "ERROR: p_u must be a probability! " + \
@@ -206,6 +206,25 @@ def sp_cliquet(
 			v /= R_N
 			sp.append( (b, v) )
 
+		# Approximations
+		if i % n == 0 and h > 0.:
+			l = 0    # l is the starting index
+			while l < len(sp):
+				approx = True
+				for j in range( len(sp), l + 1, -1 ):
+					m = ( sp[j][1] - sp[l][1] ) / ( sp[j][0] - sp[l][0] )
+					for k in range( l, j ):
+						approx = True
+						delta = m * ( sp[k][0] - sp[l][0] ) + sp[l][0] - sp[k][1]
+						if delta >= h:
+							approx = False
+							break
+					if approx:
+						break
+				if approx:
+					del sp[l+1:j]
+				l += 1
+
 		sp_i = sp
 
 	return sp_i[0][1]
@@ -235,4 +254,4 @@ def choose(n: int, r: int):
 
 
 print(sp_cliquet(r=r, q=q, sigma=sigma, t=t, m=m, N=N,
-                 f_loc=f_loc, f_glob=f_glob, c_loc=c_loc, c_glob=c_glob))
+                 f_loc=f_loc, f_glob=f_glob, c_loc=c_loc, c_glob=c_glob, h = 1e-6))

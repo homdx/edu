@@ -1,0 +1,191 @@
+% !TeX root = ../thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
+The thesis of Louis Bachelier (1900) on the ``Theory of Speculation”
+
+Introduction of Brownian motion to model fluctuating prices in the Paris stock exchange
+
+Black and Scholes
+
+Cox Ross Rubinstein
+
+Options
+
+\section{Financial instruments}
+\label{sec:intro-assets}
+
+A \emph{financial instrument} or a \emph{financial asset} is an intangible asset whose value is derived from a contractual claim, such as bank deposits, bonds, stocks and derivatives. Financial assets are usually more liquid than other tangible assets, such as commodities or real estate, and may be traded on financial markets. Every financial asset is characterised by its return. When the return is deterministic, we call it a \emph{risk-free} or \emph{riskless} asset. When the return is contingent on the market and external conditions, it is called \emph{risky}. It must be kept in mind that no instrument is fundamentally risk-free, it has only negligible risk compared to its risky counterparts.
+
+
+
+\subsection{Riskless instruments}
+\label{subsec:intro-assets-riskless}
+
+
+\paragraph{Bonds}
+A \emph{bond} is an instrument of indebtedness of the bond issuer to the holders. It is a \emph{debt security}, under which the issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay them interest (the coupon) and/or to repay the principal at a later date, termed the maturity date. Bonds can also be thought of as a \emph{loan} given to the issuer of the bond by the holder. A bond issued by a reliable institution like the United States government is a good illustration of a risk-free asset. This is because the probability of such an organisation defaulting is close to zero, or in other words, the bond has negligible \emph{credit default risk}. Such bonds are only subject to fluctuations of the current interest rate, called \emph{interest rate risk}. If we assume that the interest rate is deterministic (the fluctuations are not random), the value of the bond is consequently computable at any given future date, making them riskless. Such an assumption is quite reasonable in short periods of time and for low credit risk institutions.
+
+
+\paragraph{Compounding}
+The idea of compounding is the first idea that we must be familiar with. Essentially, a riskless asset will increase in monetary value in a deterministic manner if we keep it in the market. The increase depends on the compounding frequency and the duration of investment. The term compounding is used because the interest earned in each period also contributes to the principal in the successive periods.
+
+Let the compounding frequency is $ n $ times per year, the total time is $ t $, and the annual rate of interest is $ r $. Then
+\begin{equation}
+\label{eq:intro-compounding-discrete}
+B_t = B_0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
+\end{equation}
+where $ B_0 $ is the starting value of the asset, and $ B_t $ is the value of the asset at time $ t $.
+
+If the compounding is continuous, we let $ n \to \infty $ to obtain
+\begin{equation}
+\label{eq:intro-compounding-continous}
+B_t = B_0 e^{rt}.
+\end{equation}
+
+
+
+\subsection{Risky instruments}
+\label{subsec:intro-assets-risky}
+
+
+\paragraph{Stocks}
+A \emph{stock} of a corporation is an ownership certificate, and constitutes the equity stake of its owners. It represents the residual assets of the company that would be due to stockholders after discharge of all senior claims such as secured and unsecured debt. A \emph{share} of a stock is a unit of ownership of the organisation. Stocks are inherently risky, since the value of the organisation may change from time to time due to various internal and external factors.
+
+
+\paragraph{Derivatives}
+A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially the value of a derivative is a function of the value of the \emph{underlying} asset. Derivatives are traded in their own right, and a fair price must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, we shall mainly concern ourselves with the pricing problem of a particular class of derivatives, called \emph{exotic options}.
+
+
+\subsubsection{Classification of derivatives}
+\label{subsubsec:intro-derivative-classification}
+
+Derivatives may be classified on the basis of various factors. One important factor is whether the risk is shared, or taken up by only one party. Another factor is the nature of the function (of the underlying) that the derivative depends on. This function may either be dependent only on the final value of the underlying (\emph{path-independent}), or on the path that it took to reach this final value (\emph{path-dependent}). The function may be discrete (\emph{digital} or \emph{binary}), or continous. In this section, we briefly look at some of the more important types of derivatives. \footnote{
+	A more interested reader should consult the following extensive Wikipedia articles.
+	\begin{itemize}
+		\item \url{https://en.wikipedia.org/wiki/Option_(finance)\#Types}
+		\item \url{https://en.wikipedia.org/wiki/Option_style}
+	\end{itemize}
+}
+
+
+\paragraph{Futures and forwards}
+
+\begin{dfn}[Futures and forwards]
+	Futures and forwards are contracts between two parties, the seller and the buyer, to exchange a certain asset at a predetermined future time at a agreed upon price. Futures are \emph{exchange-traded derivatives} (ETDs), whereas forwards are traded \emph{over-the-counter} (OTC).
+\end{dfn}
+
+Such derivatives obligate the contractual parties to the terms over the life of the contract. Futures are in some sense `safer' compared to forwards, since the involved parties must go through standard protocols of the exchange.
+The contract contains the following details.
+\begin{description}
+	\item[$ T $] The maturity, or the duration of the contract
+	\item[$ F_0 $] The delivery price, or the price prefixed (at the initial time) at which trades must take place at maturity
+	\item[$ r $] The rate of interest
+	\item[underlying] The asset(s) of trade at maturity
+	\item[$ S_0 $] The initial value of the underlying asset(s)
+\end{description}
+There are, of course, other possibilities, for instance a variable interest rate, dividends yielded by the underlying, but these may be seen as generalised cases of the stated simple case.
+
+Let us assume that the compounding is continuous. We may show that under the condition of a \emph{viable market}\footnote{see Section \ref{subsec:intro-market-char} for definitions of the term}, the fair delivery price of a future with underlying prices $ ( S_t )_{t \in [0, T] } $ at any time $ t \in [0, T] $ is given by the following equation.
+\begin{equation}
+	\label{eq:intro-future-pr}
+	F_t = S_t e^{ r (T - t) }
+\end{equation}
+
+
+\paragraph{Options}
+
+\begin{dfn}[option]
+	An \emph{option} is a derivative which provides the buyer \emph{the right, but not the obligation} to enter the contract under the specified terms.
+\end{dfn}
+
+Thus, the owner of the option may choose whether to exercise his right or not. Thus, on the one hand, the owner of the option bears no risk, since all the choice is his. On the other hand, the seller of the option is \emph{obligated} to honour the terms of the contract, whether it benefits him or not -- essentially making him bear all the risks. This asymmetry is primarily what sets options apart from the locks discussed earlier.
+The contract contains the following details
+\begin{description}
+	\item[$ T $] The maturity, or the duration of the contract
+	\item[$ K $] The strike price, or the prefixed price at which trades may take place at maturity
+	\item[$ r $] The rate of interest
+	\item[underlying] The asset(s) which may be traded at maturity
+	\item[$ S_0 $] The initial value of the underlying asset at the initial time
+	\item[right] The exact right that the owner of the options has (see below)
+	\item[exercise time] European or American
+\end{description}
+
+According to the right of the owner, a simple option may be of two types.
+\begin{description}
+	\item[call] The owner has the right to buy. In this case, the price of the option at maturity is given by $ c_T = (S_T - K)_+ $, where $ (x)_+ \coloneqq \max \{ 0, x \} $.
+	\item[put] The owner has the right to sell. In this case, the price of the option at maturity is given by $ p_T = (K - S_T)_+ $.
+\end{description}
+Of course, other complicated ownership rights may be constructed, but we shall concern ourselves with these basic ones for time being.
+
+
+\begin{prp}[Equality of portfolios]
+	\label{thm:intro-portfolio-eq}
+	In a \emph{viable} and \emph{frictionless market}\footnote{see Section \ref{subsec:intro-market-char} for definitions of the terms}, if the values of two portfolios coincide at a time $ T $, they have to coincide at $ 0 $ ( or any other intermediate time $ t $).
+\end{prp}
+
+\begin{proof}
+	Let us denote by $ \mathcal{P}_1 $ and $ \mathcal{P}_2 $ the two portfolios and by $ v(\mathcal{P}) $ the value of a portfolio $ \mathcal{P} $ at time $ t $. By assumption $ v_T (\mathcal{P}_1) = v_T (\mathcal{P}_2) $, so we assume by contradiction that $ v_T (\mathcal{P}_1) > v_T (\mathcal{P}_2) $.
+	
+	Under this hypothesis it is possible to construct the following arbitrage strategy. At time 0, one can borrow the portfolio $ \mathcal{P}_1 $ and sell it right away to buy portfolio $ \mathcal{P}_2 $. One can pocket the difference $ v_T (\mathcal{P}_1) - v_T (\mathcal{P}_2) > 0 $. At $ t = T $ the values of the two portfolios coincide, so selling $ \mathcal{P}_2 $ one gets the exact money to buy $ \mathcal{P}_1 $ to be returned to the original lender. An profit is achieved, without investing any money, implying an arbitrage and violating the viable market hypothesis. Similarly, we can show that $ v_0 (\mathcal{P}_1) < v_0 (\mathcal{P}_2) $ would also enable an arbitrage opportunity.
+\end{proof}
+
+
+Looking at the call and put prices at maturity, we note that they are related. In fact, $ S_T - K = (S_T - K)_+ + (S_T - K)_- = (S_T - K)_+ - (K - S_T)_+ = c_T - p_T $. For any general time $ t $, using Proposition \ref{thm:intro-portfolio-eq}, it holds that $ c_t - p_t = S_t - K e^{- r (T-t) } $. This is known as the \emph{call-put parity}.
+
+According to the time at which the option may be exercised, an option may be of two types
+\begin{description}
+	\item[European] The owner may exercise the option only at maturity
+	\item[American] The owner may exercise the option at any time up to the maturity
+\end{description}
+Since American options allow for more flexibility for the owner, and thus more risk for the seller, they are more expensive as compared to their European counterparts. Let $ c_t, p_t $ denote the prices of an European call and put, and $ C_t, P_t $ denote the prices of an American call and put, respectively. Then, we must have $ C_t \ge c_t $ and $ P_t \ge p_t $.
+
+European options are path-independent and the simplest type of options available. Hence, they are popularly known as \emph{vanilla options}. The American options are path-dependent. Typically, other options which are more complex in nature are collectively called \emph{exotic options}. These are usually path-dependent, and may be either European, American or have more complex exercise times. A few such options are described in brief.
+\begin{description}
+	\item[Asian] The payoff depends on the average of the underlying's prices
+	\item[lookback] The payoff depends on one of the extrema of the underlying's prices
+	\item[cliquet or ratchet] A series of globally or locally, capped or floored, at-the-money options, but where the total premium is determined in advance.
+	\item[barrier] The price of the underlying reaching the pre-set barrier level either springs the option into existence (\emph{knock-in}) or extinguishes an already existing option (\emph{knock-out}).
+\end{description}
+
+
+\paragraph{Return}
+We denote the \emph{spot price} of a risky asset $ \forall t \in [0, T] $ by the stochastic process $ (S_t)_t $. Since the future value of the asset is adventitious, we use the following quantities to measure the return of the risky asset in a time interval.
+
+\begin{dfn}[absolute and relative returns]
+	The absolute return on an asset for the time interval $ [0, t], \  t \in [0, T] $ is given by
+	\begin{equation*}
+		\tilde{R}_t = S_t - S_0
+	\end{equation*}
+	The relative return on the asset is given by
+	\begin{equation*}
+		R_t = \frac{S_t - S_0}{S_0}
+	\end{equation*}	
+\end{dfn}
+
+
+
+\subsection{Financial Markets -- Characteristics}
+\label{subsec:intro-market-char}
+
+The idea of financial markets is intricately linked to that of financial transactions. Analogous to the ordinary markets, a financial market is a human construct to allow transaction between investors. The assets in the financial market are typically financial instruments such as bonds, stocks and derivatives discussed in the previous section. In this section we will primarily concern ourselves with the nature of financial markets and the assumptions we make while modelling them. Some of the jargon used in the previous section will become clear after this section.
+
+
+\paragraph{Viable market}
+absence of arbitrage opportunities / viable / No Free Lunch
+
+
+\paragraph{Frictionless market}
+
+
+\paragraph{Infinitely divisible assets}
+
+
+\paragraph{Small investor hypothesis}
+
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
