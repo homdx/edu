@@ -23,7 +23,7 @@ In this model, we essentially have
 \end{itemize}
 The binomial model is so called because there are two times, two assets and two possible movements of the risky asset.
 
-We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:crr-binom-tr-underlying}.)
+We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:crr-2tr-underlying}.)
 
 
 \begin{figure}
@@ -121,11 +121,12 @@ For the sake of completeness, we comment here that the call is also completely h
 
 In this section we extend the binomial model introduced in Section \ref{sec:crr-binom-model} to a sequence of integer times $ [N] \coloneqq \{ 0, 1, \dots, N \}, \  N \in \mathbb{N} $.
 
-Let $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $ be a finite probability space ($ |\Omega| < \infty $), such that $ P(\omega) > 0 \  \forall \omega \in \Omega $, endowed with with a filtration $ (\mathcal{F}_n)_n $, such that $ \mathcal{F}_0 $ is trivial ($ \mathcal{F}_0 = \{ \emptyset, \Omega \} $).
+Let $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $ be a finite probability space ($ |\Omega| < \infty $), such that $ P(\omega) > 0 \  \forall \omega \in \Omega $, endowed with a filtration $ (\mathcal{F}_n)_n $, such that $ \mathcal{F}_0 $ is trivial ($ \mathcal{F}_0 = \{ \emptyset, \Omega \} $).
 
 We now need to invoke two cornerstone theorems, which will allow us to price the option at any time step $ n $.
 
 \begin{thm}[First Fundamental Theorem of Asset Pricing]
+	\label{thm:crr-ftoap1}
 	The market model is viable if and only if there exists a probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
 	
 	Mathematically,
@@ -138,6 +139,7 @@ We now need to invoke two cornerstone theorems, which will allow us to price the
 
 
 \begin{thm}[Second Fundamental Theorem of Asset Pricing]
+	\label{thm:crr-ftoap2}
 	The market model is complete if and only if there exists a \textbf{unique} probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
 	
 	Mathematically,

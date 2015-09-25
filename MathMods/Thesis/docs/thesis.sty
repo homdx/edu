@@ -20,10 +20,13 @@
 \usepackage{csquotes}		 % Multilingual quotes
 \usepackage{booktabs}    % Better tables
 \usepackage{mathtools}    % Includes AMSMath and provides more benefits
+\usepackage{bm}    % For bold math symbols
 
 % Graphics
 \usepackage{graphicx}
 \graphicspath{{img/}}    % Central repository for images
+\usepackage[svgnames,x11names,table]{xcolor}
+
 
 % Set paragraph formatting
 \usepackage{parskip}    % Do not indent paragraphs, and put some linespace between paragraphs
@@ -118,33 +121,10 @@
 	}}
 
 
-% \usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
+\usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
 
-% % example file to change the style of LaTeX
-% % Tony Roberts May 2004
-% % first colour for latex or pdflatex
-% \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
-% \else\usepackage[usenames,dvipsnames]{color}
-% % and fix pdf colour problems
-% \IfFileExists{pdfcolmk.sty}{\usepackage{pdfcolmk}}{} 
-% \fi
-
-\usepackage{color}
-% My colors:
-% See http://web.njit.edu/~kevin/rgb.txt.html for possibilities
-\definecolor{myDarkBlue}{rgb}{.1,0,.2}
-\definecolor{myBlue}{rgb}{.1,.1,.5}
-\definecolor{myRoyal}{rgb}{.15,.15,.75}
-% \definecolor{myGreen}{rgb}{0,.35,.1}
-% \definecolor{myGreen}{rgb}{0,.5,.25}    % Too bright
-% \definecolor{myGreen}{rgb}{0,.4,.2}    % Still too bright
-\definecolor{myGreen}{rgb}{0,.4,0}    % Dark Green
-% \definecolor{myRed}{rgb}{.8,.1,.2}    % Too bright
-\definecolor{myRed}{rgb}{.4,0,0}    % purple
-
-% Format ToC
-% There is a problem with the AMS classes -- the ToC overlaps
-% http://tex.stackexchange.com/questions/20527/table-of-contents-section-number-and-title-overlapping
+% Format Contents
+% There is a problem with the AMS classes -- the ToC overlaps http://tex.stackexchange.com/questions/20527/table-of-contents-section-number-and-title-overlapping
 % If we use tocloft, we get a lot of errors, but at the end it gives the correct output.
 %\usepackage{tocloft}
 
@@ -153,27 +133,27 @@
 \usepackage{titlesec}
 
 \titleformat{\chapter}[frame]
-{\fontfamily{gentium}\bfseries\scshape\Huge\color{myRoyal}}
+{\fontfamily{gentium}\bfseries\scshape\Huge\color{Brown4}}
 {Chapter \thechapter}{1em}{}
 
 \titleformat{\section}
-{\fontfamily{gentium}\bfseries\scshape\Large\color{myBlue}}
+{\fontfamily{gentium}\bfseries\scshape\Large\color{Brown3}}
 {\thesection}{1em}{}
 
 \titleformat{\subsection}
-{\fontfamily{gentium}\bfseries\scshape\large\color{myDarkBlue}}
+{\fontfamily{gentium}\bfseries\scshape\large\color{Brown2}}
 {\thesubsection}{1em}{}
 
 \titleformat{\subsubsection}
-{\fontfamily{gentium}\bfseries\large\color{myDarkBlue}}
+{\fontfamily{gentium}\bfseries\large\color{Brown1}}
 {\thesubsection}{1em}{}
 
 \titleformat{\paragraph}[runin]
-{\fontfamily{gentium}\bfseries\color{myRed}}
+{\fontfamily{gentium}\bfseries\color{Burlywood4}}
 {\theparagraph}{1em}{}
 
 \titleformat{\subparagraph}[runin]
-{\fontfamily{gentium}\itshape\color{myRed}}
+{\fontfamily{gentium}\itshape\color{Tan4}}
 {\theparagraph}{1em}{}
 
 \titlespacing*{\chapter} {0pt}{50pt}{40pt}
@@ -184,23 +164,29 @@
 \titlespacing*{\subparagraph} {\parindent}{3.25ex plus 1ex minus .2ex}{1em}
 
 
-% \usepackage{lastpage}		% To get the last page number
-% \usepackage{fancyhdr}		% Headers and footers
-% \pagestyle{fancyplain}			% All pages have headers and footers
-%% Convert chapter, section names in headers to normal case
-% \renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
-% \renewcommand{\sectionmark}[1]{ \markright{#1}{} }
-% \fancyhf{}		 % Blank out the default header and footer
-% \fancyhf[HL]{\leftmark}
-% \fancyhf[HR]{\rightmark}
-% \fancyhf[FL]{Thesis}
-% \fancyhf[FC]{\today}
-% \fancyhf[FR]{{\Large\thepage} / \pageref{LastPage}}
-%% Define the thickness of the decorative lines
-% \renewcommand{\headrulewidth}{0.5pt}
-% \renewcommand{\footrulewidth}{0.5pt}
+% Format the headers and footers
+\usepackage{lastpage}		% To get the last page number
+\usepackage{fancyhdr}		% Headers and footers
+\pagestyle{fancy}			% All pages have headers and footers
+% Convert chapter, section names in headers to normal case
+\renewcommand{\chaptermark}[1]{ \markboth{#1}{} }
+\renewcommand{\sectionmark}[1]{ \markright{#1}{} }
+\fancyhf{}		 % Blank out the default header and footer
+\fancyhf[HL]{\color{Tan} \scshape \leftmark}
+\fancyhf[HR]{\color{Tan} \scshape \rightmark}
+\fancyhf[FC]{{\color{FireBrick} \large \thepage} {\color{Tan} of} \pageref{LastPage}}
+% Remove the decorative lines
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
-%%% \fancyhf[FL]{MathMods $\bullet$ 2015 May}
+\fancypagestyle{plain}{
+	\fancyhf{}    % Remove everything
+	% Including the lines
+	\renewcommand{\headrulewidth}{0pt}
+	\renewcommand{\footrulewidth}{0pt}
+}
+
+%% \fancyhf[FL]{MathMods $\bullet$ 2015 May}
 
 
 \usepackage[
@@ -213,13 +199,13 @@ pdfpagelayout=OneColumn,		% Displays the document in one column; continuous scro
 bookmarks=true,
 unicode=true,
 colorlinks=true,
-% backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers.
+% backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers. Incompatible with biblatex.
 linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
 % breaklinks=true,				% so long urls are correctly broken across lines
 % pagebackref=false,		 % add page number in bibliography and link to position in document where cited
-% linkcolor=myRed,
-% urlcolor=myGreen,
-% citecolor=Black,
+linkcolor=SaddleBrown,
+urlcolor=IndianRed,
+citecolor=Sienna,
 % hyperfootnotes=false
 ]{hyperref}
 \usepackage[figure,table]{hypcap}		 % Correct a problem with hyperref

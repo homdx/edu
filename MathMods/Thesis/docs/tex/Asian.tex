@@ -11,7 +11,7 @@ We will mainly focus on Asian options, in which the price is expressed as a func
 
 TODO: Push this defn to an earlier chapter.
 \begin{dfn}[Path-dependent option]
-	A path-dependent option is an option for which the value of the option is dependent not only on the final value of the underlying, but also on the path taken to reach that value.
+	A path-dependent option is an option whose value is dependent not only on the final value of the underlying, but also on the path taken to reach that value.
 \end{dfn}
 
 
@@ -75,7 +75,8 @@ The price of an Asian option at each instance is a continuous function of the un
 \end{dfn}
 
 
-\begin{rem} \label{rem:sp-asian-characterisation}
+\begin{rem}
+	\label{rem:sp-asian-char}
 	We note that the singular points characterise such a function completely. This can be seen from the following representation of the function.
 	\begin{equation}
 		\label{eq:sp-asian-function-repr}
@@ -446,7 +447,7 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 	\end{align*}
 \end{proof}
 
-Table \ref{tab:sp-asian-notation} summarises the discussion above.
+Table \ref{tab:sp-asian-notations} summarises the discussion above.
 
 \begin{table}
 	\label{tab:sp-asian-notations}
@@ -527,7 +528,7 @@ In defining the price function, we note that three cases may arise.
 	At each node at maturity, the price function $ { v_{n,j}: \left[ A_{n,j}^{\min}, A_{n,j}^{\max} \right] \to \left[ ( A_{n,j}^{\min} - K )_+ , ( A_{n,j}^{\max} - K )_+ \right] } $ defined as $ v_{n,j}(A) = (A - K)_+ $ is continuous, piecewise-linear and convex.
 \end{lmm}
 \begin{proof}
-	The singular points satisfy the conditions \ref{eq:sp-asian-conditions}. So for each $ A \in \left[ A_{n,j}^{\min}, A_{n,j}^{\max} \right] $, the price function ${ v_{n,j}(A) }$ characterised by the singular points is continuous, piecewise-linear and convex by remark \ref{rem:sp-asian-characterisation}.
+	The singular points satisfy the conditions \ref{eq:sp-asian-conditions}. So for each $ A \in \left[ A_{n,j}^{\min}, A_{n,j}^{\max} \right] $, the price function ${ v_{n,j}(A) }$ characterised by the singular points is continuous, piecewise-linear and convex by remark \ref{rem:sp-asian-char}.
 \end{proof}
 
 
