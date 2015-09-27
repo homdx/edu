@@ -36,6 +36,9 @@
 \setcounter{tocdepth}{2}
 % \setcounter{secnumdepth}{3}
 
+% Set the section numbering as Chapter#.Section#
+\renewcommand{\thesection}{\thechapter .\arabic{section}}
+
 
 
 % Math
@@ -53,10 +56,15 @@
 \newtheorem{eg}{Example}[chapter]
 
 % Number equations depending on the section
-\numberwithin{equation}{section}
+\numberwithin{equation}{chapter}
 
 % Differential operators
 \usepackage{commath}
+
+% Probability operators
+\DeclareMathOperator{\E}{\mathbb{E}}
+\DeclareMathOperator{\Var}{\mathbb{V}\mathrm{ar}}
+\DeclareMathOperator{\Cov}{\mathbb{C}\mathrm{ov}}
 
 % Floor and ceil functions
 \newcommand\floor[1]{\left\lfloor#1\right\rfloor}
@@ -149,7 +157,7 @@
 {\thesubsection}{1em}{}
 
 \titleformat{\paragraph}[runin]
-{\fontfamily{gentium}\bfseries\color{Burlywood4}}
+{\fontfamily{gentium}\bfseries\color{Chocolate4}}
 {\theparagraph}{1em}{}
 
 \titleformat{\subparagraph}[runin]
@@ -203,7 +211,7 @@ colorlinks=true,
 linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
 % breaklinks=true,				% so long urls are correctly broken across lines
 % pagebackref=false,		 % add page number in bibliography and link to position in document where cited
-linkcolor=SaddleBrown,
+linkcolor=red,
 urlcolor=IndianRed,
 citecolor=Sienna,
 % hyperfootnotes=false

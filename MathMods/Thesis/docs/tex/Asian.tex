@@ -5,14 +5,9 @@
 
 \section{Introduction}
 \label{sec:sp-asian-intro}
-As we have seen in the earlier chapters, European and American options may be priced using the CRR and BS models. Even though the BS model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options. The way out is by using numerical methods. A class of numerical methods use tree or lattice methods in the CRR model. One simple idea is to apply an explicit pricing scheme using CRR, which tends to BS as the number of time steps increases to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it impractical in terms of computability. A logical step would be to modify the basic CRR model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the `singular points method' for pricing certain path-dependent options in an efficient manner. The chapter is a study on this method.
+As we have seen in the earlier chapters, European options may be priced using the Cox-Ross-Rubinstein and the Black-Scholes models. Even though the Black-Scholes model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options, including American options. The way out is by using numerical methods. Numerical methods using discrete time structures were introduced in Chapter \ref{cha:discrete}. One simple idea is to apply an explicit pricing scheme using a lattice method, which converges to the Black-Scholes model as the number of time steps increase to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the `singular points method' for pricing certain path-dependent options in an efficient manner. The chapter is a study on how this method and its applications.
 
 We will mainly focus on Asian options, in which the price is expressed as a function of some form of averaging on the underlying's price. Popular Asian options use the arithmetic or geometric means as the average. Again, Asian options may be exercised only at maturity (European) or at any time till the maturity (American). They may give the owner of the option the right to either sell (put) or buy (call). Theoretically, we may study either a call or a put, because the framework for the other one may be derived in the exact same way.
-
-TODO: Push this defn to an earlier chapter.
-\begin{dfn}[Path-dependent option]
-	A path-dependent option is an option whose value is dependent not only on the final value of the underlying, but also on the path taken to reach that value.
-\end{dfn}
 
 
 
@@ -49,7 +44,7 @@ Ref: Forsyth et al (2002)
 
 TODO: Discuss the advantages and disadvantages of each method.
 
-A number of these algorithms has been implemented in Premia 13. Premia is a software designed for option pricing, hedging and financial model calibration. It has been developed by the `MathFi' team in INRIA. It is provided with it's C/C++ source code and an extensive scientific documentation. More information about Premia can be found at \url{https://www.rocq.inria.fr/mathfi/Premia/}.
+A number of these algorithms has been implemented in Premia 13. Premia is a software designed for option pricing, hedging and financial model calibration. It has been developed by the `MathFi' team in INRIA. It is provided with its C/C++ source code and an extensive scientific documentation. More information about Premia can be found at the website\footnote{\url{https://www.rocq.inria.fr/mathfi/Premia/}}.
 
 
 
@@ -82,7 +77,7 @@ The price of an Asian option at each instance is a continuous function of the un
 		\label{eq:sp-asian-function-repr}
 		f(x) = y_0 + \sum_{i=1}^n [ m_i ( \min \{x_{i}, x \} - \min \{ x_{i-1}, x \} ) ]
 	\end{equation}
-	Where $ m_{i+1} = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ (x_{i}, y_{i}) $ and $ (x_{i+1}, y_{i}) $.
+	Where $ m_{i+1} = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ x_{i} $ and $ x_{i+1} $.
 \end{rem}
 
 \begin{rem}
@@ -195,7 +190,7 @@ The following lemmas shall provide us with the necessary framework for upper and
 
 \begin{lmm}[Lower estimate]
 	\label{lmm:sp-asian-lower-estimate}
-	Let $ f:[a,b] \to [0, \infty) $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Let $ l_{j} $ be the line joining points $ P_{j-1} $ and $ P_{j} $. Similarly, let $ l_{j+2} $ be the line joining points $ P_{j+1} $ and $ P_{j+2} $. Denote the intersection of the lines $ l_{j} $ and $ l_{j+2} $ by $ \bar{P} = ( \bar{x}, \bar{y} ) $.
+	Let $ f:[a,b] \to [0, \infty) $ be a continuous, piecewise-linear, convex function characterised by the singular points $ P = ( (x_i, y_i) )_{i \in [n]} $. Let $ l_{j} $ be the line segment joining points $ P_{j-1} $ and $ P_{j} $. Similarly, let $ l_{j+2} $ be the line segment joining points $ P_{j+1} $ and $ P_{j+2} $. Denote the intersection of the line segments $ l_{j} $ and $ l_{j+2} $ by $ \bar{P} = ( \bar{x}, \bar{y} ) $.
 	
 	Then the function $ f_d: [a,b] \to [0, \infty) $ characterised by $ (P_0, \dots, P_{j-1}, \bar{P}, P_{j+2}, \dots, P_n) $ is also continuous, piecewise-linear and convex, and
 	\begin{equation}
@@ -204,7 +199,7 @@ The following lemmas shall provide us with the necessary framework for upper and
 \end{lmm}
 
 \begin{proof}
-	First we show the convexity of $f_d$. We know that $f$ satisfies the property of increasing slopes, that is $ m_{i} \le m_{i+1} \le m_{i+2} $. Since $f_d$ is obtained from $f$ by removing the line $l_{j+1}$, for $f_d$ we have that $ m_{i} \le m_{i+2} $, which implies that the function $f_d$ is still convex.
+	First we show the convexity of $f_d$. We know that $f$ satisfies the property of increasing slopes, that is $ m_{i} \le m_{i+1} \le m_{i+2} $. Since $f_d$ is obtained from $f$ by removing the line segment $l_{j+1}$, for $f_d$ we have that $ m_{i} \le m_{i+2} $, which implies that the function $f_d$ is still convex.
 	
 	Secondly, to prove the inequality, we may look at the convex function $f$ as if it has been obtained by removing point $ \bar{P} $ from the convex function $f_d$. Then, if $ \bar{x} \in ( x_{j} , x_{j+1} ) $, we have, using Lemma \ref{lmm:sp-asian-upper-estimate}, that $ f_d(x) \le f(x) \qquad \forall x \in [a,b] $.
 \end{proof}
@@ -397,7 +392,7 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 \begin{proof}
 	Clearly if $S_{i,j_i^\alpha} = S_{i,j_i^\beta} \; \forall i$, then $A^\alpha = A^\beta$.
 	
-	We only need to show the result in the case of inequality.
+	We only need to show the result in the case of strict inequality.
 	Let $ S_{i,j_i^\alpha} = S_{i,j_i^\beta} \; \forall i \in [n] \setminus \{l\} $, and $ S_{l,j_l^\alpha} > S_{l,j_l^\beta}$.
 	
 	Now, from equation \ref{eq:am}, we have:
@@ -409,6 +404,8 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 												 &= S_{l-1,j_{l-1}} (u_l - d_l) > 0 \qquad (u_l > d_l \text{ by definition}) \\
 		\implies A_{n,j}^\alpha > A_{n,j}^\beta
 	\end{align*}
+	
+	Iterating this procedure, we obtain the general case.
 \end{proof}
 
 
@@ -433,7 +430,7 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 \end{crr}
 
 \begin{proof}
-	We show the proof only for the case of the maximum, since the case of the minimum can be shown using the exact same argument.
+	We show the proof only for the case of the maximum, since the case of the minimum can be shown by using the exact same argument.
 	
 	From Theorem \ref{thm:sp-asian-up-dn-path}, the result about path with the maximum average holds directly, since there cannot be a path above the one given by $j$ up movements followed by $(i-j)$ down movements.
 	
@@ -449,10 +446,11 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 
 Table \ref{tab:sp-asian-notations} summarises the discussion above.
 
-\begin{table}
+\begin{table}[h]
 	\label{tab:sp-asian-notations}
 	\centering
 	\caption{Summary of notations}
+%	\rowcolors{1}{Burlywood1}{}
 	\begin{tabular}{cccl}
 		\toprule
 		Symbol & Range & Formula & Description \\
@@ -474,7 +472,7 @@ Table \ref{tab:sp-asian-notations} summarises the discussion above.
 
 
 
-\section{Fixed-strike European Asian options}
+\section{Fixed-strike Asian options of the European type}
 \label{sec:fixed-strike-eu}
 
 For this type of options, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $T$ and a fixed constant $K$, and is given by the function
@@ -483,7 +481,7 @@ For this type of options, the pay-off at maturity is dependent only on (some typ
 \end{equation}
 We shall focus on this case in this section because it is the easiest to handle.
 
-In each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each such average. We shall show these points to satisfy condition \ref{eq:sp-asian-conditions}, so they completely characterise a price function. Thus we focus not on the averages and corresponding prices possible under a particular binomial tree, but on the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
+In each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each of those averages. We shall show these points to satisfy condition \ref{eq:sp-asian-conditions}, so they completely characterise a price function. Thus we focus not on the averages and corresponding prices possible under a particular binomial tree, but on the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
 
 
 
@@ -543,12 +541,12 @@ In defining the price function, we note that three cases may arise.
 
 \begin{proof}
 	We shall prove this using backward induction, the base case at maturity being true by virtue of Lemma \ref{lmm:sp-asian-pr-maturity}.
-	We now consider step $ i = n-1 $. Let $A_u$ and $A_d$ respectively represent the averages after an up and down movement corresponding to the average $A$. From equation \ref{eq:am}, we get
+	We now consider step $ i = n-1 $. Let $A_u$ and $A_d$ respectively represent the averages after an up and down movement corresponding to an average $A$. From equation \ref{eq:am}, we get
 	\begin{subequations}
 		\label{eq:sp-asian-av-up-dn}
 		\begin{align}
-			A_u &= \frac{ (i+1) A + S_0 u^{-i+2j+1} }{ i+1 }
-						A_d &= \frac{ (i+1) A + S_0 u^{-i+2j-1} }{ i+1 }
+			A_u &= \frac{ (i+1) A + S_0 u^{-i+2j+1} }{ i+1 } \\
+			A_d &= \frac{ (i+1) A + S_0 u^{-i+2j-1} }{ i+1 }
 		\end{align}
 	\end{subequations}
 	The price function $ v_{i,j}: \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] \to [0, \infty) $ is obtained by considering the discounted expectation value.
@@ -556,7 +554,7 @@ In defining the price function, we note that three cases may arise.
 		\label{eq:sp-asian-dsc-expt}
 		v_{i,j}(A) = \frac{1}{R} \left[ \pi v_{i+1,j+1}(A_u) + (1 - \pi) v_{i+1,j}(A_d) \right]
 	\end{equation}
-	From equation \ref{eq:sp-asian-av-up-dn}, we get that $A_u$ and $A_d$ are linear functions of $A$. Thus, $ v_{i+1,j+1}(A_u) = v_{n,j+1}(A_u)$ and $ v_{i+1,j}(A_d) = v_{n,j}(A_d) $ are piecewise-linear convex continuous functions of $A_u$ and $A_d$ respectively. Thus, $ v_{i+1,j+1} $ and $ v_{i+1,j} $ may be seen as composition of the above functions, and is thus piecewise-linear, convex and continuous itself. Again, from equation \ref{eq:sp-asian-dsc-expt}, we get that $v_{i,j}$ is a convex combination of such functions, and the proof is complete.
+	From equation \ref{eq:sp-asian-av-up-dn}, we get that $A_u$ and $A_d$ are linear functions of $A$. Thus, $ v_{i+1,j+1}(A_u) = v_{n,j+1}(A_u)$ and $ v_{i+1,j}(A_d) = v_{n,j}(A_d) $ are piecewise-linear convex continuous functions of $A_u$ and $A_d$ respectively. Thus, $ v_{i+1,j+1} $ and $ v_{i+1,j} $ may be seen as a linear combination of the above functions, and is thus piecewise-linear, convex and continuous itself. Again, from equation \ref{eq:sp-asian-dsc-expt}, we get that $v_{i,j}$ is a convex combination of such functions, and the proof is complete.
 \end{proof}
 TODO: Insert picture for this.
 
@@ -599,7 +597,7 @@ We consider an up movement of the underlying asset from node $ N_{i,j} $. In thi
 	v_{i+1,j+1} \left( B^l_u \right) = \frac{ P_{i+1,j+1}^{s+1} - P_{i+1,j+1}^{s} }{ A_{i+1,j+1}^{s+1} - A_{i+1,j+1}^{s} } \left( B^l_u - A_{i+1,j+1}^{s} \right) + P_{i+1,j+1}^{s}
 \end{equation}
 
-We follow this up by calculating the price associated with the singular value $ B^l $ by evaluation the discounted expectation value.
+We follow this up by calculating the price associated with the singular value $ B^l $ by evaluating the discounted expectation value.
 \begin{equation}
 	\label{eq:sp-asian-up-pr}
 	v_{i,j}( B^l ) = \frac{1}{R} \left[ \pi v_{i+1,j+1} \left( B^l_u \right) + (1 - \pi) v_{i+1,j} \left( A_{i+1,j}^l \right) \right]
@@ -625,7 +623,7 @@ Each $ C^l \in \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] $ becomes the singu
 For $ v_{i,j}( C^l ) $, $ \forall \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] $, we now have the following.
 \begin{equation}
 	\label{eq:sp-asian-dn-lint}
-	v_{i+1,j+1} \left( C^l_d \right) = \frac{ P_{i+1,j}^{s+1} - P_{i+1,j}^{s} }{ A_{i+1,j}^{s+1} - A_{i+1,j}^{s} } \left( C^L_d - A_{i+1,j}^{s} \right) + P_{i+1,j}^{s}
+	v_{i+1,j+1} \left( C^l_d \right) = \frac{ P_{i+1,j}^{s+1} - P_{i+1,j}^{s} }{ A_{i+1,j}^{s+1} - A_{i+1,j}^{s} } \left( C^l_d - A_{i+1,j}^{s} \right) + P_{i+1,j}^{s}
 \end{equation}
 
 \begin{equation}

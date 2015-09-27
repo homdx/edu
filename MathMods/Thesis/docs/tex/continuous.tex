@@ -1,0 +1,41 @@
+% !TeX root = ../thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
+\section{Black-Scholes model}
+
+As in the previous chapter, we consider two assets -- one riskless and one risky.
+
+The value of the riskless asset is proportional to the rate of interest, the current value of the asset, and the time. Therefore, the dynamics of the riskless asset is given as follows.
+\begin{align}
+	\label{eq:continous-riskless-de}
+	\dif B_t &= r B_t \dif t \\
+	B_0 &= 1
+\end{align}
+Solving this initial value problem, we get
+\begin{equation}
+	\label{eq:continous-riskless-int}
+	B_t = e^{rt}.
+\end{equation}
+
+
+The risky asset is dependent on both deterministic and stochastic factors. The deterministic part is proportional to rate of interest, the current value of the asset, and the time. The non-deterministic part is dependent on its current value, the volatility, and a stochastic process, whose mean should be zero, and variance should be proportional to the time. We choose these criteria because we do not expect the process to have a bias on going up or down (mean zero) and we expect that the process has a higher probability of going away from the current value with more time. It so happens that the best candidate for such a process is a Brownian motion or a Wiener process.
+
+Let $ W_t $ be a Weiner process. 
+\begin{align}
+	\label{eq:continous-risky-sde}
+	\dif S_t &= r S_t \dif t + \sigma S_t \dif W_t \\
+	S_0 &= s_0
+\end{align}
+
+This is a stochastic differential equation with initial value. The solution to this problem is the geometric Brownian motion
+\begin{equation}
+	\label{eq:continous-risky-int}
+	S_t = s_0 e^{ ( r - \frac{\sigma^2}{2} )t + \sigma W_t }.
+\end{equation}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

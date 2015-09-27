@@ -1,0 +1,339 @@
+% !TeX root = ../thesis.tex
+% !TeX spellcheck = en_GB
+% !TeX encoding = UTF-8
+
+
+Now that we are familiar the basics of financial assets and markets, we may delve into market models under which we may price options. Since continuous models are mathematically more complex than their discrete time counterparts (also known as `lattice models'), we shall discuss the latter first. We shall then show that under certain convergence conditions, the discrete model converges to the continuous one.
+
+
+
+\section{The binomial model}
+\label{sec:discrete-binom-model}
+
+We start our discussion with one of the simplest model used for pricing of assets, the binomial model. This model was first introduced by Cox, Ross and Rubinstein \cite{Cox1979} in the paper titled ``Option pricing: A simplified approach'' in 1979. Even though it is quite simplistic, it does contain all the necessary ingredients to construct a viable market model, and to solve the problems of pricing and hedging of derivatives.
+
+We assume that the following are true.
+\begin{itemize}
+	\item The market is frictionless
+	\item All assets are infinitely divisible
+	\item The small investor hypothesis holds
+	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads
+\end{itemize}
+
+In this model, we essentially have
+\begin{itemize}
+	\item two time points, $ t = 0 $ (present) and $ t = 1 $ (future)
+	\item two traded assets
+	\begin{itemize}
+		\item the riskless asset, usually a bond, which is compounded at a constant rate of interest $ r > 0 $
+		\item the risky asset, usually a stock, which may either go up with a factor $ u $, or down with a factor $ d $
+	\end{itemize}
+\end{itemize}
+The binomial model is so called because there are two times, two assets and two possible movements of the risky asset.
+
+We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:discrete-2tr-underlying}.)
+
+
+\begin{figure}
+	\begin{tikzpicture}
+	\matrix (tree) [column sep=25mm, row sep=1mm]{
+		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $}; \\
+		&  \node[term] (u) {$ S_1^u = S_0 u $}; \\
+		\node[term] (s) {$ S_0 $};  &  \\
+		&  \node[term] (d) {$ S_1^d = S_0 d $}; \\
+	};
+	\draw[->] (s) -- (u) node[midway,above] {$ p_u = p $};
+	\draw[->] (s) -- (d) node[midway,below] {$ p_d = 1 - p $};
+	\end{tikzpicture}
+	
+	\caption{Binomial tree for the underlying}
+	\label{fig:discrete-2tr-underlying}
+\end{figure}
+
+
+Thus, we have
+\begin{equation*}
+	S_1 =
+	\begin{cases}
+		u S_0 & \quad \text{with probability } p \\
+		d S_0 & \quad \text{with probability } (1 - p) \\		
+	\end{cases}
+\end{equation*}
+
+We may also write $ S_1 = T_1 S_0 $, where $ T_1 $ is a random variable taking values in $ \{ u, d \} $ with associated probability distribution $ (p, 1-p) $.
+\begin{equation*}
+	T_1 =
+	\begin{cases}
+		u  & \quad \text{with probability } p \\
+		d  & \quad \text{with probability } (1 - p) \\		
+	\end{cases}
+\end{equation*}
+
+
+We want $ p \in [0,1] $ such that $ \E(S_1) = S_0 R $. This would make the system fair because the expected gain from either asset should be the same.
+\begin{alignat}{9}
+	          &&  \E(S_1) &= S_0 R \\
+	\implies  &&   p u S_0 + ( 1 - p ) d S_0  & =  S_0 R \nonumber \\
+	\implies  &&  p  & =  \frac{R - d}{u - d}    \label{eq:discrete-pr}
+\end{alignat}
+
+The probability thus obtained is called the \emph{risk neutral probability}, because under this probability, it is equivalent for the investor whether he invests in a risky or a riskless asset. Note that this probability is completely objective as it is determined completely by the parameters $ u $, $ d $ and $ r $. Since the probability distribution is uniquely determinable from the market parameters, the market is viable and complete (See Theorems \ref{thm:discrete-ftoap1} and \ref{thm:discrete-ftoap2} in the next section).
+
+Now we impose the condition $ p \in [0,1] $ to obtain
+\begin{equation}
+	\label{eq:discrete-feasibility-condition}
+	d < R < u
+\end{equation}
+
+
+\paragraph{Pricing a call}
+
+Let us use the above model to price a call. Recall that the pay-off of a call is given by $ h(x) = (x - K)_+ $, where $ K $ is the strike price, a fixed value specified in the contract. Thus, we know the values of the call at maturity. Note that for financial viability, we must have $ K \in (S_1^d, S_1^u) $, implying $ c_1^u = (S_1^u - K)_+ = (S_1^u - K) $ and $ c_1^d = (S_1^d - K)_+ = 0 $ (See Figure \ref{fig:discrete-2tr-call}). To ensure fairness, we may again write the following
+
+
+\begin{align*}
+	c_0 &= \E(\frac{c_1}{R}) \\
+	    &= \frac{1}{R} ( p c_1^u + (1-p) c_1^d ) \\
+	    &= p \frac{c_1^u}{R} \\
+	    &= \frac{R - d}{u - d} \frac{u S_0 - K}{R}
+\end{align*}
+Thus we have been able to price the call uniquely at all times. This is an implication of the completeness of the market, whose randomness is totally characterized by the unique probability measure $ p $.
+
+
+\begin{figure}
+	\begin{tikzpicture}
+	\matrix (tree) [column sep=25mm, row sep=1mm]{
+		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $}; \\
+		&  \node[term] (u) {$ c_1^u = (S_1^u - K) $}; \\
+		\node[term] (s) {$ c_0 $};  &  \\
+		&  \node[term] (d) {$ c_1^d = 0 $}; \\
+	};
+	\draw[->] (u) -- (s) node[midway,above] {$ p $};
+	\draw[->] (d) -- (s) node[midway,below] {$ 1 - p $};
+	\end{tikzpicture}
+	
+	\caption{Binomial tree for the underlying}
+	\label{fig:discrete-2tr-call}
+\end{figure}
+
+
+For the sake of completeness, we comment here that a call is also completely hedgeable in the binomial model.
+
+
+
+
+
+
+\section{The Cox Ross Rubinstein model}
+\label{sec:cox-ross-rubinstein}
+
+In this section we extend the binomial model introduced in Section \ref{sec:discrete-binom-model} to a sequence of integer times $ [N] \coloneqq \{ 0, 1, \dots, N \}, \  N \in \mathbb{N} $.
+
+Let $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $ be a finite probability space ($ |\Omega| < \infty $), such that $ P(\omega) > 0 \  \forall \omega \in \Omega $, endowed with a filtration $ (\mathcal{F}_n)_n $, such that $ \mathcal{F}_0 $ is trivial ($ \mathcal{F}_0 = \{ \emptyset, \Omega \} $).
+
+We assume that the following are true.
+\begin{itemize}
+	\item The market is frictionless
+	\item All assets are infinitely divisible
+	\item The small investor hypothesis holds
+	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads
+	\item The market is viable
+	\item The market is complete
+\end{itemize}
+
+
+\paragraph{Fundamental Theorems of Asset Pricing}
+
+We now need to invoke two cornerstone theorems, which will allow us to price the option at any time step $ n $.
+
+\begin{thm}[First Fundamental Theorem of Asset Pricing]
+	\label{thm:discrete-ftoap1}
+	The market model is viable if and only if there exists a probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
+	
+	Mathematically,
+	$ \text{Viable market} \iff \exists \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{n+1} | \mathcal{F}_n ) = \tilde{S}_{n} $, where $ \E^* $ is the expectation computed under $ P^* $..
+\end{thm}
+
+\begin{proof}
+	See \cite[page 6, Theorem 1.2.7]{Lamberton1996}
+\end{proof}
+
+Theorem \ref{thm:discrete-ftoap1} guarantees the existence of an equivalent martingale measure for viable markets. This implies that under this probability measure, we can calculate the fair price of an option, although they may not be unique. To ensure uniqueness, we need the subsequent theorem.
+
+\begin{thm}[Second Fundamental Theorem of Asset Pricing]
+	\label{thm:discrete-ftoap2}
+	The market model is complete if and only if there exists a \textbf{unique} probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
+	
+	Mathematically,
+	$ \text{Complete market} \iff \exists! \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{n+1} | \mathcal{F}_n ) = \tilde{S}_{n} $, where $ \E^* $ is the expectation computed under $ P^* $.
+\end{thm}
+
+\begin{proof}
+	See \cite[page 9, Theorem 1.3.4]{Lamberton1996}
+\end{proof}
+
+Theorem \ref{thm:discrete-ftoap2} guarantees the uniqueness of an equivalent martingale measure for complete markets. This implies that we can uniquely and objectively compute the fair price of an option.
+
+
+
+\subsection{European options}
+\label{subsec:discrete-eu}
+
+Augmented by these theorems, we may now seek to price path-independent options in this model. Let $ E^* $ be the expectation computed under the risk-neutral martingale measure $ P^* $. If the pay-off of an option at maturity is given by the function $ h(x) $, then the price of the option $ v_n $ at any time step $ n $ is given by the following formula.
+\begin{equation}
+	\label{eq:discrete-crr-option-pr}
+	v_n = \E^*( R^{-(N - n)} h(S_N) | \mathcal{F}_n )
+\end{equation}
+
+In particular, the price a European call at any time $ n $ is as follows.
+\begin{equation}
+	\label{eq:discrete-crr-eu-call-pr}
+	c_n = \E^*( R^{-(N - n)} (S_N - K)_+ | \mathcal{F}_n )
+\end{equation}
+
+
+\begin{figure}
+	\begin{tikzpicture}
+	\matrix[column sep=10mm,row sep=1mm] (tree){
+		& & & & \node[term] (u4) {$S_0u^4$}; \\
+		& & & \node[nterm] (u3) {$S_0u^3$}; & \\
+		& & \node[nterm] (u2) {$S_0u^2$}; & & \node[term] (u3d) {$S_0u^3d$}; \\
+		& \node[nterm] (u) {$S_0u$}; & & \node[nterm] (u2d) {$S_0u^2d$};\\
+		\node[term] (s) {$S_0$}; & & \node[nterm] (ud) {$S_0ud$}; & & \node[term] (u2d2) {$S_0u^2d^2$}; \\
+		& \node[nterm] (d) {$S_0d$}; & &	\node[nterm] (ud2) {$S_0ud^2$};\\
+		& & \node[nterm] (d2) {$S_0d^2$}; & & \node[term] (ud3) {$S_0ud^3$}; \\
+		& & & \node[nterm] (d3) {$S_0d^3$}; & \\
+		& & & & \node[term] (d4) {$S_0d^4$}; \\
+	};
+	% Lines out of s
+	\draw[->] (s) -- (u) node[midway,above] {$p_u$};
+	\draw[->] (s) -- (d) node[midway,below] {$p_d$};
+	% Lines out of u
+	\draw[->] (u) -- (u2) node[midway,above] {$p_u$};
+	\draw[->] (u) -- (ud) node[midway,above] {$p_d$};
+	% Lines out of d
+	\draw[->] (d) -- (ud) node[midway,below] {$p_u$};
+	\draw[->] (d) -- (d2) node[midway,below] {$p_d$};
+	% Lines out of u2
+	\draw[->] (u2) -- (u3) node[midway,above] {$p_u$};
+	\draw[->] (u2) -- (u2d) node[midway,above] {$p_d$};
+	% Lines out of ud
+	\draw[->] (ud) -- (u2d) node[midway,above] {$p_u$};
+	\draw[->] (ud) -- (ud2) node[midway,below] {$p_d$};
+	% Lines out of d2
+	\draw[->] (d2) -- (ud2) node[midway,below] {$p_u$};
+	\draw[->] (d2) -- (d3) node[midway,below] {$p_d$};
+	% Lines out of u3
+	\draw[->] (u3) -- (u4) node[midway,above] {$p_u$};
+	\draw[->] (u3) -- (u3d) node[midway,above] {$p_d$};
+	% Lines out of u2d
+	\draw[->] (u2d) -- (u3d) node[midway,above] {$p_u$};
+	\draw[->] (u2d) -- (u2d2) node[midway,above] {$p_d$};
+	% Lines out of ud2
+	\draw[->] (ud2) -- (u2d2) node[midway,below] {$p_u$};
+	\draw[->] (ud2) -- (ud3) node[midway,below] {$p_d$};
+	% Lines out of d3
+	\draw[->] (d3) -- (ud3) node[midway,below] {$p_u$};
+	\draw[->] (d3) -- (d4) node[midway,below] {$p_d$};
+	\end{tikzpicture}
+	
+	\caption{A 4 step lattice ($ N = 4 $)}
+	\label{fig:discrete-4tr}
+\end{figure}
+
+
+\paragraph{Volatility}
+A natural way to express the risk associated with an asset is by its variance. In the case of Cox Ross Rubinstein model, at each time, the variance is associated with the gap between $ u $ and $ d $, the up and down factors. It is reasonable to assume that when comparing to assets, an asset which has the propensity of a higher up movement will also have a similar disposition towards a large down movement. If it were not so, the investors would invest in the asset with higher up movement potential, driving up the prices, and naturally recalibrating the current value of the asset, so that the assumption is true. Thus we may reduce the requirement of two variables $ u $ and $ d $ by expressing them as a function of only the variance of the return $ T_i $. This may be achieved by making the model symmetrical by setting $ u = d^{-1} $. In this case, the log return is symmetrical w.r.t. the origin since $ \log (u) = - \log (d) $.
+
+Moreover it is reasonable to think that this variance stays constant at each time unit, but directly proportional to time.
+\begin{equation*}
+	\Var(\log(T_i)) = \sigma^2 \Delta T
+\end{equation*}
+Here $ \sigma > 0 $ is called the \emph{volatility} of the asset, and is used as a constant of proportionality.
+
+With this choice it is natural to take
+\begin{subequations}
+	\label{eq:discrete-ud}
+	\begin{align}
+		u &= e^{\sigma \sqrt{\Delta T}} \\
+		d &= e^{- \sigma \sqrt{\Delta T}}
+	\end{align}
+\end{subequations}
+
+Now we require only one parameter, $ \sigma $, to get $ u $ and $ d $, and subsequently to generate the whole tree. The value of this parameter must be estimated from the market.
+
+
+\paragraph{Computational details}
+If we are given the contingency claim, and the option is of the European type, it becomes very simple to evaluate it value in this model. If we are given the volatility $ \sigma $, the number of time steps $ N $, and the claim $ h(x) $, we need to do the following
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	
+	\KwIn{Claim $ h(x) $, Number of time steps $ N $, Volatility $ \sigma $}
+	
+	\KwOut{The price of the option at the initial time}
+	
+	\Begin{
+		Calculate $ p $ using Equation \ref{eq:discrete-pr}. \;
+		
+		Calculate $ u $ and $ d $ using Equations \ref{eq:discrete-ud}. \;
+		
+		Construct the binomial tree. \;
+		
+		Use the claim to calculate the values that the option might take at maturity. \;
+		
+		\For{$ i \in \{ N-1, \dots, 0 \} $}{
+			\ForEach{node}{
+				Calculate the expected value of the option using the weighted mean of the prices at the $ (i+1)^{\mathrm{th}} $ time which are connected to this node. The weighting is done by the probabilities $ p $ and $ 1 - p $. \;
+			}
+		}
+		\KwRet{Value at time 0}
+	}
+	
+	\caption{Evaluation of European options using the Cox-Ross-Rubinstein model}
+	\label{alg:discrete-eu}
+\end{algorithm}
+
+
+
+\subsection{American options}
+\label{subsec:discrete-am}
+
+[TODO]
+
+\begin{algorithm}[H]
+	\DontPrintSemicolon
+	
+	\KwIn{Claim $ h(x) $, Number of time steps $ N $, Volatility $ \sigma $}
+	
+	\KwOut{The price of the option at the initial time}
+	
+	\Begin{
+		Calculate $ p $ using Equation \ref{eq:discrete-pr}. \;
+		
+		Calculate $ u $ and $ d $ using Equations \ref{eq:discrete-ud}. \;
+		
+		Construct the binomial tree. \;
+		
+		Use the claim to calculate the values that the option might take at maturity. \;
+		
+		\For{$ i \in \{ N-1, \dots, 0 \} $}{
+			\ForEach{node}{
+				Calculate the expected value of the option using the weighted mean of the prices at the $ (i+1)^{\mathrm{th}} $ time which are connected to this node. The weighting is done by the probabilities $ p $ and $ 1 - p $. \;
+				
+				Calculate the value of exercising the option. \;
+				
+				Store the higher value among the two numbers obtained above. \;
+			}
+		}
+		\KwRet{Value at time 0}
+	}
+	
+	\caption{Evaluation of American options using the Cox-Ross-Rubinstein model}
+	\label{alg:discrete-am}
+\end{algorithm}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

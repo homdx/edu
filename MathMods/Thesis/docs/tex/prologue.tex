@@ -2,6 +2,26 @@
 % !TeX spellcheck = en_GB
 % !TeX encoding = UTF-8
 
+* Not all bonds are riskless, only government bonds are, that too only default risk.
+* Bonds do not have interest rate risk only if they are held till maturity. In other cases, they are dependent on the interest rate fluctuations of the market.
+
+* compounding -> return on bonds
+
+* The value of a stock in time is usually represented by a stochastic process. - More explanation, or remove.
+
+* Swap are types of derivatives which might be added.
+
+we shall concern -- too repetitive
+
+* ETDs and OTCs -- explanation
+
+Option categorization according to...
+
+Highlight exotic options
+
+* Check -- does in no way affect(s)
+
+
 [TODO] History
 
 The thesis of Louis Bachelier (1900) on the ``Theory of Speculation”
@@ -11,6 +31,8 @@ Introduction of Brownian motion to model fluctuating prices in the Paris stock e
 Black and Scholes
 
 Cox Ross Rubinstein
+
+We start our discussion with one of the simplest model used for pricing of assets, the binomial model. This model was first introduced by Cox, Ross and Rubinstein \cite{Cox1979} in the paper titled ``Option pricing: A simplified approach'' in 1979. Even though it is very simple, it does contain all the necessary ingredients to construct a viable market model, and to solve the problems of pricing and hedging of derivatives.
 
 Options
 
@@ -56,7 +78,7 @@ A \emph{stock} of a corporation is an ownership certificate, and constitutes the
 
 
 \paragraph{Derivatives}
-A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially the value of a derivative is a function of the value of the \emph{underlying} asset(s). Derivatives are traded in their own right, and a fair price must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, we shall mainly concern ourselves with the pricing problem of a particular class of derivatives, called \emph{exotic options}.
+A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially, the value of a derivative is a function of the value of the \emph{underlying} asset(s). Derivatives are traded in their own right, and a fair price must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, our main focus shall be the pricing problem of a particular class of derivatives, called \emph{exotic options}.
 
 
 \subsubsection{Classification of derivatives}
@@ -102,7 +124,7 @@ Let us assume that the compounding is continuous. We may show that under the con
 \end{dfn}
 
 Thus, the owner of the option may choose whether to exercise his right or not. Thus, on the one hand, the owner of the option bears no risk, since all the choice is his. On the other hand, the seller of the option is \emph{obligated} to honour the terms of the contract -- whether it benefits him or not -- essentially making him bear all the risks. This asymmetry is primarily what sets options apart from the futures and forwards discussed earlier.
-The contract contains the following details
+The contract contains the following details.
 \begin{description}
 	\item[$ T $] The maturity, or the duration of the contract
 	\item[$ K $] The strike price, or the prefixed price at which trades may take place at maturity
@@ -135,7 +157,7 @@ Of course, other complicated ownership rights may be constructed, but we shall c
 
 Looking at the call and put prices at maturity, we note that they are related. In fact, $ S_T - K = (S_T - K)_+ + (S_T - K)_- = (S_T - K)_+ - (K - S_T)_+ = c_T - p_T $. For any general time $ t $, using Proposition \ref{thm:intro-portfolio-eq}, it holds that $ c_t - p_t = S_t - K e^{- r (T-t) } $. This is known as the \emph{call-put parity}.
 
-According to the time at which the option may be exercised, an option may be of two types
+According to the time at which the option may be exercised, an option may be of two types.
 \begin{description}
 	\item[European] The owner may exercise the option only at maturity
 	\item[American] The owner may exercise the option at any time up to the maturity
@@ -177,7 +199,7 @@ Pricing of financial assets is one of the most pressing aims of the subject of F
 \paragraph{Viable market}
 The term viability here refers to the fairness of a market. To interpret viability, we need to familiarise ourselves with the following definitions.
 
-In what follows, we assume  the following
+In what follows, we assume the following.
 \begin{itemize}
 	\item There is a probability space $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $, endowed with the filtration $ (\mathcal{F}_n)_n $.
 	\item $ \forall t \in [0, T], T \in [0, \infty) $, there is one riskless asset worth $ S_t^0 = e^{rt} $ ($ S_0^0 = 1 $).

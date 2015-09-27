@@ -41,42 +41,42 @@ We consider a market model, in which the price of the underlying risky asset is 
 		S_0 &= s_0		
 	\end{align}
 \end{subequations}
-where the quantities are as follows
+The quantities used above are defined as follows.
 \begin{description}
-	\item[$ S_t $] Price of the underlying risky asset at time $t$.
-	\item[$B_t$] A standard Brownian motion under the risk-neutral probability measure $Q$.
+	\item[$ S_t $] Price of the underlying risky asset at time $t$
+	\item[$B_t$] A standard Brownian motion under the risk-neutral probability measure $Q$
 	\item[$ r > 0 $] Rate of interest
 	\item[$ q \ge 0 $] Continuous divident yield
 	\item[$ \sigma > 0 $] Volatility of the risky asset
 \end{description}
 
-Solving the equation, at any time $ t $, the price of the underlying risky asset is
+Solving the equation, at any time $ t $, the price of the underlying risky asset is given by
 \begin{equation*}
 	\label{eq:sp-clq-risky-prc}
-	S_t = s_0 e^{ ( (r - q) - \frac{\sigma^2}{2} )t + \sigma B_t }
+	S_t = s_0 e^{ ( (r - q) - \frac{\sigma^2}{2} )t + \sigma B_t }.
 \end{equation*}
 
 Let $T$ be the maturity of the cliquet contract. Let the payoffs depend on the $ N $ preordained observation times $ t_1, t_2, \dots, t_{N} $ ($ t_0 = 0 $). At these observation times, the value of the underlying are $ ( S_i )_i, S_i = S_{t_i}, i \in \left[ N \right] $. The returns for the time interval $ ( t_{i-1}, t_i ] $ are given by
 \begin{equation}
 	\label{eq:sp-clq-return}
-	R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1
+	R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1 \ .
 \end{equation}
 
 During each time interval, the return is capped and floored locally by the quantities $ C_{loc} $ and $ F_{loc} $. In other words, we consider the quantity $ \max \{ F_{loc}, \min \{ C_{loc}, R_i \} \} $ rather than the return itself. The sum of these quantities till time $t_i$ is called the `running sum' and is given by
 \begin{equation}
 	\label{eq:sp-clq-rsz}
-	Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \}
+	Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \}.
 \end{equation}
 
 We also consider a global cap $ C_{glob} $ and floor $ F_{glob} $. Thus, the expression for the payoff finally becomes
 \begin{equation}
 	\label{eq:sp-clq-rsz}
-	\mathrm{payoff} = \mathrm{notional} \cdot \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \}
+	\mathrm{payoff} = \mathrm{notional} \cdot \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \}.
 \end{equation}
 
 For ease of notation, we take $ \mathrm{notional} = 1 $.
 
-We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C_{loc} $. Similarly, the case $ F_{glob} < N F_{loc} $ is equivalent to $ F_{glob} = N F_{loc} $. We simply say
+We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C_{loc} $. Similarly, the case $ F_{glob} < N F_{loc} $ is equivalent to $ F_{glob} = N F_{loc} $. In general, we may write the following.
 \begin{subequations}
 	\label{eq:sp-clq-update-glob}
 	\begin{align*}
@@ -86,15 +86,15 @@ We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C
 \end{subequations}
 
 
-Now, we consider the binomial approach in order to price the cliquet option in the Black-Scholes framework. Let the number of intervals be $n$ and the corresponding time step be $ \Delta T = \frac{T}{n} $. Then the lognormal diffusion process is approximated by the Cox-Ross-Rubinstein binomial process.
+Now, we consider the binomial approach in order to price the cliquet option in the Black-Scholes framework. Let the number of intervals be $n$ and the corresponding time step be $ \Delta T = \frac{T}{n} $. Then the lognormal diffusion process is approximated by the Cox-Ross-Rubinstein binomial process:
 \begin{equation}
 	\label{eq:sp-clq-risky-iid-binom-rvs}
-	\tilde{S}_j = s_0 \prod_{k = 1}^j Y_k \qquad \forall j \in [n]
+	\tilde{S}_j = s_0 \prod_{k = 1}^j Y_k \qquad \forall j \in [n],
 \end{equation}
 where the random variables $Y_k$ are independent and identically distributed with values in $ \{ d, u \} $, representing a down and up movement, respectively. Let $p$ be the probability of an up movement of the asset, that is, $ p = \Pr( Y_n = u ) $. The Cox-Ross-Rubinstein corresponds to the choice $ u = 1/d = e^{ \sigma \sqrt{ \Delta T } } $. Thus,
 \begin{equation}
 	\label{eq:sp-clq-pu}
-	p = \frac{ e^{r \Delta T} - d }{ u - d } = \frac{ e^{r \Delta T} - e^{ -\sigma \sqrt{ \Delta T } } }{ e^{ \sigma \sqrt{ \Delta T } } - e^{ -\sigma \sqrt{ \Delta T } } }
+	p = \frac{ e^{r \Delta T} - d }{ u - d } = \frac{ e^{r \Delta T} - e^{ -\sigma \sqrt{ \Delta T } } }{ e^{ \sigma \sqrt{ \Delta T } } - e^{ -\sigma \sqrt{ \Delta T } } }.
 \end{equation}
 
 We assume that the difference between two observation times is constant and we denote by $m$ the number of steps of the binomial tree in every period (so that the total number of steps of the binomial tree is $ n = m N $).
