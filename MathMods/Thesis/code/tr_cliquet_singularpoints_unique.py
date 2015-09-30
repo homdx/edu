@@ -14,43 +14,43 @@ q = 0.0
 
 # Derivative
 t = 5.
-nobs = 5
+N = 5
 (f_loc, c_loc, f_glob, c_glob) = (0., 0.08, 0.16, float("inf"))
 
 # k = 60.
 # am = False
 
 # Computation
-m = 2000
+m = 100
 # h = 1e-4
 
 
 # @profile
 def sp_cliquet(
 		r : float, q : float, sigma : float, t : float,
-		m : int, nobs : int,
-		f_loc : float, f_glob : float,
-		c_loc : float, c_glob : float,
+		m : int, N : int,
+		f_loc : float, c_loc : float,
+		f_glob : float, c_glob : float,
 		mach_eps = 65536 * ( 7/3 - 4/3 - 1 ) ) -> float:
 	"""Prices of an Cliquet call option using the singular point method"""
 
 	# Time period for each option
-	n = m * nobs
+	n = m * N
 	dt = t / n
 	assert dt < ( sigma ** 2 / ( r - q ) ** 2 ), "p_u must be a probability!"
 
 	# Checks
-	f_glob = max( nobs * f_loc, f_glob )
-	c_glob = min( nobs * c_loc, c_glob )
+	f_glob = max( N * f_loc, f_glob )
+	c_glob = min( N * c_loc, c_glob )
 
 	# Singular points for maturity (go to the future)
-	sp_i = [(nobs * f_loc, f_glob),
+	sp_i = [(N * f_loc, f_glob),
 	        (f_glob, f_glob),
 	        (c_glob, c_glob),
-	        (nobs * c_loc, c_glob)]
-	if f_glob == nobs * f_loc:
+	        (N * c_loc, c_glob)]
+	if f_glob == N * f_loc:
 		sp_i = sp_i[1:]
-	if c_glob == nobs * c_loc:
+	if c_glob == N * c_loc:
 		sp_i = sp_i[:-1]
 	# print(sp_i)
 
@@ -61,7 +61,7 @@ def sp_cliquet(
 
 	if unique_r:
 		# Effective interest rate for observable time periods
-		R_nobs = exp( ( r - q ) * t / nobs )
+		R_nobs = exp( ( r - q ) * t / N )
 		# Effective interest rate for computational time periods
 		R_n = exp( ( r - q ) * t / n )
 
@@ -106,7 +106,7 @@ def sp_cliquet(
 			ret[j - j_min] = u ** ( -m + 2 * j ) - 1
 
 	# Come back from the future, one step at a time.
-	for i in range( nobs - 1, -1, -1 ):
+	for i in range( N - 1, -1, -1 ):
 		sp = []
 
 		# Obtain a sorted list for B
@@ -172,5 +172,5 @@ def choose(n: int, r: int):
 	return c // factorial(r)
 
 
-print(sp_cliquet(r=r, q=q, sigma=sigma, t=t, m=m, nobs=nobs,
+print(sp_cliquet(r=r, q=q, sigma=sigma, t=t, m=m, N=N,
                  f_loc=f_loc, f_glob=f_glob, c_loc=c_loc, c_glob=c_glob))

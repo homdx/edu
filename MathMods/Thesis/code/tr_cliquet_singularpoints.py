@@ -29,8 +29,8 @@ m = 5
 def sp_cliquet(
 		r : float, q : float, sigma : float, t : float,
 		m : int, N : int,
-		f_loc : float, f_glob : float,
-		c_loc : float, c_glob : float,
+		f_loc : float, c_loc : float,
+		f_glob : float, c_glob : float,
 		h : float = 0., mach_eps = 65536 * ( 7/3 - 4/3 - 1 ) ) -> float:
 	"""Prices of an Cliquet call option using the singular point method"""
 
@@ -207,7 +207,7 @@ def sp_cliquet(
 			sp.append( (b, v) )
 
 		# Approximations
-		if i % n == 0 and h > 0.:
+		if h > 0.:    # i % m == 0 and
 			l = 0    # l is the starting index
 			while l < len(sp):
 				approx = True
@@ -222,6 +222,7 @@ def sp_cliquet(
 					if approx:
 						break
 				if approx:
+					print('i = {i}, Points eliminated = {e}'.format(i = i, e = j - l - 2))
 					del sp[l+1:j]
 				l += 1
 
@@ -253,5 +254,5 @@ def choose(n: int, r: int):
 	return c // factorial(r)
 
 
-print(sp_cliquet(r=r, q=q, sigma=sigma, t=t, m=m, N=N,
-                 f_loc=f_loc, f_glob=f_glob, c_loc=c_loc, c_glob=c_glob, h = 1e-6))
+# print(sp_cliquet(r=r, q=q, sigma=sigma, t=t, m=m, N=N,
+#                  f_loc=f_loc, c_loc=c_loc, f_glob=f_glob, c_glob=c_glob, h = 1e-6))

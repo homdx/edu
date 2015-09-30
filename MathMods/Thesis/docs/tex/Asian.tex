@@ -3,16 +3,14 @@
 % !TeX encoding = UTF-8
 
 
-\section{Introduction}
-\label{sec:sp-asian-intro}
-As we have seen in the earlier chapters, European options may be priced using the Cox-Ross-Rubinstein and the Black-Scholes models. Even though the Black-Scholes model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options, including American options. The way out is by using numerical methods. Numerical methods using discrete time structures were introduced in Chapter \ref{cha:discrete}. One simple idea is to apply an explicit pricing scheme using a lattice method, which converges to the Black-Scholes model as the number of time steps increase to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the `singular points method' for pricing certain path-dependent options in an efficient manner. The chapter is a study on how this method and its applications.
+As we have seen in the earlier chapters, European options may be priced using the Cox-Ross-Rubinstein and the Black-Scholes models. Even though the Black-Scholes model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options, including American options. The way out is by using numerical methods. Numerical methods using discrete time structures were introduced in Chapter \ref{cha:models}. One simple idea is to apply an explicit pricing scheme using a lattice method, which converges to the Black-Scholes model as the number of time steps increase to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the `singular points method' for pricing certain path-dependent options in an efficient manner. The chapter is a study on how this method and its applications.
 
 We will mainly focus on Asian options, in which the price is expressed as a function of some form of averaging on the underlying's price. Popular Asian options use the arithmetic or geometric means as the average. Again, Asian options may be exercised only at maturity (European) or at any time till the maturity (American). They may give the owner of the option the right to either sell (put) or buy (call). Theoretically, we may study either a call or a put, because the framework for the other one may be derived in the exact same way.
 
 
 
-\section{Existing methods}
-\label{sec:existing-methods}
+\section{Literature Review}
+\label{sec:asian-lit-review}
 
 Before we go into the details of the singular points method, we shall look into the pre-existing methods, and discuss their advantages and disadvantages briefly.
 
@@ -46,6 +44,67 @@ TODO: Discuss the advantages and disadvantages of each method.
 
 A number of these algorithms has been implemented in Premia 13. Premia is a software designed for option pricing, hedging and financial model calibration. It has been developed by the `MathFi' team in INRIA. It is provided with its C/C++ source code and an extensive scientific documentation. More information about Premia can be found at the website\footnote{\url{https://www.rocq.inria.fr/mathfi/Premia/}}.
 
+
+\section{The exact binomial algorithm}
+The evolution of the risky asset price $ (S_t)_t $ is governed by the Black-Scholes stochastic differential equation
+\begin{subequations}
+	\begin{align*}
+		\frac{\dif S_t}{S_t}  &=  (r - q) \dif t + \sigma \dif W_t  \\
+		S_0  &=  s_0
+	\end{align*}
+\end{subequations}
+Here $ W_t $ is a standard Brownian motion under the risk-neutral probability $ P^* $, $ r $ is the instantaneous interest rate, $ q $ is the continuous divident yield, $ \sigma $ is the volatility of the underlying risky asset. (Refer also to Equation \ref{eq:continuous-risky-sde-risk-neutral} and Remark \ref{rem:continuous-dividend} in Section \ref{sec:continuous} of Chapter \ref{cha:models}.)
+
+
+\paragraph{Asian options}
+Asian options are dependent on the averaging of the underlying
+The price of an American Asian option of initial time 0 and maturity T is
+\begin{equation}
+	P(0, S_0, A_0) = \sup_{\tau \in \mathcal{T}_{[0,T]}}  \E^* \left(  e^{-r \tau} \  h(S_{\tau}, A_{\tau})  \mid  S_0 = s_0, A_0 = s_0  \right) 
+\end{equation}
+The quantities used in the formula are explained below.
+\begin{description}
+	\item[$ \mathcal{T}_{[0,T]} $] the set of all stopping times with values in $ [0, T ] $
+	\item[$ h $] the payoff function
+	\item[$ A_\tau $] the average of the price of the underlying asset over the period $ [0, \tau] $
+\end{description}
+
+Let $ K $ denote the strike price. The price function may be one of the following
+\begin{description}
+	\item[fixed Asian call] $ h = (A_T - K)_+ $
+	\item[fixed Asian put] $ h = (K - A_T)_+ $
+	\item[floating Asian call] $ h = (S_T - A_T)_+ $
+	\item[floating Asian put] $ h = (A_T - S_T)_+ $
+\end{description}
+
+Now we consider the discrete model. If the number of time steps in the binomial tree is $ n $, then the corresponding time step is $ \Delta T = \frac{T}{n} $. The lognormal diffusion process $ (S_{i \Delta T})_{i \in [n]} $ is approximated by the Cox–Ross–Rubinstein binomial process (refer Equation \ref{eq:discrete-risky-prod-iid}).
+\begin{equation*}
+	S_i = s_0 \prod_{j=1}^{i} T_j  \qquad  \forall i \in [n] .
+\end{equation*}
+
+As usual, we represent the risk-neutral probability by $ p = \frac{R - d}{u - d} $, where $ u = d^{-1} = e^{\sigma \Delta T} $. We denote the effective rate of interest in each period as $ R \coloneqq e^{r \Delta T} $.
+
+In the Cox–Ross–Rubinstein model, the price at time 0 of the Asian option of the American and European types with payoff function $ h $ is given by $ v(0, s_0, s_0) $, where the functions $ v(i, x, y) $ can be computed by the following backward dynamic programming equations.
+\begin{subequations}
+	\label{eq:asian-dp-eu}
+	\begin{align}
+		v(n, x, y)  &=  h(x,y)  \\
+		v(i, x, y)  &=  \frac{1}{R} \left(  p v \left( i + 1, x u, \frac{(i + 1) y + x u}{i + 2} \right)  \right.  \\
+		&  \qquad  \left. + (1-p) v \left( i + 1, x d, \frac{(i + 1) y + x d}{i + 2} \right)  \right)  \qquad   \forall i \in [n - 1]  \nonumber
+	\end{align}
+\end{subequations}
+
+In case of Asian options of the American type, we modify the equations accordingly.
+\begin{subequations}
+	\label{eq:asian-dp-am}
+	\begin{align}
+		v(n, x, y)  &=  h(x,y)  \\
+		v(i, x, y)  &=  \max \left\lbrace  h(x, y), \frac{1}{R} \left(  p v \left( i + 1, x u, \frac{(i + 1) y + x u}{i + 2} \right)  \right. \right. \\
+		&  \qquad  \left. \left. + (1-p) v \left( i + 1, x d, \frac{(i + 1) y + x d}{i + 2} \right)  \right)  \right\rbrace  \qquad  \forall i \in [n - 1]  \nonumber
+	\end{align}
+\end{subequations}
+
+The payoff is a function of the average, which is clearly path-dependent. Thus, the option is path-dependent, and the corresponding price tree is non-recombinant. This makes the classical binomial method infeasible after a small number of steps. Note that the binomial tree for the underlying is always recombinant for constant volatility.
 
 
 \section{The Singular Points method}
@@ -475,8 +534,9 @@ Table \ref{tab:sp-asian-notations} summarises the discussion above.
 \section{Fixed-strike Asian options of the European type}
 \label{sec:fixed-strike-eu}
 
-For this type of options, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $T$ and a fixed constant $K$, and is given by the function
-\begin{equation} \label{eq:sp-asian-price-eu-asian-am}
+For this type of options, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $ T $ and a fixed constant $ K $, and is given by the function
+\begin{equation}
+	\label{eq:sp-asian-price-eu-asian-am}
 	P_T = (A_T - K)_+
 \end{equation}
 We shall focus on this case in this section because it is the easiest to handle.

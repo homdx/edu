@@ -4,7 +4,7 @@ __author__ = 'Sudip Sinha'
 from tr_crr import tr_underlying
 from tr_vanilla import vanilla_call
 from tr_asian_singularpoints import sp_asian_call
-
+from tr_cliquet_singularpoints import sp_cliquet
 
 # Market
 r = 0.05
@@ -65,13 +65,23 @@ def run_asian(ns: list, d: int=6) -> None:
 		else:
 			print('n={n:3}: {lb:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ub=upper))
 
+def run_cliquet(ms: list, d: int = 9) -> None:
+	"""Display short results for a list of 'n's."""
+
+	for m in ms:
+		pr = sp_cliquet( r = 0.03, q = 0., sigma = 0.02,
+		                 t = 5., m = m, N = 5,
+		                 f_loc = 0., c_loc = 0.08,
+		                 f_glob = 0.16, c_glob = float('inf'), h = 1e-6 )
+		print('m = {m:4}: price = {pr:.{d}f}'.format(d = d, m = m, pr = pr))
+
 
 # Display the results
 # run_asian([100], d=6)
 # run_asian([221], d=6)
 # run_asian([222], d=6)
 
-show_results(n)
+# show_results(n)
 
 # print(sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=222, h=h, ub=True)[0][0][0][1])
 # print(sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=222, h=h, ub=False)[0][0][0][1])
@@ -81,3 +91,6 @@ show_results(n)
 # http://www.mngt.waikato.ac.nz/kurt/frontpage/studentwork/danielchainov2003/bitree2.htm
 # http://www.fintools.com/resources/online-calculators/options-calcs/binomial/
 # http://www.optionspricevaluation.com/
+
+# run_cliquet([10, 20, 50, 100, 200, 500, 1000])
+run_cliquet([20])

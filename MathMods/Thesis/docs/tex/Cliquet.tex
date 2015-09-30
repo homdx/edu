@@ -14,7 +14,8 @@ Usually, the return on a cliquet option is capped and floored. The capping and f
 	\item[Digital cliquet] The forward-starting options are digital options.
 \end{description}
 
-\begin{eg} %[TODO: taken directly from wikipedia, investopedia]
+The following example, copied verbatim from Investopedia\footnote{http://www.investopedia.com/terms/c/cliquet.asp}, provides a good illustration.
+\begin{eg}
 	A three-year cliquet option with a strike of 1000 would expire worthless on the first year if the underlying was to be 900. This value (900) would then be the new strike price for the following year and should the underlying on the settlement be 1200, the contract holder would receive a payout and the strike would reset to this new level. Higher volatility provides better conditions for investors to earn profits.
 \end{eg}
 
@@ -37,7 +38,7 @@ We consider a market model, in which the price of the underlying risky asset is 
 \begin{subequations}
 	\label{eq:black-scholes}
 	\begin{align}
-		\frac{\dif S_t}{S_t} &= (r - q) \dif t + \sigma \dif B_t \\
+		\frac{\dif S_t}{S_t}  &=  (r - q) \dif t + \sigma \dif B_t  \\
 		S_0 &= s_0		
 	\end{align}
 \end{subequations}
@@ -107,7 +108,7 @@ To recapitulate, the following table highlights the notations in a concise manne
 \section{The Singular Points method for cliquet options}
 \label{sec:sp-clq-sp}
 
-The binomial method may always be used to price any option, including path-dependent ones. The binomial method looks through all possible paths of the underlying in order to price the option. The number of possible paths are $ 2 ^ {m N} $. Thus, the method is inherently extremely computationally expensive due to the exponential dependence of the number of paths on $m$ and $ N $. The theoretical computational complexity is $ O( m^{N} ) $, as in Page 128 of \cite{Gaudenzi2011}.
+The binomial method may always be used to price any option, including path-dependent ones. The binomial method looks through all possible paths of the underlying in order to price the option. The number of possible paths are $ 2 ^ {m N} $. Thus, the method is inherently extremely computationally expensive due to the exponential dependence of the number of paths on $m$ and $ N $. The theoretical computational complexity is $ O( m^{N} ) $, as in \cite[Page 128]{Gaudenzi2011}.
 
 A modification of the Singular Points method described in the previous chapter solves this problem for cliquet options by the process of approximation. The method of approximation selectively removes certain paths that would be normally considered, but which do not affect the result in a significant manner. This may be done by putting an \emph{a priori} error bound while removing points. The method turns out to be significantly faster and memory efficient compared to known binomial techniques. Moreover, its flexible is evinced by the fact that it is adaptable for varying interest rate and volatility in each observational period.
 
@@ -322,15 +323,21 @@ Finally, the singular points thus obtained are sorted in ascending order on the 
 
 
 \paragraph{At all times}
-The previous argument may be applied iteratively in a backward fashion at each step $ N-2, N-3, \dots, 1, 0 $ to obtain the singular points at each time step. At time 0, there is only one singular point $ (0, P_0^1) $, and $ P_0^1 $ provides the exact binomial price of the cliquet option. The equivalence of this price and the exact binomial price is proved in Proposition \ref{thm:sp-clq-equality}.
-
+The previous argument may be applied iteratively in a backward fashion at each step $ N-2, N-3, \dots, 1, 0 $ to obtain the singular points at each time step. At time 0, there is only one singular point $ (0, P_0^1) $, and $ P_0^1 $ provides the exact binomial price of the cliquet option. The equality of this price and the exact binomial price is proved in Proposition \ref{thm:sp-clq-equality}.
 
 
 \begin{prp}[Equality of price obtained by the singular points method and the binomial price]
 	\label{thm:sp-clq-equality}
-	TODO
+	$ P_0^l $ coincides with the exact binomial price with $ n $ time steps of the cliquet option.
 \end{prp}
 
+\begin{proof}
+	Let the running sum $ Z_{i_1, \dots, i_k} = \sum_{j=1}^{k} R_{i_j}', \  (i_1, \dots, i_k) \in [j_0]^k, k \in \{ 1, \dots, N \} $.
+	Then the exact binomial price $ Q_n $ of the cliquet option is given by
+	\begin{equation*}
+		Q_n = e^{-rT} \sum_{i_1, \dots, i_N = 0}^{j_0} \left( p_{i_1}' \cdot \dots \cdot p_{i_N}' \max \left\{ F_{glob}, \min \left\{ C_{glob}, Z_{i_1, \dots, i_N} \right\} \right\} \right).
+	\end{equation*}
+\end{proof}
 
 [TODO] Insert remark 2
 
@@ -445,7 +452,7 @@ Since at each $ N $ the upper bound for the error is $ h $, if we repeat the app
 	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section [TODO: reference] of Chapter \ref{cha:sp-asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
 \end{rem}
 
-The following proposition tells us that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model.
+The following proposition proves that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model.
 
 [TODO: Proposition 2]
 
@@ -537,6 +544,70 @@ The system specifications are as follows
 
 \section{Numerical results}
 \label{sec:sp-clq-results}
+
+In this section, we provide some numerical results that we have obtained from our program, along with the reported values of the same from \cite[Section 4]{Gaudenzi2011}. They compare the results with other techniques, namely Monte Carlo and finite differences. The cases considered are as follows:
+\begin{enumerate}
+	\item Constant volatility of $ \sigma = 0.2 $
+	\item Constant volatility of $ \sigma = 0.02 $, in order to test the efficiency of the methods for low volatility cases
+	\item Varying volatility for each observational period, as $ \sigma(i) = 0.05 + 0.04i, i = 1, \dots, 8 $ (denoted by \emph{Var} in the $ \sigma $ column of Table \ref{tab:sp-clq-results}).
+\end{enumerate}
+In order to obtain corroboration with the continuous value, we also report the price obtained by using Monte Carlo method with 1,000,000 of trials, along with the values in the 95\% confidence interval.
+
+The specifications of the cliquet contract are as follows.
+\begin{itemize}
+	\item $ F_{loc} = 0, C_{loc} = 0.08, F_{glob} = 0.16, C_{glob} = \infty $
+	\item $ T = 5 $ years
+	\item $ N = 5 $
+	\item $ r = 0.03 $
+\end{itemize}
+
+[TODO: Include computer specifications and working environment.]
+[TODO: Insert remark 3]
+
+
+
+\begin{table}[h]
+	\label{tab:sp-clq-results}
+	\centering
+	\caption{Results}
+	%	\rowcolors{1}{Burlywood1}{}
+	\begin{tabular}{rrccccc}
+		\toprule
+		\multirow{2}{1em}{$ \sigma $}  &  \multirow{2}{1em}{$ m $}
+		&  \multicolumn{3}{c}{Price}  &  \multicolumn{2}{c}{Time (s)}  \\
+		\cmidrule(lr){3-5}\cmidrule(lr){6-7}
+		&&  Bin  &  SP  &  MC  &  Bin  &  SP  \\
+		\midrule
+		\multirow{7}{2em}{$ 0.2 $}
+		&    10  &    &  0.165661911  &  \multirow{7}{5em}{0.174106 (0.17398 -- 0.17423)}  &    &    \\
+		&    20  &    &  0.172300056  &    &    &    \\
+		&    50  &    &  0.165661911  &    &    &    \\
+		&   100  &    &  0.173927464  &    &    &    \\
+		&   200  &  0.173716366  &  0.173716366  &    &    &    \\
+		&   500  &  0.173922597  &  0.173922597  &    &    &    \\
+		&  1000  &  0.174051949  &  0.174051949  &    &    &    \\
+		\midrule
+		\multirow{7}{2em}{$ 0.02 $}
+		&    10  &    &  0.151234115  &  \multirow{7}{5em}{0.150525 (0.150472 -- 0.150578)}  &    &    \\
+		&    20  &    &  0.149734212  &    &    &    \\
+		&    50  &    &  0.150228984  &    &    &    \\
+		&   100  &    &  0.150386306  &    &    &    \\
+		&   200  &  0.150465004  &  0.150465004  &    &    &    \\
+		&   500  &  0.150508871  &    &    &    &    \\
+		&  1000  &  0.150522368  &    &    &    &    \\
+		\midrule
+		\multirow{7}{2em}{Var}
+		&    10  &    &    &  \multirow{7}{5em}{0.226169 (0.225978 -- 0.226360)}  &    &    \\
+		&    20  &    &    &    &    &    \\
+		&    50  &    &    &    &    &    \\
+		&   100  &    &    &    &    &    \\
+		&   200  &  0.225819395  &    &    &    &    \\
+		&   500  &  0.226028534  &    &    &    &    \\
+		&  1000  &  0.226039040  &    &    &    &    \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
 
 
 \section{Conclusions}

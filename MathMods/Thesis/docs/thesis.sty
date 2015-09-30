@@ -18,9 +18,12 @@
 \usepackage[utf8]{inputenc}	   % For extended UTF8 support change to utf8x
 \usepackage[english]{babel}	   % English hyphenation
 \usepackage{csquotes}		 % Multilingual quotes
+\usepackage[babel]{microtype}    % Awesome microtyping
 \usepackage{booktabs}    % Better tables
+\usepackage{multirow}    % Multirows in tables
 \usepackage{mathtools}    % Includes AMSMath and provides more benefits
 \usepackage{bm}    % For bold math symbols
+\usepackage{bbm}    % For the indicator function \mathbbm{1}
 
 % Graphics
 \usepackage{graphicx}
@@ -30,6 +33,15 @@
 
 % Set paragraph formatting
 \usepackage{parskip}    % Do not indent paragraphs, and put some linespace between paragraphs
+%\usepackage{etoolbox}
+%\makeatletter
+%\let\ams@starttoc\@starttoc
+%\makeatother
+%\usepackage[parfill]{parskip}
+%\makeatletter
+%\let\@starttoc\ams@starttoc
+%\patchcmd{\@starttoc}{\makeatletter}{\makeatletter\parskip\z@}{}{}
+%\makeatother
 \linespread{1.1}    % Set more space between lines
 
 % Set ToC and bookmark depths
@@ -129,8 +141,6 @@
 	}}
 
 
-\usepackage[protrusion=true,expansion=true,final,babel]{microtype}		% many good lay-out/justification effects, see: texblog.net/latex-archive/layout/pdflatex-microtype/
-
 % Format Contents
 % There is a problem with the AMS classes -- the ToC overlaps http://tex.stackexchange.com/questions/20527/table-of-contents-section-number-and-title-overlapping
 % If we use tocloft, we get a lot of errors, but at the end it gives the correct output.
@@ -141,15 +151,15 @@
 \usepackage{titlesec}
 
 \titleformat{\chapter}[frame]
-{\fontfamily{gentium}\bfseries\scshape\Huge\color{Brown4}}
+{\fontfamily{gentium}\bfseries\Huge\color{Brown4}}
 {Chapter \thechapter}{1em}{}
 
 \titleformat{\section}
-{\fontfamily{gentium}\bfseries\scshape\Large\color{Brown3}}
+{\fontfamily{gentium}\bfseries\Large\color{Brown3}}
 {\thesection}{1em}{}
 
 \titleformat{\subsection}
-{\fontfamily{gentium}\bfseries\scshape\large\color{Brown2}}
+{\fontfamily{gentium}\bfseries\large\color{Brown2}}
 {\thesubsection}{1em}{}
 
 \titleformat{\subsubsection}
@@ -161,8 +171,8 @@
 {\theparagraph}{1em}{}
 
 \titleformat{\subparagraph}[runin]
-{\fontfamily{gentium}\itshape\color{Tan4}}
-{\theparagraph}{1em}{}
+{\fontfamily{gentium}\itshape\color{Chocolate4}}
+{\theparagraph}{0pt}{}
 
 \titlespacing*{\chapter} {0pt}{50pt}{40pt}
 \titlespacing*{\section} {0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
@@ -194,8 +204,6 @@
 	\renewcommand{\footrulewidth}{0pt}
 }
 
-%% \fancyhf[FL]{MathMods $\bullet$ 2015 May}
-
 
 \usepackage[
 pdfusetitle,		% Use PDF title
@@ -208,9 +216,9 @@ bookmarks=true,
 unicode=true,
 colorlinks=true,
 % backref=section,		% Adds ‘backlink’ text to the end of each item in the bibliography, as a list of section numbers. Incompatible with biblatex.
-linktocpage=false,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
-% breaklinks=true,				% so long urls are correctly broken across lines
-% pagebackref=false,		 % add page number in bibliography and link to position in document where cited
+% linktocpage=true,			 % ToC, LoF, LoT place hyperlink on page number, rather than entry text
+breaklinks=true,				% so long urls are correctly broken across lines
+% pagebackref=false,		 % add page number in bibliography and link to position in document where cited, incompatible with biblatex
 linkcolor=red,
 urlcolor=IndianRed,
 citecolor=Sienna,

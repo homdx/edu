@@ -2,39 +2,16 @@
 % !TeX spellcheck = en_GB
 % !TeX encoding = UTF-8
 
-* Not all bonds are riskless, only government bonds are, that too only default risk.
-* Bonds do not have interest rate risk only if they are held till maturity. In other cases, they are dependent on the interest rate fluctuations of the market.
 
-* compounding -> return on bonds
-
-* The value of a stock in time is usually represented by a stochastic process. - More explanation, or remove.
-
-* Swap are types of derivatives which might be added.
-
-we shall concern -- too repetitive
-
-* ETDs and OTCs -- explanation
-
-Option categorization according to...
-
-Highlight exotic options
-
-* Check -- does in no way affect(s)
+[TODO] One page history
+\begin{itemize}
+	\item The thesis of Louis Bachelier (1900) on the ``Theory of Speculation''
+	\item Introduction of Brownian motion to model fluctuating prices in the Paris stock exchange
+	\item Black and Scholes
+	\item Cox Ross Rubinstein
+\end{itemize}
 
 
-[TODO] History
-
-The thesis of Louis Bachelier (1900) on the ``Theory of Speculation”
-
-Introduction of Brownian motion to model fluctuating prices in the Paris stock exchange
-
-Black and Scholes
-
-Cox Ross Rubinstein
-
-We start our discussion with one of the simplest model used for pricing of assets, the binomial model. This model was first introduced by Cox, Ross and Rubinstein \cite{Cox1979} in the paper titled ``Option pricing: A simplified approach'' in 1979. Even though it is very simple, it does contain all the necessary ingredients to construct a viable market model, and to solve the problems of pricing and hedging of derivatives.
-
-Options
 
 \section{Financial instruments}
 \label{sec:intro-assets}
@@ -43,34 +20,47 @@ A \emph{financial instrument} or a \emph{financial asset} is an intangible asset
 
 
 
-\subsection{Riskless instruments}
-\label{subsec:intro-assets-riskless}
+\subsection{Return on an asset}
+\label{subsec:intro-assets-return}
 
-
-\paragraph{Bonds}
-A \emph{bond} is an instrument of indebtedness of the bond issuer to the holders. It is a \emph{debt security}, under which the issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay them interest (the coupon) and/or to repay the principal at a later date, termed the maturity date. Bonds can also be thought of as a \emph{loan} given to the issuer of the bond by the holder. A bond issued by a reliable institution like the United States government is a good illustration of a risk-free asset. This is because the probability of such an organisation defaulting is close to zero, or in other words, the bond has \emph{negligible} \emph{credit default risk}. Such bonds are only subject to fluctuations of the current interest rate, called \emph{interest rate risk}. If we assume that the interest rate is deterministic (the fluctuations are not random), the value of the bond is computable at any given future date, making it riskless. Such an assumption is quite reasonable in short periods of time and for low credit risk institutions.
-
-
-\paragraph{Compounding}
+\paragraph{Return on a riskless asset -- Compounding}
 Compounding is the first idea that we must be familiar with. Essentially, a riskless asset will increase in monetary value in a deterministic manner if we keep it in the market. The increase depends on the compounding frequency and the duration of investment. The term compounding is used because the interest earned in each period also contributes to the principal in the successive periods.
 
 Let the compounding frequency is $ n $ times per year, the total time is $ t $, and the annual rate of interest is $ r $. Then
 \begin{equation}
-\label{eq:intro-compounding-discrete}
-B_t = B_0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
+	\label{eq:intro-compounding-discrete}
+	B_t = B_0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
 \end{equation}
 where $ B_0 $ is the starting value of the asset, and $ B_t $ is the value of the asset at time $ t $.
 
 If the compounding is continuous, we let $ n \to \infty $ to obtain
 \begin{equation}
-\label{eq:intro-compounding-continous}
-B_t = B_0 e^{rt}.
+	\label{eq:intro-compounding-continous}
+	B_t = B_0 e^{rt}.
 \end{equation}
 
 
+\paragraph{Return on a risky asset}
+At any point of time in the future, the value of a risky asset is not known with certainty, so it is a random variable taking values in $ [0, \infty) $. Since the values change with time, we denote the \emph{spot price} of a risky asset by the stochastic process $ (S_t)_t $, where $ t \in [0, T] $ denotes the time and $ T $ is the maturity. Since the future value of the asset is adventitious, we use the following quantities to measure the return of the risky asset in the given time interval.
 
-\subsection{Risky instruments}
-\label{subsec:intro-assets-risky}
+\begin{dfn}[absolute and relative returns]
+	The absolute return on an asset for the time interval $ [0, t], \  t \in [0, T] $ is given by
+	\begin{equation*}
+		\tilde{R}_t = S_t - S_0
+	\end{equation*}
+	
+	The relative return on the asset is given by
+	\begin{equation*}
+		R_t = \frac{S_t - S_0}{S_0}
+	\end{equation*}	
+\end{dfn}
+
+
+
+\subsection{Common asset types}
+
+\paragraph{Bonds}
+A \emph{bond} is an instrument of indebtedness of the bond issuer to the holders. It is a \emph{debt security}, under which the issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay them interest (the coupon) and/or to repay the principal at a later date, termed the maturity date. Bonds can also be thought of as a \emph{loan} given to the issuer of the bond by the holder. A bond primarily has two kinds of risks, \emph{credit default risk} and \emph{interest rate risk}. A bond issued by a reliable institution like the United States government is a good illustration of a risk-free asset. This is because the probability of such an organisation defaulting is close to zero, or in other words, the bond has \emph{negligible} \emph{credit default risk}. Such bonds are only subject to fluctuations of the current interest rate, called \emph{interest rate risk}. The interest rate risk may also be nullified if the bond is held till maturity. If we assume that the interest rate is deterministic (the fluctuations are not random), the value of the bond is computable at any given future date, making it riskless. Such an assumption is quite reasonable in short periods of time and for institutions with a low default risk rating.
 
 
 \paragraph{Stocks}
@@ -81,8 +71,8 @@ A \emph{stock} of a corporation is an ownership certificate, and constitutes the
 A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially, the value of a derivative is a function of the value of the \emph{underlying} asset(s). Derivatives are traded in their own right, and a fair price must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, our main focus shall be the pricing problem of a particular class of derivatives, called \emph{exotic options}.
 
 
-\subsubsection{Classification of derivatives}
-\label{subsubsec:intro-derivative-classification}
+\subsection{Classification of derivatives}
+\label{subsec:intro-derivative-classification}
 
 Derivatives may be classified on the basis of various factors. One important factor is whether the risk is shared, or taken up by only one party. Another factor is the nature of the function (of the underlying) that the derivative depends on. This function may either be dependent only on the final value of the underlying (\emph{path-independent}), or on the path that it took to reach this final value (\emph{path-dependent}). The function may be discrete (\emph{digital} or \emph{binary}), or continous. In this section, we briefly look at some of the more important types of derivatives. \footnote{
 	A more interested reader should consult the following extensive Wikipedia articles.
@@ -132,16 +122,29 @@ The contract contains the following details.
 	\item[underlying] The asset(s) which may be traded at maturity
 	\item[$ S_0 $] The initial value of the underlying asset at the initial time
 	\item[right] The exact right that the owner of the options has (see below)
-	\item[exercise time] European or American
+	\item[exercise time] European or American (see below)
 \end{description}
 
-According to the right of the owner, a simple option may be of two types.
+Options may be categorised by the right of the owner and the exercise time.
+
+\subparagraph{According to the right of the owner}  Options may be of two main types.
 \begin{description}
 	\item[call] The owner has the right to buy. In this case, the price of the option at maturity is given by $ c_T = (S_T - K)_+ $, where $ (x)_+ \coloneqq \max \{ 0, x \} $.
 	\item[put] The owner has the right to sell. In this case, the price of the option at maturity is given by $ p_T = (K - S_T)_+ $.
 \end{description}
-Of course, other complicated ownership rights may be constructed, but we shall concern ourselves with these basic ones for time being.
+Of course, other complicated ownership rights may be constructed, but we shall not go into the details of those.
 
+\subparagraph{According to the time at which the option may be exercised}  Again, option may be of two main types.
+\begin{description}
+	\item[European] The owner may exercise the option only at maturity
+	\item[American] The owner may exercise the option at any time up to the maturity
+\end{description}
+Again, more complicated options exist, which allow exercising rights only at certain time points, but we exclude them from out discussion.
+
+Since American options allow for more flexibility for the owner, and thus more risk for the seller, they are more expensive as compared to their European counterparts. Let $ c_t, p_t $ denote the prices of an European call and put, and $ C_t, P_t $ denote the prices of an American call and put, respectively. Then, we must have $ C_t \ge c_t $ and $ P_t \ge p_t $.
+
+
+\subparagraph{Call-put parity}  Call and put prices are connected to each other. We need the following proposition to explore the relationship.
 
 \begin{prp}[Equality of portfolios]
 	\label{thm:intro-portfolio-eq}
@@ -154,16 +157,10 @@ Of course, other complicated ownership rights may be constructed, but we shall c
 	Under this hypothesis it is possible to construct the following arbitrage strategy. At time 0, one can borrow the portfolio $ \mathcal{P}_1 $ and sell it right away to buy portfolio $ \mathcal{P}_2 $. One can pocket the difference $ v_T (\mathcal{P}_1) - v_T (\mathcal{P}_2) > 0 $. At $ t = T $ the values of the two portfolios coincide, so selling $ \mathcal{P}_2 $ one gets the exact money to buy $ \mathcal{P}_1 $ to be returned to the original lender. An profit is achieved, without investing any money, implying an arbitrage and violating the viable market hypothesis. Similarly, we can show that $ v_0 (\mathcal{P}_1) < v_0 (\mathcal{P}_2) $ would also enable an arbitrage opportunity.
 \end{proof}
 
+We now look at the relationship. $ S_T - K = (S_T - K)_+ + (S_T - K)_- = (S_T - K)_+ - (K - S_T)_+ = c_T - p_T $. For any general time $ t $, using Proposition \ref{thm:intro-portfolio-eq}, it holds that $ c_t - p_t = S_t - K e^{- r (T-t) } $. This is known as the \emph{call-put parity}.
 
-Looking at the call and put prices at maturity, we note that they are related. In fact, $ S_T - K = (S_T - K)_+ + (S_T - K)_- = (S_T - K)_+ - (K - S_T)_+ = c_T - p_T $. For any general time $ t $, using Proposition \ref{thm:intro-portfolio-eq}, it holds that $ c_t - p_t = S_t - K e^{- r (T-t) } $. This is known as the \emph{call-put parity}.
 
-According to the time at which the option may be exercised, an option may be of two types.
-\begin{description}
-	\item[European] The owner may exercise the option only at maturity
-	\item[American] The owner may exercise the option at any time up to the maturity
-\end{description}
-Since American options allow for more flexibility for the owner, and thus more risk for the seller, they are more expensive as compared to their European counterparts. Let $ c_t, p_t $ denote the prices of an European call and put, and $ C_t, P_t $ denote the prices of an American call and put, respectively. Then, we must have $ C_t \ge c_t $ and $ P_t \ge p_t $.
-
+\paragraph{Exotic options}
 European options are path-independent and the simplest type of options available. Hence, they are popularly known as \emph{vanilla options}. The American options are path-dependent. Typically, other options which are more complex in nature are collectively called \emph{exotic options}. These are usually path-dependent, and may be either European, American or have more complex exercise times. A few such options are described in brief.
 \begin{description}
 	\item[Asian] The payoff depends on the average of the underlying's prices
@@ -171,21 +168,6 @@ European options are path-independent and the simplest type of options available
 	\item[cliquet or ratchet] A series of globally or locally, capped or floored, at-the-money options, but where the total premium is determined in advance.
 	\item[barrier] The price of the underlying reaching the pre-set barrier level either springs the option into existence (\emph{knock-in}) or extinguishes an already existing option (\emph{knock-out}).
 \end{description}
-
-
-\paragraph{Return}
-We denote the \emph{spot price} of a risky asset $ \forall t \in [0, T] $ by the stochastic process $ (S_t)_t $. Since the future value of the asset is adventitious, we use the following quantities to measure the return of the risky asset in a time interval.
-
-\begin{dfn}[absolute and relative returns]
-	The absolute return on an asset for the time interval $ [0, t], \  t \in [0, T] $ is given by
-	\begin{equation*}
-		\tilde{R}_t = S_t - S_0
-	\end{equation*}
-	The relative return on the asset is given by
-	\begin{equation*}
-		R_t = \frac{S_t - S_0}{S_0}
-	\end{equation*}	
-\end{dfn}
 
 
 
@@ -201,15 +183,14 @@ The term viability here refers to the fairness of a market. To interpret viabili
 
 In what follows, we assume the following.
 \begin{itemize}
-	\item There is a probability space $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $, endowed with the filtration $ (\mathcal{F}_n)_n $.
-	\item $ \forall t \in [0, T], T \in [0, \infty) $, there is one riskless asset worth $ S_t^0 = e^{rt} $ ($ S_0^0 = 1 $).
+	\item There is a probability space $ (\Omega, \mathcal{F}, (\mathcal{F}_t)_t, P) $, endowed with the filtration $ (\mathcal{F}_t)_t $.
+	\item $ \forall t \in [0, T], T \in [0, \infty) $, there is one riskless asset worth $ S_t^0 = e^{rt} $ (Take $ S_0^0 = 1 $).
 	\item $ \forall t \in [0, T], T \in [0, \infty) $, there are $ d $ risky assets each worth $ S_t^i $, where $ i \in \{ 1, 2, \dots, d \} $ is the index of the risky asset. These may be represented as a $ d $-dimensional (vector) stochastic process $ ( S_t^1, S_t^2, \dots, S_t^d ) $.
 \end{itemize}
 
-A word about notation: We shall denote the class of all $ \mathcal{F} $-measurable random variables by $ \mu \mathcal{F} $.
 
 \begin{dfn}[investment strategy]
-	A $ d + 1 $ dimensional (vector) stochastic process $ \Phi = (\bm{\phi_t})_t = (\phi_t^0, \phi_t^1, \dots, \phi_t^d)_t $ is called an \emph{investment strategy} or \emph{trading strategy} if $ \phi_t^i \in \mu \mathcal{F}_t \  \forall i \in [d]$.
+	A $ d + 1 $ dimensional (vector) stochastic process $ \Phi = (\bm{\phi_t})_t = (\phi_t^0, \phi_t^1, \dots, \phi_t^d)_t $ is called an \emph{investment strategy} or \emph{trading strategy} if $ \phi_t^i $ is $ \mathcal{F}_t $-measurable $ \forall i \in [d] $.
 \end{dfn}
 This means that there is a procedure to allocate resources within the portfolio at all times. We shall write strategy to mean investment strategy in the rest of the document.
 
@@ -219,7 +200,13 @@ The following definition gives the value of a strategy at a point in time.
 \end{dfn}
 
 \begin{dfn}[self-financing strategy]
-	A strategy $ \Phi $ is called \emph{self-financing} if $ \dif \bm{\phi_t} \cdot S_t = 0 \  \forall t \in [0, T] $.
+	A portfolio is self-financing if its changes in value are only due to changes in prices of the assets. This can be represented as follows.
+	\begin{subequations}
+		\begin{align}
+			\dif V_t &= \bm{\phi_t} \cdot \dif S_t \qquad \forall t \in [0, T]  \\
+			\implies  \qquad  \dif \tilde{V}_t &= \bm{\phi_t} \cdot \dif \tilde{S}_t \qquad \forall t \in [0, T]
+		\end{align}
+	\end{subequations}
 \end{dfn}
 This implies that we do not put in any fresh money in the strategy at any point of time, apart from what is generated due to the change is values of the underlying assets.
 
@@ -233,11 +220,57 @@ This implies that we do not run out of money at any point of time.
 \end{dfn}
 A arbitrage strategy basically means that we generate value at time $ T $ without any initial investment. For the sake of fairness, we do not want a market in which there exist arbitrage opportunities. The next definition addresses this issue.
 
+%In what follows, we assume the following.
+%\begin{itemize}
+%	\item There is a probability space $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $, endowed with the filtration $ (\mathcal{F}_n)_n $.
+%	\item $ \forall n \in [N], N \in \mathbb{N} $, there is one riskless asset worth $ S_n^0 = e^{rt} $ ($ S_0^0 = 1 $).
+%	\item $ \forall t \in [0, T], T \in [0, \infty) $, there are $ d $ risky assets each worth $ S_t^i $, where $ i \in \{ 1, 2, \dots, d \} $ is the index of the risky asset. These may be represented as a $ d $-dimensional (vector) stochastic process $ ( S_t^1, S_t^2, \dots, S_t^d ) $.
+%\end{itemize}
+%
+%A word about notation: We shall denote the class of all $ \mathcal{F} $-measurable random variables by $ \mu \mathcal{F} $.
+%
+%\begin{dfn}[investment strategy]
+%	A $ d + 1 $ dimensional (vector) stochastic process $ \Phi = (\bm{\phi_t})_t = (\phi_t^0, \phi_t^1, \dots, \phi_t^d)_t $ is called an \emph{investment strategy} or \emph{trading strategy} if $ \phi_t^i \in \mu \mathcal{F}_t \  \forall i \in [d]$.
+%\end{dfn}
+%This means that there is a procedure to allocate resources within the portfolio at all times. We shall write strategy to mean investment strategy in the rest of the document.
+%
+%The following definition gives the value of a strategy at a point in time.
+%\begin{dfn}[value of a strategy]
+%	The value of a strategy $ \Phi $ at a time $ t $ is given by $ V_t( \Phi ) = \bm{\phi_t} \cdot S_t $.
+%\end{dfn}
+%
+%\begin{dfn}[self-financing strategy]
+%	A strategy $ \Phi $ is called \emph{self-financing} if $ \dif \bm{\phi_t} \cdot S_t = 0 \  \forall t \in [0, T] $.
+%\end{dfn}
+%This implies that we do not put in any fresh money in the strategy at any point of time, apart from what is generated due to the change is values of the underlying assets.
+%
+%\begin{dfn}[admissible strategy]
+%	A self-financing strategy $ \Phi $ is said to be admissible if $ V_t( \Phi ) \ge 0 \  \forall t \in [0, T] $.
+%\end{dfn}
+%This implies that we do not run out of money at any point of time.
+%
+%\begin{dfn}[arbitrage strategy]
+%	An admissible strategy $ \Phi $ is said to be an arbitrage strategy if $ V_0( \Phi ) = 0 $ and $ P( V_T( \Phi ) > 0 ) > 0 $.
+%\end{dfn}
+%A arbitrage strategy basically means that we generate value at time $ T $ without any initial investment. For the sake of fairness, we do not want a market in which there exist arbitrage opportunities. The next definition addresses this issue.
+%
+%\begin{prp}[Equivalence of arbitrage conditions]
+%	Assume that $ \phi_t^i \in L^2( P \times \lambda ) $, where $ \lambda $ is the Lebesgues measure for time. Then the following are equivalent.
+%	\begin{itemize}
+%		\item $ \Phi $ is self-financing
+%		\item $ \forall t \in [0, T], \dif V_t = \bm{\phi_t} \cdot \dif S_t $
+%		\item $ \forall t \in [0, T], \dif \tilde{V}_t = \bm{\phi_t} \cdot \dif \tilde{S}_t $
+%	\end{itemize}
+%\end{prp}
+%[TODO: Proof]
+%[TODO: May be incorrect -- Check \cite[Remark 4.1.3, Page 65]{Lamberton1996}]
+
+
 \begin{dfn}[viable market, no free lunch]
 	A market is called \emph{viable}, or there is \emph{no free lunch}, if there does not exist any arbitrage strategies.
 \end{dfn}
 
-We will see in Theorem \ref{thm:crr-ftoap1} of Chapter \ref{cha:crr} how the financial concept of viability translates mathematically to the existence of equivalent martingale measures.
+We will see in Theorem \ref{thm:discrete-ftoap1} of Chapter \ref{cha:models} how the financial concept of viability translates mathematically to the existence of equivalent martingale measures.
 
 
 \paragraph{Complete market}
@@ -251,7 +284,7 @@ strategy employs, by definition, only the basic assets (riskless and risky) trad
 
 This implies that the marginal probability distributions of the derivative price are uniquely determined by the marginal distributions of the prices of the basic assets. Namely, each derivative is replicable, so its price at all times may be written as the value of a portfolio employing basic assets only, that is to say it is a linear combination of the prices of the basic assets. On the other hand, in a viable market the discounted value of a portfolio is a martingale under the risk neutral probability, so if a contingent claim is attainable, then its price, by the martingale property, belongs to the linear span of the basic assets’ prices under this probability prices. Vice versa, if the market is incomplete, then there must be sources of randomness that cannot be totally represented as linear combinations of the prices of the basic tradeable assets, which means that the basic titles are not sufficient to construct all the necessary hedging strategies.
 
-We will see in Theorem \ref{thm:crr-ftoap2} of Chapter \ref{cha:crr} how the financial concept of market completeness translates mathematically to the existence of a unique equivalent martingale measure.
+We will see in Theorem \ref{thm:discrete-ftoap2} of Chapter \ref{cha:models} how the financial concept of market completeness translates mathematically to the existence of a unique equivalent martingale measure.
 
 
 \paragraph{Frictionless market}
