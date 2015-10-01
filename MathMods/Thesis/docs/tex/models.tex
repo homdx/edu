@@ -3,14 +3,14 @@
 % !TeX encoding = UTF-8
 
 
-Now that we are familiar the basics of financial assets and markets, we may delve into market models under which we may price options. Since continuous models are mathematically more complex than their discrete time counterparts (also known as `lattice models'), we shall discuss the latter first. We shall then show that under certain convergence conditions, the discrete model converges to the continuous one.
+Now that we are familiar the basics of financial assets and markets, we may delve into market models under which we may price options. Since continuous models are mathematically more complex than their discrete time counterparts (also known as \emph{lattice models}), we shall discuss the latter first. We shall then show that under certain convergence conditions, the discrete model converges to the continuous one.
 
 
 
 \section{Discrete models -- The binomial model}
 \label{sec:discrete-binom-model}
 
-We start our discussion with one of the simplest model used for pricing of assets, the binomial model. This model was first introduced by Cox, Ross and Rubinstein \cite{Cox1979} in the paper titled ``Option pricing: A simplified approach'' in 1979. Even though it is quite simplistic, it does contain all the necessary ingredients to construct a viable market model, and to solve the problems of pricing and hedging of derivatives.
+We start our discussion with one of the simplest model used for pricing of assets, the binomial model. This model was first introduced by Cox, Ross and Rubinstein \cite{Cox1979} in the paper titled \emph{Option pricing: A simplified approach} in 1979. Even though it is quite simplistic, it does contain all the necessary ingredients to construct a viable market model, and to solve the problems of pricing and hedging of derivatives.
 
 We assume that the following are true.
 \begin{itemize}
@@ -31,10 +31,10 @@ In this model, we essentially have
 \end{itemize}
 The binomial model is so called because there are two times, two assets and two possible movements of the risky asset.
 
-We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:discrete-2tr-underlying}.)
+We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements, respectively -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:discrete-2tr-underlying}.)
 
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{tikzpicture}
 	\matrix (tree) [column sep=25mm, row sep=1mm]{
 		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $}; \\
@@ -42,8 +42,8 @@ We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its 
 		\node[term] (s) {$ S_0 $};  &  \\
 		&  \node[term] (d) {$ S_1^d = S_0 d $}; \\
 	};
-	\draw[->] (s) -- (u) node[midway,above] {$ p_u = p $};
-	\draw[->] (s) -- (d) node[midway,below] {$ p_d = 1 - p $};
+	\draw[->] (s) -- (u) node[midway,above,sloped] {$ p_u = p $};
+	\draw[->] (s) -- (d) node[midway,below,sloped] {$ p_d = 1 - p $};
 	\end{tikzpicture}
 	
 	\caption{Binomial tree for the underlying}
@@ -122,7 +122,7 @@ Let us use the above model to price a call. Recall that the pay-off of a call is
 Thus we have been able to price the call uniquely at all times. This is an implication of the completeness of the market, whose randomness is totally characterized by the unique probability measure $ p $.
 
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{tikzpicture}
 	\matrix (tree) [column sep=25mm, row sep=1mm]{
 		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $}; \\
@@ -130,11 +130,11 @@ Thus we have been able to price the call uniquely at all times. This is an impli
 		\node[term] (s) {$ c_0 $};  &  \\
 		&  \node[term] (d) {$ c_1^d = 0 $}; \\
 	};
-	\draw[->] (u) -- (s) node[midway,above] {$ p $};
-	\draw[->] (d) -- (s) node[midway,below] {$ 1 - p $};
+	\draw[->] (u) -- (s) node[midway,above,sloped] {$ p $};
+	\draw[->] (d) -- (s) node[midway,below,sloped] {$ 1 - p $};
 	\end{tikzpicture}
 	
-	\caption{Binomial tree for the underlying}
+	\caption{Binomial tree for the call}
 	\label{fig:discrete-2tr-call}
 \end{figure}
 
@@ -242,7 +242,7 @@ In particular, the price a European call at any time $ i $ is as follows.
 \end{equation}
 
 
-\begin{figure}
+\begin{figure}[h]
 	\begin{tikzpicture}
 	\matrix[column sep=10mm,row sep=1mm] (tree){
 		\node[header] (t0) {$ t = 0 $};  &  \node[header] (t1) {$ t = 1 $};   &  \node[header] (t2) {$ t = 2 $};   &  \node[header] (t3) {$ t = 3 $};   &  \node[header] (t4) {$ t = 4 $};  \\
@@ -257,35 +257,35 @@ In particular, the price a European call at any time $ i $ is as follows.
 		& & & & \node[term] (d4) {$S_0d^4$}; \\
 	};
 	% Lines out of s
-	\draw[->] (s) -- (u) node[midway,above] {$p_u$};
-	\draw[->] (s) -- (d) node[midway,below] {$p_d$};
+	\draw[->] (s) -- (u) node[midway,above,sloped] {$p_u$};
+	\draw[->] (s) -- (d) node[midway,below,sloped] {$p_d$};
 	% Lines out of u
-	\draw[->] (u) -- (u2) node[midway,above] {$p_u$};
-	\draw[->] (u) -- (ud) node[midway,above] {$p_d$};
+	\draw[->] (u) -- (u2) node[midway,above,sloped] {$p_u$};
+	\draw[->] (u) -- (ud) node[midway,above,sloped] {$p_d$};
 	% Lines out of d
-	\draw[->] (d) -- (ud) node[midway,below] {$p_u$};
-	\draw[->] (d) -- (d2) node[midway,below] {$p_d$};
+	\draw[->] (d) -- (ud) node[midway,below,sloped] {$p_u$};
+	\draw[->] (d) -- (d2) node[midway,below,sloped] {$p_d$};
 	% Lines out of u2
-	\draw[->] (u2) -- (u3) node[midway,above] {$p_u$};
-	\draw[->] (u2) -- (u2d) node[midway,above] {$p_d$};
+	\draw[->] (u2) -- (u3) node[midway,above,sloped] {$p_u$};
+	\draw[->] (u2) -- (u2d) node[midway,above,sloped] {$p_d$};
 	% Lines out of ud
-	\draw[->] (ud) -- (u2d) node[midway,above] {$p_u$};
-	\draw[->] (ud) -- (ud2) node[midway,below] {$p_d$};
+	\draw[->] (ud) -- (u2d) node[midway,above,sloped] {$p_u$};
+	\draw[->] (ud) -- (ud2) node[midway,below,sloped] {$p_d$};
 	% Lines out of d2
-	\draw[->] (d2) -- (ud2) node[midway,below] {$p_u$};
-	\draw[->] (d2) -- (d3) node[midway,below] {$p_d$};
+	\draw[->] (d2) -- (ud2) node[midway,below,sloped] {$p_u$};
+	\draw[->] (d2) -- (d3) node[midway,below,sloped] {$p_d$};
 	% Lines out of u3
-	\draw[->] (u3) -- (u4) node[midway,above] {$p_u$};
-	\draw[->] (u3) -- (u3d) node[midway,above] {$p_d$};
+	\draw[->] (u3) -- (u4) node[midway,above,sloped] {$p_u$};
+	\draw[->] (u3) -- (u3d) node[midway,above,sloped] {$p_d$};
 	% Lines out of u2d
-	\draw[->] (u2d) -- (u3d) node[midway,above] {$p_u$};
-	\draw[->] (u2d) -- (u2d2) node[midway,above] {$p_d$};
+	\draw[->] (u2d) -- (u3d) node[midway,above,sloped] {$p_u$};
+	\draw[->] (u2d) -- (u2d2) node[midway,above,sloped] {$p_d$};
 	% Lines out of ud2
-	\draw[->] (ud2) -- (u2d2) node[midway,below] {$p_u$};
-	\draw[->] (ud2) -- (ud3) node[midway,below] {$p_d$};
+	\draw[->] (ud2) -- (u2d2) node[midway,below,sloped] {$p_u$};
+	\draw[->] (ud2) -- (ud3) node[midway,below,sloped] {$p_d$};
 	% Lines out of d3
-	\draw[->] (d3) -- (ud3) node[midway,below] {$p_u$};
-	\draw[->] (d3) -- (d4) node[midway,below] {$p_d$};
+	\draw[->] (d3) -- (ud3) node[midway,below,sloped] {$p_u$};
+	\draw[->] (d3) -- (d4) node[midway,below,sloped] {$p_d$};
 	\end{tikzpicture}
 	
 	\caption{A 4 step lattice ($ n = 4 $)}
@@ -294,7 +294,7 @@ In particular, the price a European call at any time $ i $ is as follows.
 
 
 \paragraph{Computational details}
-If we are given the contingency claim, and the option is of the European type, it becomes very simple to evaluate it value in this model. While going through the algorithm, it is suggested to keep in mind Figure \ref{fig:discrete-4tr}.
+If we are given the contingency claim (which is the function of the underlying as stated in the contract), and the option is of the European type, it becomes very simple to evaluate it value in this model. While going through the algorithm, it is suggested to keep in mind Figure \ref{fig:discrete-4tr}.
 
 \begin{algorithm}[H]
 	\DontPrintSemicolon
@@ -320,7 +320,7 @@ If we are given the contingency claim, and the option is of the European type, i
 		\KwRet{Value at time 0}
 	}
 	
-	\caption{Evaluation of European options using the Cox-Ross-Rubinstein model}
+	\caption{Pricing European options in Cox-Ross-Rubinstein model}
 	\label{alg:discrete-eu}
 \end{algorithm}
 
@@ -421,7 +421,7 @@ If we are given the contingency claim, and the option is of the American type, i
 		\KwRet{Value at time 0}
 	}
 	
-	\caption{Evaluation of American options using the Cox-Ross-Rubinstein model}
+	\caption{Pricing American options in Cox-Ross-Rubinstein model}
 	\label{alg:discrete-am}
 \end{algorithm}
 
@@ -432,6 +432,8 @@ If we are given the contingency claim, and the option is of the American type, i
 
 \section{Continuous models -- the Black-Scholes model}
 \label{sec:continuous}
+
+We now consider a continuous model, meaning that the times are continuous and the prices do not have discrete jumps, but are continuous random variables. The most famous model is the Black-Scholes model proposed by Black and Scholes in 1973 \cite{Black1973}.
 
 As in the previous chapter, we consider two assets -- one riskless and one risky.
 
@@ -470,7 +472,7 @@ S_t = s_0 e^{ ( \mu - \frac{\sigma^2}{2} )t + \sigma B_t }.
 Before we proceed further in this section, we need to recall the Girsanov theorem.
 \begin{thm}[Girsanov]
 	\label{thm:continuous-girsanov}
-	Let $ (\Omega, \mathcal{F}, (\mathcal{F}_t)_t, P) $ be a filtered probability space, $ (B_t)_t $ be a $ (\mathcal{F}_t)_t $-Brownian motion on the bounded interval $ [0, T] $, and $ \theta \in \mathbb{R} $. Let the probability $ P^* $ be defined by the Radon-Nikodym derivative
+	Let $ (\Omega, \mathcal{F}, (\mathcal{F}_t)_t, P) $ be a filtered probability space, $ (B_t)_t $ be a $ (\mathcal{F}_t)_t $-Brownian motion on the bounded interval $ [0, T] $, and $ \theta \in \mathbb{R} $. Let the probability $ P^* $ be defined by the Radon-Nikodym derivative [TODO]
 	\begin{equation}
 	\frac{\dif P^*}{\dif P} = e^{ \theta B_T - \frac{\theta^2}{2} T }.
 	\end{equation}
@@ -488,7 +490,7 @@ Before we proceed further in this section, we need to recall the Girsanov theore
 \end{proof}
 
 
-First, we need to show that there exists a probability measure $ P^* $ equivalent to $ P $ under which the discounted share price $ \tilde{S}_t = e^{-rt} S_t $ is a martingale [TODO]. From Equation \ref{eq:continous-risky-sde} and Ito's Lemma [TODO], we get
+First, we need to show that there exists a probability measure $ P^* $ equivalent to $ P $ under which the discounted share price $ \tilde{S}_t = e^{-rt} S_t $ is a martingale[TODO]. From Equation \ref{eq:continous-risky-sde} and Ito's Lemma [TODO], we get
 \begin{align*}
 	\dif \tilde{S}_t  &=  -r e^{-rt} S_t \dif t + e^{-rt} \dif S_t  \\
 	&=  -r \tilde{S}_t \dif t + e^{-rt} ( \mu S_t \dif t + \sigma S_t \dif B_t )  \\
@@ -579,12 +581,12 @@ We deal with $ B $ first as it is more manageable.
 
 Now, $ \Delta W_t \sim N(0, \Delta t) $, implying $ \frac{ \Delta W_t }{ \sqrt{\Delta t} } \sim N(0, 1) $. Also note that $ \Delta W_t \perp \mathcal{F}_t $. Writing 
 \begin{equation*}
-	d_- ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
+	d_{\ominus} ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
 \end{equation*}
 and using independence, we get:
 \begin{align*}
-	B  &=  P^* \left( N(0, 1)  <  d_- \right)  \\
-	\implies  \qquad  B  &=  \mathcal{N}(d_- ( \Delta t, x; K, \sigma, r )),
+	B  &=  P^* \left( N(0, 1)  <  d_{\ominus} \right)  \\
+	\implies  \qquad  B  &=  \mathcal{N}(d_{\ominus} ( \Delta t, x; K, \sigma, r )),
 \end{align*}
 where $ \mathcal{N} $ is the (cumulative) distribution function of the standard normal distribution, given by
 \begin{equation}
@@ -598,20 +600,20 @@ Similarly, we now evaluate $ A $.
 
 Writing 
 \begin{equation*}
-d_+ ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r + \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
+d_{\oplus} ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r + \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
 \end{equation*}
 and using independence, we get:
 \begin{align*}
-A  &=  P^* \left( N(0, 1)  <  d_+ \right)  \\
-\implies  \qquad  A  &=  \mathcal{N}(d_+ ( \Delta t, x; K, \sigma, r )).
+A  &=  P^* \left( N(0, 1)  <  d_{\oplus} \right)  \\
+\implies  \qquad  A  &=  \mathcal{N}(d_{\oplus} ( \Delta t, x; K, \sigma, r )).
 \end{align*}
 
-Henceforth, we shall write $ d_\pm $ to denote $ d_\pm ( \Delta t, x; K, \sigma, r ) $.
+Henceforth, we shall write $ d_{\opm} $ to denote $ d_{\opm} ( \Delta t, x; K, \sigma, r ) $.
 
 Assembling all the pieces together we obtain the famous Black-Scholes formula for a European call.
 \begin{equation}
 	\label{eq:continous-call-pr}
-	c_t = c(t, S_t) = S_t \mathcal{N}(d_+) - K e^{-r \Delta t} \mathcal{N}(d_-)
+	c_t = c(t, S_t) = S_t \mathcal{N}(d_{\oplus}) - K e^{-r \Delta t} \mathcal{N}(d_{\ominus})
 \end{equation}
 
 
@@ -619,12 +621,12 @@ Assembling all the pieces together we obtain the famous Black-Scholes formula fo
 Employing the call-put parity to get
 \begin{equation}
 	\label{eq:continous-put-pr}
-	p_t = p(t, S_t) = K e^{-r \Delta t} \mathcal{N}(- d_-) - S_t \mathcal{N}(- d_+).
+	p_t = p(t, S_t) = K e^{-r \Delta t} \mathcal{N}(- d_{\ominus}) - S_t \mathcal{N}(- d_{\oplus}).
 \end{equation}
 
 
 \begin{rem}[Hedging]
-	Even though we shall not derive the hedging strategy, we comment that in the Black-Scholes model, derivatives are hedgeable, and is determined by the so called \emph{delta}, where $ \Delta \coloneqq \pd{c}{x}(t,S_t) = \mathcal{N}(d_+) $. The hedging strategy which uses the delta is called \emph{delta hedging}. In the real-world, there are other sources of risk which needs different hedging strategies, as highlighted in the limitations of the model.
+	Even though we shall not derive the hedging strategy, we comment that in the Black-Scholes model, derivatives are hedgeable, and is determined by the so called \emph{delta}, where $ \Delta \coloneqq \pd{c}{x}(t,S_t) = \mathcal{N}(d_{\oplus}) $. The hedging strategy which uses the delta is called \emph{delta hedging}. In the real-world, there are other sources of risk which needs different hedging strategies, as highlighted in the limitations of the model.
 \end{rem}
 
 
@@ -647,7 +649,7 @@ In spite of its limitations, the Black-Scholes model remain one of the most usef
 	\item[computability] The ease of computation is one of the biggest advantages of the model.
 	\item[useful approximation] It serves as decent approximation of the real world, particularly when analysing the direction in which prices move when crossing critical points.
 	\item[basis] It serves as a bedrock for more refined models, which try to address its drawbacks.
-	\item[reversible] the model's original output, price, can be used as an input and one of the other variables solved for; the implied volatility calculated in this way is often used to quote option prices.
+	\item[reversible] The model's original output, price, can be used as an input and one of the other variables solved for; the implied volatility calculated in this way is often used to quote option prices.
 \end{description}
 
 
@@ -657,7 +659,8 @@ In spite of its limitations, the Black-Scholes model remain one of the most usef
 
 
 
-\section{Other options}
+\subsection{Black-Scholes model -- other options}
+\label{subsec:continuous-other}
 
 We have seen that it is quite easy to compute the price of European options in the Black-Scholes model. On the other hand, pricing most other options is not so straight forward. For most options, we do not have closed-form solutions in the Black-Scholes model. Examples of such options include American options and most exotic options.
 

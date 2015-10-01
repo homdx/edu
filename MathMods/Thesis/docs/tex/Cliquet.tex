@@ -4,9 +4,9 @@
 
 
 \section{Introduction}
-\label{sec:sp-clq-intro}
+\label{sec:clq-intro}
 
-A `cliquet option' or a `ratchet option' is an exotic option consisting of a series of consecutive forward start options. The first such option is active immediately, and once it expires the second comes into existence, and so on. Each option is struck at-the-money when it becomes active. Therefore, such an option periodically settles and resets its strike price at the level of the underlying during the time of settlement. Investors can opt to receive their payout either when each option expires or wait until the entire time has elapsed.
+A \emph{cliquet option} or a \emph{ratchet option} is an exotic option consisting of a series of consecutive forward start options. The first such option is active immediately, and once it expires the second comes into existence, and so on. Each option is struck at-the-money when it becomes active. Therefore, such an option periodically settles and resets its strike price at the level of the underlying during the time of settlement. Investors can opt to receive their payout either when each option expires or wait until the entire time has elapsed.
 
 Usually, the return on a cliquet option is capped and floored. The capping and flooring may be local or global (or both). The motivation behind bounding the return is to provide the investor safety against downside risks, yet allowing significant upside potential. Consequently, the investor is also constrained from having unbounded gains. Capping the maximum ensures that the payoff is never too extreme and therefore that the value of the contract is not too outrageous. Some variants of cliquet options are as follows:
 \begin{description}
@@ -14,7 +14,7 @@ Usually, the return on a cliquet option is capped and floored. The capping and f
 	\item[Digital cliquet] The forward-starting options are digital options.
 \end{description}
 
-The following example, copied verbatim from Investopedia\footnote{http://www.investopedia.com/terms/c/cliquet.asp}, provides a good illustration.
+The following example, copied verbatim from Investopedia\footnote{\url{http://www.investopedia.com/terms/c/cliquet.asp}}, provides a good illustration.
 \begin{eg}
 	A three-year cliquet option with a strike of 1000 would expire worthless on the first year if the underlying was to be 900. This value (900) would then be the new strike price for the following year and should the underlying on the settlement be 1200, the contract holder would receive a payout and the strike would reset to this new level. Higher volatility provides better conditions for investors to earn profits.
 \end{eg}
@@ -22,56 +22,60 @@ The following example, copied verbatim from Investopedia\footnote{http://www.inv
 
 
 \paragraph{Literature review}
-[ToDo] The literature for pricing of cliquet options is primarily based on partial differential equations (PDE) techniques. Notable mentions include Wilmott's[TODO:reference] finite difference (FD) approach in a non-linear uncertain volatility model (UVM) in 2002. Later, Windcliff et al.[TODO:reference] explored a variety of modelling alternatives including jump diffusion models, local volatility and UVM models, again using finite differences
-methods in 2006.
+The literature for pricing of cliquet options is primarily based on partial differential equations (PDE) techniques. Notable mentions include Wilmott's finite difference (FD) approach in a non-linear uncertain volatility model (UVM) in 2002 \cite{Wilmott2002}. Later in 2006, Windcliff et al.\cite{Windcliff2006} explored a variety of modelling alternatives, including jump diffusion models, local volatility and UVM models, again using finite differences methods. They compared the use of a running sum of returns formulation to an average return formulation. Methods for grid construction, interpolation of jump conditions, and application of boundary conditions were also compared.
+
 
 \paragraph{Lattice method}
-Gaudenzi \textit{et al}\cite{Gaudenzi2011} introduced a discrete method for pricing cliquet options in a binomial Cox Ross Rubinstein model [TODO:reference]. This Singular Points method is faster than the alternative lattice based approaches available, while retaining a fair bit of flexibility to handle varying volatilities and rates of interest. Most of the chapter is inspired from the former paper.
+Gaudenzi \emph{et al}\cite{Gaudenzi2011} introduced a discrete method for pricing cliquet options in the Cox Ross Rubinstein model \cite{Cox1979} introduced in Chapter \ref{cha:models}. This singular points method is faster than the alternative lattice based approaches available, while retaining a fair bit of flexibility to handle varying volatilities and rates of interest. Most of the chapter is inspired by this paper.
+
+The central idea of the method, as we saw in Chapter \ref{cha:asian}, is to give, at every monitoring date, a continuous representation of the cliquet option price as a piecewise-linear function of the sum of the returns over the corresponding period. This function is characterized only by a set of points, called \emph{singular points}, which can easily be computed recursively by backward induction. Although the number of singular points grows rapidly at every monitoring date, it is possible to reduce their number drastically in a
+straightforward way, controlling the error involved by the elimination procedure at the same time. Moreover, the error control process leads automatically to the convergence of the approximations to the continuous value.
+
 
 
 \section{Cliquet contracts and models}
-\label{sec:sp-clq-models}
+\label{sec:clq-models}
 
-Notation review: In this and the following sections, we will use the notation $ [n] := \{ 0, 1, \dots, n \} $.
-
-We consider a market model, in which the price of the underlying risky asset is governed by the Black-Scholes stochastic differential equation.
+We consider a market model, in which the evolution of the risky asset price $ (S_t)_t $ is governed by the Black-Scholes stochastic differential equation
 \begin{subequations}
-	\label{eq:black-scholes}
-	\begin{align}
-		\frac{\dif S_t}{S_t}  &=  (r - q) \dif t + \sigma \dif B_t  \\
-		S_0 &= s_0		
-	\end{align}
+	\begin{align*}
+		\frac{\dif S_t}{S_t}  &=  (r - q) \dif t + \sigma \dif W_t  \\
+		S_0  &=  s_0
+	\end{align*}
 \end{subequations}
+Here $ W_t $ is a standard Brownian motion under the risk-neutral probability $ P^* $, $ r $ is the instantaneous interest rate, $ q $ is the continuous divident yield, $ \sigma $ is the volatility of the underlying risky asset. (Refer also to Equation \ref{eq:continuous-risky-sde-risk-neutral} and Remark \ref{rem:continuous-dividend} in Section \ref{sec:continuous} of Chapter \ref{cha:models}.)
+
 The quantities used above are defined as follows.
 \begin{description}
-	\item[$ S_t $] Price of the underlying risky asset at time $t$
-	\item[$B_t$] A standard Brownian motion under the risk-neutral probability measure $Q$
-	\item[$ r > 0 $] Rate of interest
-	\item[$ q \ge 0 $] Continuous divident yield
-	\item[$ \sigma > 0 $] Volatility of the risky asset
+	\item[$ S_t $] the price of the underlying risky asset at time $t$
+	\item[$ W_t $] a standard Brownian motion under the risk-neutral probability measure $ P^* $
+	\item[$ r > 0 $] the instantaneous interest rate
+	\item[$ q \ge 0 $] the continuous divident yield
+	\item[$ \sigma > 0 $] the volatility of the risky asset
 \end{description}
+(Refer also to Equation \ref{eq:continuous-risky-sde-risk-neutral} and Remark \ref{rem:continuous-dividend} in Section \ref{sec:continuous} of Chapter \ref{cha:models}.)
 
 Solving the equation, at any time $ t $, the price of the underlying risky asset is given by
 \begin{equation*}
-	\label{eq:sp-clq-risky-prc}
+	\label{eq:clq-risky-prc}
 	S_t = s_0 e^{ ( (r - q) - \frac{\sigma^2}{2} )t + \sigma B_t }.
 \end{equation*}
 
 Let $T$ be the maturity of the cliquet contract. Let the payoffs depend on the $ N $ preordained observation times $ t_1, t_2, \dots, t_{N} $ ($ t_0 = 0 $). At these observation times, the value of the underlying are $ ( S_i )_i, S_i = S_{t_i}, i \in \left[ N \right] $. The returns for the time interval $ ( t_{i-1}, t_i ] $ are given by
 \begin{equation}
-	\label{eq:sp-clq-return}
+	\label{eq:clq-return}
 	R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1 \ .
 \end{equation}
 
 During each time interval, the return is capped and floored locally by the quantities $ C_{loc} $ and $ F_{loc} $. In other words, we consider the quantity $ \max \{ F_{loc}, \min \{ C_{loc}, R_i \} \} $ rather than the return itself. The sum of these quantities till time $t_i$ is called the `running sum' and is given by
 \begin{equation}
-	\label{eq:sp-clq-rsz}
+	\label{eq:clq-rsz}
 	Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \}.
 \end{equation}
 
 We also consider a global cap $ C_{glob} $ and floor $ F_{glob} $. Thus, the expression for the payoff finally becomes
 \begin{equation}
-	\label{eq:sp-clq-rsz}
+	\label{eq:clq-rsz}
 	\mathrm{payoff} = \mathrm{notional} \cdot \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \}.
 \end{equation}
 
@@ -79,7 +83,7 @@ For ease of notation, we take $ \mathrm{notional} = 1 $.
 
 We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C_{loc} $. Similarly, the case $ F_{glob} < N F_{loc} $ is equivalent to $ F_{glob} = N F_{loc} $. In general, we may write the following.
 \begin{subequations}
-	\label{eq:sp-clq-update-glob}
+	\label{eq:clq-update-glob}
 	\begin{align*}
 		F_{glob} &= \max \{ N F_{loc}, F_{glob} \}  \\
 		C_{glob} &= \min \{ N C_{loc}, C_{glob} \}
@@ -89,33 +93,30 @@ We note that the case $ C_{glob} > N C_{loc} $ is equivalent to $ C_{glob} = N C
 
 Now, we consider the binomial approach in order to price the cliquet option in the Black-Scholes framework. Let the number of intervals be $n$ and the corresponding time step be $ \Delta T = \frac{T}{n} $. Then the lognormal diffusion process is approximated by the Cox-Ross-Rubinstein binomial process:
 \begin{equation}
-	\label{eq:sp-clq-risky-iid-binom-rvs}
-	\tilde{S}_j = s_0 \prod_{k = 1}^j Y_k \qquad \forall j \in [n],
+	\label{eq:clq-risky-iid-binom-rvs}
+	\tilde{S}_j = s_0 \prod_{k = 1}^j T_k \qquad \forall j \in [n],
 \end{equation}
-where the random variables $Y_k$ are independent and identically distributed with values in $ \{ d, u \} $, representing a down and up movement, respectively. Let $p$ be the probability of an up movement of the asset, that is, $ p = \Pr( Y_n = u ) $. The Cox-Ross-Rubinstein corresponds to the choice $ u = 1/d = e^{ \sigma \sqrt{ \Delta T } } $. Thus,
+where the random variables $ T_k $ are independent and identically distributed with values in $ \{ d, u \} $, representing a down and up movement, respectively. Let $p$ be the probability of an up movement of the asset, that is, $ p = \Pr( Y_n = u ) $. The Cox-Ross-Rubinstein corresponds to the choice $ u = 1/d = e^{ \sigma \sqrt{ \Delta T } } $. Thus,
 \begin{equation}
-	\label{eq:sp-clq-pu}
+	\label{eq:clq-pu}
 	p = \frac{ e^{r \Delta T} - d }{ u - d } = \frac{ e^{r \Delta T} - e^{ -\sigma \sqrt{ \Delta T } } }{ e^{ \sigma \sqrt{ \Delta T } } - e^{ -\sigma \sqrt{ \Delta T } } }.
 \end{equation}
 
 We assume that the difference between two observation times is constant and we denote by $m$ the number of steps of the binomial tree in every period (so that the total number of steps of the binomial tree is $ n = m N $).
 
-To recapitulate, the following table highlights the notations in a concise manner.
-[TODO]
 
 
-
-\section{The Singular Points method for cliquet options}
-\label{sec:sp-clq-sp}
+\section{The singular points method for cliquet options}
+\label{sec:clq-sp}
 
 The binomial method may always be used to price any option, including path-dependent ones. The binomial method looks through all possible paths of the underlying in order to price the option. The number of possible paths are $ 2 ^ {m N} $. Thus, the method is inherently extremely computationally expensive due to the exponential dependence of the number of paths on $m$ and $ N $. The theoretical computational complexity is $ O( m^{N} ) $, as in \cite[Page 128]{Gaudenzi2011}.
 
-A modification of the Singular Points method described in the previous chapter solves this problem for cliquet options by the process of approximation. The method of approximation selectively removes certain paths that would be normally considered, but which do not affect the result in a significant manner. This may be done by putting an \emph{a priori} error bound while removing points. The method turns out to be significantly faster and memory efficient compared to known binomial techniques. Moreover, its flexible is evinced by the fact that it is adaptable for varying interest rate and volatility in each observational period.
+A modification of the singular points method described in the previous chapter solves this problem for cliquet options by the process of approximation. The method of approximation selectively removes certain paths that would be normally considered, but which do not affect the result in a significant manner. This may be done by putting an \emph{a priori} error bound while removing points. The method turns out to be significantly faster and memory efficient compared to known binomial techniques. Moreover, its flexible is evinced by the fact that it is adaptable for varying interest rate and volatility in each observational period.
 
-In this section, we will note some elementary definitions and results, and give a detailed exposition of the method. The reader is advised to keep in mind the notation introduced in section \ref{sec:sp-asian-notations} of chapter \ref{cha:sp-asian}.
+In this section, we will note some elementary definitions and results, and give a detailed exposition of the method. The reader is advised to keep in mind the notation introduced in section \ref{sec:asian-notations} of chapter \ref{cha:asian}.
 
 \begin{dfn}[Singular points and singular values]
-	\label{def:sp-clq-sp}
+	\label{def:clq-sp}
 	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that $ a = x_0 < x_1 < \dots < x_{n-1} < x_n = b \forall i \in [n] $
 	
 	Let $ f:[a,b] \to [0, \infty) $ be the function obtained by linear interpolation of the points in $P$. The definition of $f$ ensures that the function is continuous and piecewise-linear.
@@ -124,23 +125,23 @@ In this section, we will note some elementary definitions and results, and give 
 \end{dfn}
 
 
-\begin{rem} \label{rem:sp-clq-char}
+\begin{rem} \label{rem:clq-char}
 	We note that the singular points characterise such a function completely. This can be seen from the following representation of the function.
 	\begin{equation}
-		\label{eq:sp-clq-function-repr}
+		\label{eq:clq-function-repr}
 		f(x) = y_0 + \sum_{i=1}^n [ m_i ( \min \{x_{i}, x \} - \min \{ x_{i-1}, x \} ) ]
 	\end{equation}
 	Where $ m_{i+1} = \frac{y_{i+1} - y_{i}}{x_{i+1} - x_{i}} $ represents the slope of the function between $ (x_{i}, y_{i}) $ and $ (x_{i+1}, y_{i}) $.
 \end{rem}
 
 \begin{rem}
-	Note that there is no mention of convexity in the foregoing discussion, since the price function in the cliquet case is not necessarily convex, as opposed to the Asian case. The problem comes from the fact that due to the presence of a global cap, the price function at maturity is no longer convex (see Figure \ref{fig:sp-clq-maturity}). Since the algorithm starts from maturity, it follows that we cannot assume convexity at any point of time. It was primarily the convexity of the price functions in the Asian case that allowed us to obtain simple upper and lower bounds of the exact binomial price. Nevertheless, in the case of cliquet options, the singular points approach still provides an efficient binomial framework, even in the absence of convexity of the price functions, as we shall see.
+	Note that there is no mention of convexity in the foregoing discussion, since the price function in the cliquet case is not necessarily convex, as opposed to the Asian case. The problem comes from the fact that due to the presence of a global cap, the price function at maturity is no longer convex (see Figure \ref{fig:clq-maturity}). Since the algorithm starts from maturity, it follows that we cannot assume convexity at any point of time. It was primarily the convexity of the price functions in the Asian case that allowed us to obtain simple upper and lower bounds of the exact binomial price. Nevertheless, in the case of cliquet options, the singular points approach still provides an efficient binomial framework, even in the absence of convexity of the price functions, as we shall see.
 \end{rem}
 
 
 
 \subsection{The method}
-\label{subsec:sp-clq-method}
+\label{subsec:clq-method}
 
 Our aim is to look at every possible value taken by the running sum $Z$ within the bounds $ [ F_{loc}, C_{loc} ] $ for each time interval $ t_1, \dots, t_{N} $. If we know the price function at maturity, we may use a backward procedure (in time) in order to obtain a continuous representation of the cliquet price as a piecewise-linear function of the running sum $Z$. Since it is piecewise-linear and continuous, the function may be represented using its singular points. Thus, we see an evolution of singular points as we go back in time. Since the number of singular points may be significantly high for any computer, we shall introduce an error controlled approximation procedure to reduce the number of singular points.
 
@@ -153,7 +154,7 @@ Let the number of singular points at each observational time $ t_i $ be $ L_{i} 
 \paragraph{At maturity}
 At maturity ($ t_{N{obs}} = T $), for every running sum $Z$, the price of the cliquet option $ V_{N}(Z) $ as function of $Z$, is given by
 \begin{equation}
-	\label{eq:sp-clq-vnobs-maturity}
+	\label{eq:clq-vnobs-maturity}
 	V_{N}(Z) = \max \{ Fglob, \min\{ Cglob, Z \} \}
 \end{equation}
 
@@ -166,7 +167,7 @@ We note the following.
 
 Focusing further on point 3 above, we note down the singular running sums and corresponding prices.
 \begin{table}[h]
-	\label{tab:sp-clq-maturity}
+	\label{tab:clq-maturity}
 	\centering
 	\caption{Singular points at maturity}
 	\begin{tabular}{ccc}
@@ -181,8 +182,8 @@ Focusing further on point 3 above, we note down the singular running sums and co
 	\end{tabular}
 \end{table}
 
-A more visual representation of the price function at maturity is given in Figure \ref{fig:sp-clq-maturity}.
-\begin{figure}
+A more visual representation of the price function at maturity is given in Figure \ref{fig:clq-maturity}.
+\begin{figure}[h]
 	\centering
 	
 	\definecolor{cqcqcq}{rgb}{0.7529411764705882,0.7529411764705882,0.7529411764705882}
@@ -232,7 +233,7 @@ A more visual representation of the price function at maturity is given in Figur
 	\end{tikzpicture}
 	
 	\caption{The price function at maturity}
-	\label{fig:sp-clq-maturity}
+	\label{fig:clq-maturity}
 \end{figure}
 
 
@@ -240,15 +241,15 @@ A more visual representation of the price function at maturity is given in Figur
 
 We consider the time step $ N - 1 $. If the running sum at time $ t_{N - 1} $ is denoted by $ Z $, then the corresponding price depends on the possible returns of the underlying asset during the time interval $ [ t_{N - 1}, T ] $.
 
-We revisit equation \ref{eq:sp-clq-return} once more. Now we note that since the number of time steps in each interval is $m$, there will be $m$ up movements or down movements of the asset. Thus, there are $ m + 1 $ possible outcomes, given by $ S_i = u^{-m + 2j} S_{i-1}, j \in [m] $. Corresponding to these cases, there are also $ m + 1 $ returns, given by
+We revisit equation \ref{eq:clq-return} once more. Now we note that since the number of time steps in each interval is $m$, there will be $m$ up movements or down movements of the asset. Thus, there are $ m + 1 $ possible outcomes, given by $ S_i = u^{-m + 2j} S_{i-1}, j \in [m] $. Corresponding to these cases, there are also $ m + 1 $ returns, given by
 \begin{equation}
-	\label{eq:sp-clq-return-final}
+	\label{eq:clq-return-final}
 	R_j = u^{-m + 2j} - 1 \qquad j \in [m]
 \end{equation}
 
-Since the probability of an up movement in time $ \Delta T $ is $p$ (refer equation \ref{eq:sp-clq-pu}), we have that the probability of each return is distributed binomially, and is given by
+Since the probability of an up movement in time $ \Delta T $ is $p$ (refer equation \ref{eq:clq-pu}), we have that the probability of each return is distributed binomially, and is given by
 \begin{equation}
-	\label{eq:sp-clq-prb-binom}
+	\label{eq:clq-prb-binom}
 	p_j = \binom{m}{j} p^j (1-p)^{m-j}
 \end{equation}
 
@@ -276,7 +277,7 @@ Where $ \ceil{\cdot} $ denotes the ceiling function.
 
 We represent by $ j_0 $ the number of possibilities of the return after enforcing the local floor and cap. Summarising
 \begin{subequations}
-	\label{eq:sp-clq-j-mix-max}
+	\label{eq:clq-j-mix-max}
 	\begin{align}
 		j_{\min} &= \floor{ \frac{ \log(F_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  \\
 		j_{\max} &= \ceil { \frac{ \log(C_{loc} + 1) }{ 2 \sigma \Delta T } + \frac{m}{2} }  \\
@@ -286,9 +287,9 @@ We represent by $ j_0 $ the number of possibilities of the return after enforcin
 
 $ \forall j \le j_{\min} $, the return is $ F_{loc} $, and $ \forall j \ge j_{\max} $, the return is $ C_{loc} $. For the other indices, the return remains unchanged.
 
-For ease of implementation, we shift the indices from $ \{ j_{\min}, \dots, j_{\max} \} $ to $ \{ 0, \dots, j_0 \} $ by putting $ j' = j - j_{\min} $. Table \ref{tab:sp-clq-shift} highlights the shifted indices, and the corresponding returns and probabilities.
+For ease of implementation, we shift the indices from $ \{ j_{\min}, \dots, j_{\max} \} $ to $ \{ 0, \dots, j_0 \} $ by putting $ j' = j - j_{\min} $. Table \ref{tab:clq-shift} highlights the shifted indices, and the corresponding returns and probabilities.
 \begin{table}[h]
-	\label{tab:sp-clq-shift}
+	\label{tab:clq-shift}
 	\centering
 	\caption{Shifted returns and probabilities}
 	\begin{tabular}{cccc}
@@ -303,57 +304,84 @@ For ease of implementation, we shift the indices from $ \{ j_{\min}, \dots, j_{\
 \end{table}
 
 
-Now we focus on how to determine the price function at time $ t_{N - 1} $. Recall that at maturity, the function $ V_{N}(Z) $ giving the price of the cliquet option as a function of the running sum $ Z $ at maturity, is the piecewise linear function whose singular points are presented in Table \ref{tab:sp-clq-maturity}. At the penultimate time step $ t_{N - 1} $, we must have $ Z \in [ (N-1) F_{loc}, (N-1) C_{loc} ] $. Note that $ Z $ is the running sum till the penultimate time step. The price function at this time is given as a discounted conditional expectation of the price function at maturity given the information at penultimate time. Thus
+Now we focus on how to determine the price function at time $ t_{N - 1} $. Recall that at maturity, the function $ V_{N}(Z) $ giving the price of the cliquet option as a function of the running sum $ Z $ at maturity, is the piecewise linear function whose singular points are presented in Table \ref{tab:clq-maturity}. At the penultimate time step $ t_{N - 1} $, we must have $ Z \in [ (N-1) F_{loc}, (N-1) C_{loc} ] $. Note that $ Z $ is the running sum till the penultimate time step. The price function at this time is given as a discounted conditional expectation of the price function at maturity given the information at penultimate time. Thus
 \begin{equation}
-	\label{eq:sp-clq-penultimate}
+	\label{eq:clq-penultimate}
 	V_{N-1} (Z) = e^{- m \Delta T} \sum_{j=0}^{j_0} \left[ p_j' V_{N} (Z + R_j') \right]
 \end{equation}
 
 Since $ V_{N} $ is piecewise-linear and continuous, and the above is just a linear combination of such functions, the resulting function is also piecewise-linear and continuous, and thus may be completely represented by singular points. The next logical step is of course to figure out a method to compute these singular points.
 
-From equation \ref{eq:sp-clq-penultimate}, we note that each singular point $ l $ at maturity may have $ j_0 + 1 $ possible returns, given by
+From equation \ref{eq:clq-penultimate}, we note that each singular point $ l $ at maturity may have $ j_0 + 1 $ possible returns, given by
 \begin{equation}
-	\label{eq:sp-clq-b}
+	\label{eq:clq-b}
 	B_{l,j} = Z_N^l - R_j' \qquad j \in [j_0]
 \end{equation}
 
-Then the maximum number of singular points at time $ t_{N-1} $ is $ ( j_0 + 1 ) L_N $. But not all the running sums at time $ t_{N-1} $ would belong to the interval $ [ (N-1) F_{loc}, (N-1) C_{loc} $. All the $ B_{l,j} $ which belong to the interval become the abscissa of a singular point at time $ t_{N-1} $. The corresponding singular price is determined by formula \ref{eq:sp-clq-penultimate}. The term $ V_{N} (B_{l,j} + R_k') $, required by the formula, is computed using linearity of the price function at maturity. We just need to figure out the interval $ l_0 $ such that $ ( B_{l,j} + R_k' ) \in [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $, and evaluate $ V_{N} (B_{l,j} + R_k') $ by linear interpolation of the extrema. Such an interpolation gives not an approximation by the exact value due to the piecewise-linear nature of the original function.
+Then the maximum number of singular points at time $ t_{N-1} $ is $ ( j_0 + 1 ) L_N $. But not all the running sums at time $ t_{N-1} $ would belong to the interval $ [ (N-1) F_{loc}, (N-1) C_{loc} $. All the $ B_{l,j} $ which belong to the interval become the abscissa of a singular point at time $ t_{N-1} $. The corresponding singular price is determined by formula \ref{eq:clq-penultimate}. The term $ V_{N} (B_{l,j} + R_k') $, required by the formula, is computed using linearity of the price function at maturity. We just need to figure out the interval $ l_0 $ such that $ ( B_{l,j} + R_k' ) \in [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $, and evaluate $ V_{N} (B_{l,j} + R_k') $ by linear interpolation of the extrema. Such an interpolation gives not an approximation by the exact value due to the piecewise-linear nature of the original function.
 
 Finally, the singular points thus obtained are sorted in ascending order on the basis of the running sums. This ordered sequence of singular points $ ( ( Z_{N-1}^l, P_{N-1}^l ) )_l , l \in \{ 1, \dots, L_{N-1} \} $ completely characterises the price function at time $ V_{N-1}(Z) $.
 
 
 \paragraph{At all times}
-The previous argument may be applied iteratively in a backward fashion at each step $ N-2, N-3, \dots, 1, 0 $ to obtain the singular points at each time step. At time 0, there is only one singular point $ (0, P_0^1) $, and $ P_0^1 $ provides the exact binomial price of the cliquet option. The equality of this price and the exact binomial price is proved in Proposition \ref{thm:sp-clq-equality}.
+The previous argument may be applied iteratively in a backward fashion at each step $ N-2, N-3, \dots, 1, 0 $ to obtain the singular points at each time step. At time 0, there is only one singular point $ (0, P_0^1) $, and $ P_0^1 $ provides the exact binomial price of the cliquet option. The equality of this price and the exact binomial price is proved in Proposition \ref{thm:clq-equality}.
 
 
-\begin{prp}[Equality of price obtained by the singular points method and the binomial price]
-	\label{thm:sp-clq-equality}
+\begin{prp}[The singular points method gives the binomial price]
+	\label{thm:clq-equality}
 	$ P_0^l $ coincides with the exact binomial price with $ n $ time steps of the cliquet option.
 \end{prp}
 
 \begin{proof}
-	Let the running sum $ Z_{i_1, \dots, i_k} = \sum_{j=1}^{k} R_{i_j}', \  (i_1, \dots, i_k) \in [j_0]^k, k \in \{ 1, \dots, N \} $.
+	Let the running sum $ Z_{i_1, \dots, i_k} = \sum_{j=1}^{k} R_{i_j}', \  (i_1, \dots, i_k) \in [j_0]^k, k \in \{ 1, \dots, N \} $, and associate them to the prices $ P_{i_1, \dots, i_k} $.
 	Then the exact binomial price $ Q_n $ of the cliquet option is given by
 	\begin{equation*}
 		Q_n = e^{-rT} \sum_{i_1, \dots, i_N = 0}^{j_0} \left( p_{i_1}' \cdot \dots \cdot p_{i_N}' \max \left\{ F_{glob}, \min \left\{ C_{glob}, Z_{i_1, \dots, i_N} \right\} \right\} \right).
 	\end{equation*}
+	This can be computed backward.
+	
+	At maturity, set $ P_{i_1, \dots, i_N} = \max \left\{ F_{glob}, \min \left\{ C_{glob}, Z_{i_1, \dots, i_N} \right\} \right\} $.
+	
+	Along the tree the prices $ P_{i_1, \dots, i_k}, k \in [N-1] $, are evaluated by the
+	backward formula
+	\begin{equation*}
+		P_{i_1, \dots, i_k}  =  e^{-r \frac{T}{N}}  \sum_{j=0}^{j_0} p_j' P_{i_1, \dots, i_k, j}
+	\end{equation*}
+	
+	Finally, we get $ Q_n = e^{-r \frac{T}{N}}  \sum_{j=0}^{j_0} p_j' P_j $.
+	
+	We now prove the result by backward induction. At maturity, for every choice of the running sum $ Z = Z_{i_1, \dots, i_N} $, the price $ P_{i_1, \dots, i_N} $ coincides with the value of the option $ v_N(Z) $. By construction (Equation \ref{eq:clq-penultimate}), this holds true
+	also for every running sum evaluated at step $ N - 1 $, and iteratively, at all the nodes
+	of the tree. Thus, the price $ Q_n $ coincides with the price $ P_0^1 $ determined by the singular points algorithm.
 \end{proof}
 
-[TODO] Insert remark 2
+
+\begin{rem}[Generalisation]
+	The method is easily generalised to cases with (discrete) time-varying interest rates and volatilities. In other words, for each \emph{observed} time interval $ [t_{i-1}, t_{i}] $ denoted by $ i \in \{1, 2, \dots, N \} $, we can take different values of $ r_i, \sigma_i $. The technique requires modification only for the computation of the probabilities $ p' $ and the returns $ R' $ which have to be evaluated at every observation time by using the corresponding $ r_i $ and $ \sigma_i $.
+	
+	In fact, we may even take varying local floors and caps, denoted $ F_i^{loc}, C_i^{loc} $. In this case, we also have to compute $ j_{\min}, j_{\max}, j_0 $ for each period individually.
+\end{rem}
+
+
+\begin{rem}[Computational dependence on volatility]
+	The time of computation of the pure binomial method for cliquet options is strongly dependent on the volatility. In fact the total number of paths needed to determine the price is $ m^N $. Because of the presence of the global cap and floor, the number of paths can be reduced to $ ( j_0 + 1 ) N $, where $ j_0 = j_{\max} - j_{\min} $. But $ j_0 $ is strictly dependent on $ \sigma $ (see Equation \ref{eq:clq-j-mix-max}) and the difference in the computational time between large and small volatilities becomes very high (see also Table \ref{tab:clq-results}).
+\end{rem}
+
 
 
 \subsection{Approximation}
+\label{subsec:clq-approx}
 
-The method demonstrated in Section \ref{subsec:sp-clq-method} gives us the actual binomial price of the cliquet option. But as was mentioned earlier, the computational complexity of the method is theoretically the same as that of the binomial method, which is $ m^{N} $. But contrary to the binomial method, the singular point method enables us to use precise, efficient and controlled approximation to accelerate the procedure significantly. Thus its efficacy become apparent when we have time and memory constraints, or we wish to substantially increase the number of intermediate time steps.
+The method demonstrated in Section \ref{subsec:clq-method} gives us the actual binomial price of the cliquet option. But as was mentioned earlier, the computational complexity of the method is theoretically the same as that of the binomial method, which is $ m^N $. But contrary to the binomial method, the singular point method enables us to use precise, efficient and controlled approximation to accelerate the procedure significantly. Thus its efficacy become apparent when we have time and memory constraints, or we wish to substantially increase the number of intermediate time steps.
 
 The prime idea of the approximation procedure is to remove singular points in a controlled manner in order to simplify the computations. To this end, we fix a given maximal level $ h > 0 $ of the error in each period. Now, we eliminate singular points in a fashion so that the function after deletion of the points ($ \tilde{V}_i $) is different from the original function by less than ($ h $) at each point. This may be achieved as follows.
 
-Start with the point $ ( Z_i^1, P_i^1 ) $. Find the largest index $ l > 1 $ such that the distances between the straight line joining $ ( Z_i^1, P_i^1 ) $ and $ ( Z_i^l, P_i^l ) $ and the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $ are always less than $ h $. Note that this, coupled with the fact that the original function is piecewise-linear, ensures that the differences in the values of the functions for any value of the running sum would be bounded over by $ h $. Now delete the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $. The point $ ( Z_i^l, P_i^l ) $ now becomes the second singular point, and we continue the procedure iteratively starting with this point till we cover all the points. Figure \ref{fig:sp-clq-approx} elaborates on this graphically.
+Start with the point $ ( Z_i^1, P_i^1 ) $. Find the largest index $ l > 1 $ such that the distances between the straight line joining $ ( Z_i^1, P_i^1 ) $ and $ ( Z_i^l, P_i^l ) $ and the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $ are always less than $ h $. Note that this, coupled with the fact that the original function is piecewise-linear, ensures that the differences in the values of the functions for any value of the running sum would be bounded over by $ h $. Now delete the points $ ( Z_i^2, P_i^2 ), ( Z_i^3, P_i^3 ), \dots, ( Z_i^{l-1}, P_i^{l-1} ) $. The point $ ( Z_i^l, P_i^l ) $ now becomes the second singular point, and we continue the procedure iteratively starting with this point till we cover all the points. Figure \ref{fig:clq-approx} elaborates on this graphically. The elimination of points $ S_3 $ to $ S_6 $ gives function $ V_1 $ (bold, blue), which has maximum error $ \le h $. Elimination of points $ S_3 $ to $ S_7 $ gives function $ V_2 $ (dashed, red), which has maximum error $ > h $. Thus we choose $ V_1 $ as the approximation function.
 
 Since at each $ N $ the upper bound for the error is $ h $, if we repeat the approximation procedure at every observational time, the total error infused in the price of the option is bounded by $ Nh $.
 
 
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	
 	\definecolor{ffqqqq}{rgb}{1.,0.,0.}
@@ -443,26 +471,46 @@ Since at each $ N $ the upper bound for the error is $ h $, if we repeat the app
 	\end{scriptsize}
 	\end{tikzpicture}
 	
-	\caption{Approximation procedure: Elimination of points $ S_3 $ to $ S_6 $ gives function $ V_1 $ (bold, blue), which has maximum error $ \le h $. Elimination of points $ S_3 $ to $ S_7 $ gives function $ V_2 $ (dashed, red), which has maximum error $ > h $. Thus we choose $ V_1 $ as the  approximation function.}
-	\label{fig:sp-clq-approx}
+	\caption{Approximation procedure}
+	\label{fig:clq-approx}
 \end{figure}
 
 
 \begin{rem}[Comparison with Asian options]
-	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section [TODO: reference] of Chapter \ref{cha:sp-asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
+	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section [TODO: reference] of Chapter \ref{cha:asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
 \end{rem}
 
-The following proposition proves that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model.
-
-[TODO: Proposition 2]
+The following proposition proves that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model. The proposition and proof is directly from \cite{Gaudenzi2011}.
 
 
+\begin{prp}[Convergence to the continuous model]
+	\label{thm:convergence-continuous}
+	Let us denote by $ Q_n^h $ the approximation of the price evaluated with $ n $ time steps and with maximal level of error at every monitoring date $ h = h(n) $. If $ h(n) \to 0 $ as $ n \to \infty $, then $ Q_n^{h(n)} $ converges to the price of the cliquet option in the continuous model.
+\end{prp}
 
+\begin{proof}
+	The binomial Cox-Ross-Rubinstein tree converges weakly to the lognormal process. In fact, Kushner’s Theorem (see \cite{kushner1984approximation} and \cite{Kushner:1992:NMS:151172}) ensures that the local consistency conditions, i.e. the matching at the first order of the first and the second moments of the logarithmic increments of the approximating Markov chain
+	with those of the continuous-time limit, leads to the convergence of the expectations of smooth functionals. In particular, let $ \psi $ be a continuous bounded function and $ \tilde{S}_j $ be the Cox–Ross–Rubinstein binomial process defined in \ref{eq:clq-risky-iid-binom-rvs}. Then it holds that
+	\begin{equation*}
+		\lim_{n \to \infty} \E \left( e^{-rT} \psi \left( \bar{S}_j, j \in [n] \right) \right)  =  \E \left( e^{-rT} \psi \left( S_t, t \in [0, T] \right) \right)
+	\end{equation*}
+	Therefore the exact binomial price $ Q_n $ converges to the continuous option price as $ n \to \infty $.
+	
+	Proposition \ref{thm:clq-equality} ensures that $ Q_n $ coincides with $ Q_n^0 $, i.e. the price computed with the
+	singular points algorithm and $ h = 0 $. We can conclude
+	\begin{equation*}
+		\left|   Q_n^{h(n)} - Q_n  \right|  =  \left|   Q_n^{h(n)} - Q_n^0  \right|  <  h(n) N
+	\end{equation*}
+	
+	The claim now follows from the assumption $ h(n) \to 0 $.
+\end{proof}
+
+
+\clearpage
 \section{The program}
-\label{sec:sp-clq-program}
+\label{sec:clq-program}
 
 \subsection{Algorithm}
-[TODO: Include approximation procedure]
 
 \begin{algorithm}[H]
 	\DontPrintSemicolon
@@ -487,17 +535,17 @@ The following proposition proves that the approximation of the price obtained by
 	\KwOut{The price of the option at the initial time}
 	
 	\Begin{
-		Update $ F_{glob} $ and $ C_{glob} $ using Equations \ref{eq:sp-clq-update-glob}. \;
+		Update $ F_{glob} $ and $ C_{glob} $ using Equations \ref{eq:clq-update-glob}. \;
 		
-		Set $ \Delta T, u, p $ from the formulae in Section \ref{sec:sp-clq-models}. \;
+		Set $ \Delta T, u, p $ from the formulae in Section \ref{sec:clq-models}. \;
 		
-		Compute the returns and probabilities using Equation \ref{eq:sp-clq-return-final} and Equation \ref{eq:sp-clq-prb-binom}. \;
+		Compute the returns and probabilities using Equation \ref{eq:clq-return-final} and Equation \ref{eq:clq-prb-binom}. \;
 		
-		Compute $ j_{\min}, j_{\max}, j_0 $ (Equations \ref{eq:sp-clq-j-mix-max}) and shifted returns (Table \ref{tab:sp-clq-shift}). \;
+		Compute $ j_{\min}, j_{\max}, j_0 $ (Equations \ref{eq:clq-j-mix-max}) and shifted returns (Table \ref{tab:clq-shift}). \;
 		
 		\tcp{$ S_i $ and $ S_+ $ denotes the current ($ i^{\mathrm{th}} $) and next ($ (i+1)^{\mathrm{th}} $) list of singular points.}
 		
-		$ S_N \leftarrow \{ (N F_{loc}, F_{glob}), (F_{glob}, F_{glob}), (C_{glob}, C_{glob}), (N C_{loc}, C_{glob}) \} $ \tcp{Table \ref{tab:sp-clq-maturity}.}
+		$ S_N \leftarrow \{ (N F_{loc}, F_{glob}), (F_{glob}, F_{glob}), (C_{glob}, C_{glob}), (N C_{loc}, C_{glob}) \} $ \tcp{Table \ref{tab:clq-maturity}.}
 				
 		$ S_+ \leftarrow S_N $ \;
 		
@@ -505,7 +553,7 @@ The following proposition proves that the approximation of the price obtained by
 			$ S_i \leftarrow \emptyset, \qquad L_+ \leftarrow \mathrm{length}(S_+) $ \;
 			
 			\ForAll{$ (l, j) \in [L_+] \times [j_0 + 1] $}{
-				Compute $ B_{l,j} $ using Equation \ref{eq:sp-clq-b}, replacing $ N $ by $ i $. \;
+				Compute $ B_{l,j} $ using Equation \ref{eq:clq-b}, replacing $ N $ by $ i $. \;
 				
 				\If{ $ ( B_{l,j} + R_k' ) \notin [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $ } {
 					Continue \tcp*{to the next item in the loop}
@@ -515,9 +563,13 @@ The following proposition proves that the approximation of the price obtained by
 				
 				Evaluate $ V_{i+1} (B_{l,j} + R_k') $ by linear interpolation of the extrema. \;
 				
-				Evaluate $ V_{i}(B_{l,j}) $ by using Equation \ref{eq:sp-clq-penultimate}, replacing $ N $ by $ i $. \;
+				Evaluate $ V_{i}(B_{l,j}) $ by using Equation \ref{eq:clq-penultimate}, replacing $ N $ by $ i $. \;
 				
 				$ S_i \leftarrow S_i \cup (B_{l,j}, V_{N-1}(B_{l,j})) $ \;
+			}
+			
+			\If{$ m \mid i $}{
+				Approximate as described in Section \ref{subsec:clq-approx}. \;
 			}
 			
 			$ S_+ \leftarrow S_i $ \;
@@ -525,7 +577,7 @@ The following proposition proves that the approximation of the price obtained by
 		\KwRet{$ (S_i)_{1,2} $ \tcp*{Singular price at time 0} }
 	}
 	
-	\caption{The Singular Points method for cliquet options}
+	\caption{Pricing cliquet options using the singular points method}
 \end{algorithm}
 
 \paragraph{Analysis of algorithm}
@@ -534,26 +586,24 @@ The following proposition proves that the approximation of the price obtained by
 
 \subsection{Implementation}
 The algorithm was implemented in Python 3.5.0 (2015-09-13).
-The system specifications are as follows
-[TODO: Shift this to some common region for both Asian and cliquet]
 
 <TODO: The actual implementation goes here>
 %\inputminted[tabsize=2]{python}{../code/tr_cliquet_singularpoints.py}
-%\label{lst:sp-clq}
+%\label{lst:clq}
 
 
-\section{Numerical results}
-\label{sec:sp-clq-results}
+\section{Numerical results and conclusions}
+\label{sec:clq-results}
 
 In this section, we provide some numerical results that we have obtained from our program, along with the reported values of the same from \cite[Section 4]{Gaudenzi2011}. They compare the results with other techniques, namely Monte Carlo and finite differences. The cases considered are as follows:
 \begin{enumerate}
 	\item Constant volatility of $ \sigma = 0.2 $
 	\item Constant volatility of $ \sigma = 0.02 $, in order to test the efficiency of the methods for low volatility cases
-	\item Varying volatility for each observational period, as $ \sigma(i) = 0.05 + 0.04i, i = 1, \dots, 8 $ (denoted by \emph{Var} in the $ \sigma $ column of Table \ref{tab:sp-clq-results}).
+	\item Varying volatility for each observational period, as $ \sigma(i) = 0.05 + 0.04i, i = 1, \dots, 8 $ (denoted by \emph{Var} in the $ \sigma $ column of Table \ref{tab:clq-results}). The contract maturity is of 2 years, with quarterly monitoring dates.
 \end{enumerate}
 In order to obtain corroboration with the continuous value, we also report the price obtained by using Monte Carlo method with 1,000,000 of trials, along with the values in the 95\% confidence interval.
 
-The specifications of the cliquet contract are as follows.
+The specifications of the cliquet contract for the cases with constant volatility are as follows.
 \begin{itemize}
 	\item $ F_{loc} = 0, C_{loc} = 0.08, F_{glob} = 0.16, C_{glob} = \infty $
 	\item $ T = 5 $ years
@@ -562,12 +612,10 @@ The specifications of the cliquet contract are as follows.
 \end{itemize}
 
 [TODO: Include computer specifications and working environment.]
-[TODO: Insert remark 3]
 
-
-
+Table \ref{tab:clq-results} highlights the results.
 \begin{table}[h]
-	\label{tab:sp-clq-results}
+	\label{tab:clq-results}
 	\centering
 	\caption{Results}
 	%	\rowcolors{1}{Burlywood1}{}
@@ -609,8 +657,12 @@ The specifications of the cliquet contract are as follows.
 \end{table}
 
 
+\paragraph{Concluding remarks}
+We notice that, in all cases, the difference between SP and BIN is remarkably smaller than the theoretical value $ N \cdot 10^{-6} $. Moreover, as in the case examined $ N C_{loc} < C_{glob} $ (which is equivalent to $ N C_{loc} = C_{glob} $), the price functions $ V_i(Z) $ are always convex and this implies that the approximation procedure will provide an upper estimate of the exact binomial value.
 
-\section{Conclusions}
+Thus, the singular points method is quite capable in pricing cliquet options in a Black-Scholes framework with piecewise constant interest rates and volatilities. The implementation is quite simple, and the price obtained by the method converges to the price of continuous model. In absence of approximation, the price matches the exact binomial price. The ability to set \emph{a priori} error bounds differentiates it from the alternative algorithms.
+
+Numerical comparisons indicate that the method is accurate both for standard and small volatilities, and that it avoids the computational problems arising from the application of the standard binomial method. For small volatilities and large numbers of observation times in particular, the improvement with respect to the binomial standard technique is very significant.
 
 
 %%% Local Variables:

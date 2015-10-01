@@ -31,7 +31,7 @@ Let the compounding frequency is $ n $ times per year, the total time is $ t $, 
 	\label{eq:intro-compounding-discrete}
 	B_t = B_0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
 \end{equation}
-where $ B_0 $ is the starting value of the asset, and $ B_t $ is the value of the asset at time $ t $.
+where $ B_0 $ is the starting value of the asset, and $ B_t $ is the value of the asset at time $ t $, and $ \floor{\cdot} $ represents the floor function.
 
 If the compounding is continuous, we let $ n \to \infty $ to obtain
 \begin{equation}
@@ -110,7 +110,7 @@ Let us assume that the compounding is continuous. We may show that under the con
 \paragraph{Options}
 
 \begin{dfn}[option]
-	An \emph{option} is a derivative which provides the buyer \emph{the right, but not the obligation} to enter the contract under the specified terms.
+	An \emph{option} or a \emph{contingent claim} is a derivative which provides the buyer \emph{the right, but not the obligation} to enter the contract under the specified terms.
 \end{dfn}
 
 Thus, the owner of the option may choose whether to exercise his right or not. Thus, on the one hand, the owner of the option bears no risk, since all the choice is his. On the other hand, the seller of the option is \emph{obligated} to honour the terms of the contract -- whether it benefits him or not -- essentially making him bear all the risks. This asymmetry is primarily what sets options apart from the futures and forwards discussed earlier.
@@ -187,6 +187,8 @@ In what follows, we assume the following.
 	\item $ \forall t \in [0, T], T \in [0, \infty) $, there is one riskless asset worth $ S_t^0 = e^{rt} $ (Take $ S_0^0 = 1 $).
 	\item $ \forall t \in [0, T], T \in [0, \infty) $, there are $ d $ risky assets each worth $ S_t^i $, where $ i \in \{ 1, 2, \dots, d \} $ is the index of the risky asset. These may be represented as a $ d $-dimensional (vector) stochastic process $ ( S_t^1, S_t^2, \dots, S_t^d ) $.
 \end{itemize}
+
+Also, any quantity with a $ \sim $ on top denotes the discounted value of that quantity.
 
 
 \begin{dfn}[investment strategy]
@@ -275,14 +277,18 @@ We will see in Theorem \ref{thm:discrete-ftoap1} of Chapter \ref{cha:models} how
 
 \paragraph{Complete market}
 
-\begin{dfn}[frictionless market]
-	A market is said complete if all derivatives are hedgeable.
+\begin{dfn}[hedgeable, attainable]
+	A derivative is called hedgeable or attainable if it can be represented as a linear combination of its underlying assets at all times.
+\end{dfn}
+
+\begin{dfn}[complete market]
+	A market is said to be complete if all derivatives are hedgeable.
 \end{dfn}
 
 A market is complete if the traded basic assets represent all the random factors that influence the course of prices. If we are in complete market model, this means that, whatever be the contract, one can always set a hedging strategy that equals the final value of the derivative. This hedging
 strategy employs, by definition, only the basic assets (riskless and risky) traded on the market. In a sense those derivatives are redundant, they do not introduce any additional risk factor; any randomness source is represented by the basic assets prices and it is tradeable.
 
-This implies that the marginal probability distributions of the derivative price are uniquely determined by the marginal distributions of the prices of the basic assets. Namely, each derivative is replicable, so its price at all times may be written as the value of a portfolio employing basic assets only, that is to say it is a linear combination of the prices of the basic assets. On the other hand, in a viable market the discounted value of a portfolio is a martingale under the risk neutral probability, so if a contingent claim is attainable, then its price, by the martingale property, belongs to the linear span of the basic assets’ prices under this probability prices. Vice versa, if the market is incomplete, then there must be sources of randomness that cannot be totally represented as linear combinations of the prices of the basic tradeable assets, which means that the basic titles are not sufficient to construct all the necessary hedging strategies.
+This implies that the marginal probability distributions of the derivative price are uniquely determined by the marginal distributions of the prices of the basic assets. Namely, each derivative is replicable, so its price at all times may be written as the value of a portfolio employing basic assets only, that is to say it is a linear combination of the prices of the basic assets. On the other hand, in a viable market the discounted value of a portfolio is a martingale under the risk-neutral probability, so if a contingent claim is attainable, then its price, by the martingale property, belongs to the linear span of the basic assets' prices under this probability. Vice versa, if the market is incomplete, then there must be sources of randomness that cannot be totally represented as linear combinations of the prices of the basic tradeable assets, which means that the basic titles are not sufficient to construct all the necessary hedging strategies.
 
 We will see in Theorem \ref{thm:discrete-ftoap2} of Chapter \ref{cha:models} how the financial concept of market completeness translates mathematically to the existence of a unique equivalent martingale measure.
 
@@ -300,7 +306,7 @@ In a market, usually only discrete units of assets may be bought or sold. This w
 
 
 \paragraph{Small investor hypothesis}
-An investor who has virtually unlimited funds might decide to buy massively quantities of an asset to make its price rise in order to sell it later at the new higher price. We shall ignore such cases, and assume that all agents are trifling with respect to the market dimension, meaning that they cannot influence prices uniquely by means of their investing strategies, hence prices are determined only by the combined actions of all agents. This assumption is called the \emph{small investor hypothesis} and it is totally realistic in bigger stock markets like for those in the United States, even though it is less so for much smaller markets.
+An investor who has virtually unlimited funds might decide to buy massive quantities of an asset to make its price rise in order to sell it later at a higher price. We shall ignore such cases, and assume that all agents are trifling with respect to the market dimension, meaning that they cannot influence prices uniquely by means of their investing strategies, hence prices are determined only by the combined actions of all agents. This assumption is called the \emph{small investor hypothesis} and it is totally realistic in bigger stock markets like for those in the United States, even though it is less so for much smaller markets.
 
 
 \paragraph{Borrowing}

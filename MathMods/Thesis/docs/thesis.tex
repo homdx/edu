@@ -41,6 +41,9 @@
 	\item[$ \mathbb{N} $] $ \{ 1, 2, 3, \dots \} $
 	\item[$ \mathbb{N}_0 $] $ \mathbb{N} \cup \{ 0 \} $
 	\item[$ \mu \mathcal{F} $] The class of all $ \mathcal{F} $-measurable functions.
+	\item[$ \floor{\cdot} $] The floor function. $ \floor{x} $ gives the largest integer smaller or equal to $ x $.
+	\item[$ \ceil{\cdot} $] The ceiling function. $ \ceil{x} $ gives the smallest integer larger or equal to $ x $.
+	\item[$ \sim $] Represents the discounted value when used on top of a quantity. For example, $ \tilde{S}_t = e^{-rt} S_t $
 \end{description}
 
 
@@ -54,12 +57,12 @@
 \label{cha:models}
 \input{tex/models.tex}
 
-\chapter[Asian options]{The Singular Points method applied to Asian options}
-\label{cha:sp-asian}
+\chapter{Asian options}
+\label{cha:asian}
 \input{tex/asian.tex}
 
-\chapter[Cliquet options]{The Singular Points method applied to Cliquet options}
-\label{cha:sp-cliquet}
+\chapter{Cliquet options}
+\label{cha:cliquet}
 \input{tex/cliquet.tex}
 
 \chapter{Epilogue}
@@ -68,10 +71,15 @@
 
 
 \appendix
+\chapter{Probability Theory}
+\label{cha:probability}
+\input{tex/probability.tex}
 
 
 \backmatter
-% List of figures (can be in the backmatter too)
+
+\listoffigures
+
 %\listofalgorithms
 
 \printbibliography

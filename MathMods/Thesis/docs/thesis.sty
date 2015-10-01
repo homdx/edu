@@ -24,6 +24,7 @@
 \usepackage{mathtools}    % Includes AMSMath and provides more benefits
 \usepackage{bm}    % For bold math symbols
 \usepackage{bbm}    % For the indicator function \mathbbm{1}
+\usepackage[font=small]{caption}
 
 % Graphics
 \usepackage{graphicx}
@@ -48,9 +49,47 @@
 \setcounter{tocdepth}{2}
 % \setcounter{secnumdepth}{3}
 
-% Set the section numbering as Chapter#.Section#
+% Set the section and figure numbering as Chapter#.<>
 \renewcommand{\thesection}{\thechapter .\arabic{section}}
+\renewcommand{\thefigure}{\thechapter .\arabic{figure}}
 
+
+% Figures
+\usepackage{pgf,tikz}
+\usepackage{mathrsfs}
+\usetikzlibrary{arrows,shapes.geometric,shapes.misc}
+
+\tikzset{
+	header/.style={
+		% The shape:
+		rectangle,minimum size=6mm,
+		% The rest
+		draw=black!10,
+	}}
+	
+	\tikzset{
+		term/.style={
+			% The shape:
+			shape=rectangle,rounded corners=3mm,
+			% The size:
+			minimum size=6mm,
+			% The border:
+			very thick,
+			draw=red!50!black!50, % 50% red and 50% black,
+			% and that mixed with 50% white
+			% The filling:
+			top color=white, % a shading that is white at the top...
+			bottom color=red!50!black!20 % and something else at the bottom
+		}}
+		
+		\tikzset{
+			nterm/.style={
+				% The shape:
+				rectangle,minimum size=6mm,rounded corners=3mm,
+				% The rest
+				very thick,draw=black!30,
+				top color=black!05,bottom color=black!10,
+			}}
 
 
 % Math
@@ -82,18 +121,34 @@
 \newcommand\floor[1]{\left\lfloor#1\right\rfloor}
 \newcommand\ceil[1]{\left\lceil#1\right\rceil}
 
+% \opm
+\newcommand\buildcirclepm[5]{%
+	\begin{tikzpicture}[baseline=(X.base), inner sep=-#5, outer sep=-.65]
+	\node[draw,circle,line width=#4] (X)  {\footnotesize\raisebox{#2}{\scalebox{#3}{$#1\pm$}}};
+	\end{tikzpicture}%
+}
+\newcommand{\opm}{ 
+	\mathbin{
+		\mathchoice
+		{\buildcirclepm{\displaystyle     }{0.14ex}{0.95}{0.05ex}{.7}}
+		{\buildcirclepm{\textstyle        }{0.14ex}{0.95}{0.05ex}{.7}}
+		{\buildcirclepm{\scriptstyle      }{0.13ex}{0.955}{0.04ex}{.55}}
+		{\buildcirclepm{\scriptscriptstyle}{0.08ex}{0.95}{0.03ex}{.45}}
+	} 
+}
+
 % Align math cells
 \newcommand*\rightmathcell[1]{\omit\hfil$\displaystyle#1$}
 \newcommand*\centermathcell[1]{\omit\hfil$\displaystyle#1$\hfil\ignorespaces}
 
 
 % Code
-\usepackage[ruled,vlined,noend,linesnumbered]{algorithm2e}
+\usepackage[ruled,vlined,noend,linesnumbered,algochapter]{algorithm2e}
 %\usepackage{minted}
 
 
 % Bibliography
-\usepackage[backend=biber,style=alphabetic]{biblatex}
+\usepackage[backend=biber,style=alphabetic,sorting=ydnt]{biblatex}
 \addbibresource{thesis.bib}
 
 
@@ -103,42 +158,6 @@
 \date{\today}
 
 
-% Figures
-\usepackage{pgf,tikz}
-\usepackage{mathrsfs}
-\usetikzlibrary{arrows,shapes.geometric,shapes.misc}
-
-\tikzset{
-	header/.style={
-		% The shape:
-		rectangle,minimum size=6mm,
-		% The rest
-		draw=black!10,
-	}}
-
-\tikzset{
-	term/.style={
-		% The shape:
-		shape=rectangle,rounded corners=3mm,
-		% The size:
-		minimum size=6mm,
-		% The border:
-		very thick,
-		draw=red!50!black!50, % 50% red and 50% black,
-		% and that mixed with 50% white
-		% The filling:
-		top color=white, % a shading that is white at the top...
-		bottom color=red!50!black!20 % and something else at the bottom
-	}}
-	
-\tikzset{
-	nterm/.style={
-		% The shape:
-		rectangle,minimum size=6mm,rounded corners=3mm,
-		% The rest
-		very thick,draw=black!30,
-		top color=black!05,bottom color=black!10,
-	}}
 
 
 % Format Contents
