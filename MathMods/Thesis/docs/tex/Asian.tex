@@ -182,7 +182,7 @@ The following lemmas shall provide us with the necessary framework for upper and
 \end{lmm}
 
 \begin{proof}
-	By construction, $ \forall x \notin ( x_{j-1} , x_{j+1} ), \; f_u(x) = f(x) $.
+	By construction, $ \forall x \notin ( x_{j-1} , x_{j+1} ) $, we have $ f_u(x) = f(x) $.
 	
 	Again, by construction, $ \forall x \in ( x_{j-1} , x_{j+1} ), f_u(x) = (1-t) f(x_{j-1}) + t f(x_{j+1}) $, where $ t = \frac{ x - x_{j-1} }{ x_{j+1} - x_{j-1} } $.
 	
@@ -638,7 +638,6 @@ In defining the price function, we note that three cases may arise.
 	
 	We showed that if at time $ i+1 $, if the price function is continuous, piecewise-linear and convex, so is it for time $ i $. Since this is true for $ i+1 = n $, the same logic applied iteratively proves that the functions retain the characteristics for all $ i \in [n] $.
 \end{proof}
-TODO: Insert picture for this.
 
 
 \begin{rem}
@@ -781,7 +780,7 @@ Note that $ v_{n,j} (A) $ is still a piecewise-linear convex function, since $ \
 	\item $ A_{i,j}^{\max} - K  \le  v_{i,j}^c ( A_{i,j}^{\max} ) $. This implies that $ v_{i,j} \equiv v_{i,j}^c $. The singular points remain the same.
 	\item $ A_{i,j}^{\max} - K  <  v_{i,j}^c ( A_{i,j}^{\max} ) $. This case has two subcases, as follows.
 	\begin{enumerate}
-		\item $ A_{i,j}^{\min} - K  \ge  v_{i,j}^c ( A_{i,j}^{\min} ) $. This implies that $ v_{i,j} (A) = A - K \  \forall A \in [ A_{i,j}^{\min}, A_{i,j}^{\max} ] $, so the only singular points points are $ \left(  A_{i,j}^{\min}, A_{i,j}^{\min} - K  \right) $ and $ \left(  A_{i,j}^{\max}, A_{i,j}^{\max} - K  \right) $.
+		\item $ A_{i,j}^{\min} - K  \ge  v_{i,j}^c ( A_{i,j}^{\min} ) $. This implies that $ v_{i,j} (A) = (A - K), \  \forall A \in [ A_{i,j}^{\min}, A_{i,j}^{\max} ] $, so the only singular points points are $ \left(  A_{i,j}^{\min}, A_{i,j}^{\min} - K  \right) $ and $ \left(  A_{i,j}^{\max}, A_{i,j}^{\max} - K  \right) $.
 		\item $ A_{i,j}^{\min} - K  <  v_{i,j}^c ( A_{i,j}^{\min} ) $. This means that there is a unique average $ \bar{A} $ at which point the continuation value equals the early exercise. Let $ j_0 $ be the largest index such that $ A_{i,j}^{j_0} < \bar{A} $. The new set of singular points becomes
 		\begin{equation*}
 			\left\lbrace  \left( A_{i,j}^{1}, P_{i,j}^{1} \right), \left( A_{i,j}^{j_0}, P_{i,j}^{j_0} \right), \left( \bar{A}, \bar{A} - K \right), \left( A_{i,j}^{\max}, A_{i,j}^{\max} - K \right)  \right\rbrace
@@ -810,15 +809,47 @@ We can repeat the same procedure iteratively for $ i = n-2, \dots, 0 $. At the f
 \section{Approximation}
 The above sections introduced the singular points method, a procedure to evaluate the exact binomial price of an Asian option. Since for any node $ N_{i,j} $, we have that $ L_{i,j} \le L_{i+1,j} + L_{i+1,j+1} - 2 $, the resulting algorithm has exponential complexity, same as that of the binomial method.
 
-Where this method shines, though, is its ability to use approximations to drastically reduce the order of complexity from exponential to polynomial time. The singular points method can be used to obtain upper and lower bounds of the binomial price at a fraction of the computational cost. Moreover, we can specify \emph{a priori} bounds on the error. We shall see that these are just simple consequences of Lemmas 
+Where this method shines, though, is its ability to use approximations to drastically reduce the order of complexity from exponential to polynomial time. The singular points method can be used to obtain upper and lower bounds of the binomial price at a fraction of the computational cost. Moreover, we can specify \emph{a priori} bounds on the error. We shall see that these are just simple consequences of Lemmas \ref{lmm:asian-upper-estimate} and \ref{lmm:asian-lower-estimate}.
 
 \subsection{Upper bound}
 \label{subsec:asian-ub}
-[TODO]
+In order to obtain an upper bound, we remove selected points from each node. That this is a upper estimate of the exact binomial price is guaranteed by Lemma \ref{lmm:asian-upper-estimate}.
+
+Removal of points may be done on the basis of various criteria. One such method is as follows.
+
+Consider the set of singular points $ C $ associated with the node $ N_{i,j} $ and the corresponding price value function $ v_{i,j} (A) $. Let $ v_{i,j}^u (A) $ be the price value function obtained by removing a point $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $ from $ C $. We have
+\begin{equation}
+	\left| v_{i,j}^u (A) - v_{i,j} (A) \right|  \le  \epsilon_l  \qquad  \forall A \in \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right],
+\end{equation}
+where
+\begin{equation}
+	\epsilon_l  =  v_{i,j}^u \left( A_{i,j}^{l} \right) - v_{i,j} \left( A_{i,j}^{l} \right)  =  \frac{ P_{i,j}^{l+1} - P_{i,j}^{l-1} }{ A_{i,j}^{l+1} - A_{i,j}^{l-1} } \left( A_{i,j}^{l} - A_{i,j}^{l-1} \right) + \left( P_{i,j}^{l-1} - P_{i,j}^{l} \right) .
+\end{equation}
+
+Therefore, given any tolerance $ h > 0 $, we may remove a point $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $ only if $ \epsilon_l < h $. Repeating this procedure sequentially at each node of the tree, while avoiding the elimination of two consecutive singular points, we can conclude that the upper estimate thus obtained differs from the exact binomial value by at most $ n h $.
+
 
 \subsection{Lower bound}
 \label{subsec:asian-lb}
-[TODO]
+The computational procedure is quite similar to the procedure of approximation using upper bounds. The theoretical foundation of this part is given by Lemma \ref{lmm:asian-lower-estimate}. If we remove the points $ \left( A_{i,j}^{l-1}, P_{i,j}^{l-1} \right) $ and $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $, and add the point $ (\bar{x}, \bar{y} ) $ as described in Lemma \ref{lmm:asian-lower-estimate}, the new function is never greater than the original one, and the differences between the values at any point is bounded over by $ \delta_l $, where
+\begin{equation}
+	\delta_l  =  \frac{ P_{i,j}^{l} - P_{i,j}^{l-1} }{ A_{i,j}^{l} - A_{i,j}^{l-1} } \left( \bar{x} - A_{i,j}^{l-1} \right) + \left( P_{i,j}^{l-1} - \bar{y} \right) .
+\end{equation}
+
+Again, we allow for the operation only if $ \delta_l < h $.
+
+An implementation methodology is as follows. At each node $ N_{ij} $, we consider the starting four points $ \left\lbrace  \left( A_{i,j}^1, P_{i,j}^1 \right), \left( A_{i,j}^2, P_{i,j}^2 \right), \left( A_{i,j}^3, P_{i,j}^3 \right), \left( A_{i,j}^4, P_{i,j}^4 \right)  \right\rbrace $. Calculate $ \delta_3 $. If $ \delta_3 < h $, we add the point $ (\bar{x}, \bar{y}) $ and remove the points corresponding to $ \left( A_{i,j}^2, P_{i,j}^2 \right) $ and $ \left( A_{i,j}^3, P_{i,j}^3 \right) $. The procedure will continue by considering the four new points $ \left\lbrace  (\bar{x}, \bar{y}), \left( A_{i,j}^4, P_{i,j}^4 \right), \left( A_{i,j}^5, P_{i,j}^5 \right), \left( A_{i,j}^6, P_{i,j}^6 \right)  \right\rbrace $ and proceeding in the exact same way. On the other hand, if $ \delta_3 \ge h $, then we do not remove any points and the procedure will continue by considering the four new points $ \left\lbrace  \left( A_{i,j}^2, P_{i,j}^2 \right), \left( A_{i,j}^3, P_{i,j}^3 \right), \left( A_{i,j}^4, P_{i,j}^4 \right), \left( A_{i,j}^5, P_{i,j}^5 \right)  \right\rbrace $. The procedure is repeated until all the singular points of the node has been taken into account.
+
+\begin{rem}[Convergence to the exact binomial value]
+	Jiang and Dai (2005) \cite{Jiang2004} proved the convergence of the exact binomial algorithm for European/American path-dependent options. In particular, they proved that the rate of convergence of the exact binomial algorithm to the continuous value is $ O( \Delta T ) $.
+\end{rem}
+
+The possibility of obtaining estimates of the exact binomial price with an error control allows us to prove easily the convergence of our method to the continuous value. By choosing $ h $ to depend on $ n $ so that $ n h(n) \to 0 $, we have that the corresponding sequences of upper and lower estimates converge to the continuous price value. Moreover, the choice $ h(n) = O(\frac{1}{n^2}) $ guarantees that the order of convergence is $ O( \Delta T ) $.
+
+\begin{rem}[Compuational complexity -- theoretical considerations]
+	The key issue in assessing the complexity of our algorithm lies in the upper and lower bound computation. Since the number of singular points eliminated depends on various factors, and we do not control the number of singular points directly, it is difficult to theoretically calculate the order of complexity of the algorithm. Nevertheless, the numerical results indicate
+	that the present method is very competitive in practice.
+\end{rem}
 
 
 
@@ -869,7 +900,7 @@ Where this method shines, though, is its ability to use approximations to drasti
 				
 				\Switch(Approximation){upper or lower}{
 					\Case{upper bound} {Follow Section \ref{subsec:asian-ub} \;}
-					\Case{lower bound} {Follow Section \ref{subsec:asian-ub} \;}
+					\Case{lower bound} {Follow Section \ref{subsec:asian-lb} \;}
 				}
 			}
 		}
@@ -934,7 +965,7 @@ Firstly, we show that the result about the maximum and minimum paths still hold 
 \end{lmm}
 
 \begin{proof}
-	The proof is the same as \ref{crr:asian-up-dn-path}, with $A$ replaced by $G$ and relevant modifications.
+	The proof is the same as Corollary \ref{crr:asian-up-dn-path}, with $A$ replaced by $G$ and relevant modifications.
 \end{proof}
 
 
