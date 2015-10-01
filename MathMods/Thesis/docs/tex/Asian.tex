@@ -3,16 +3,16 @@
 % !TeX encoding = UTF-8
 
 
-As we have seen in the earlier chapters, European options may be priced using the Cox-Ross-Rubinstein and the Black-Scholes models. Even though the Black-Scholes model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options, including American options. The way out is by using numerical methods. Numerical methods using discrete time structures were introduced in Chapter \ref{cha:models}. One simple idea is to apply an explicit pricing scheme using a lattice method, which converges to the Black-Scholes model as the number of time steps increase to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the \emph{singular points method} for pricing certain path-dependent options in an efficient manner. The chapter is a study on how this method and its applications.
+As we have seen in the earlier chapters, European options may be priced using the Cox-Ross-Rubinstein and the Black-Scholes models. Even though the Black-Scholes model has a very high degree of computability, it does not allow us to find closed-form pricing formulae for many path-dependent options, including American options. The way out is by using numerical methods. Numerical methods using discrete models were introduced in Chapter \ref{cha:models}. One simple idea is to apply an explicit pricing scheme using a lattice method, which converges to the Black-Scholes model as the number of time steps increases to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the \emph{singular points method} for pricing certain path-dependent options in an efficient manner. The chapter is a study on how this method and its applications.
 
 We will mainly focus using the singular points method for pricing Asian options. In Asian options, the price is expressed as a function of some form of averaging on the underlying's price. Popular Asian options use the arithmetic or geometric means as the average. Again, Asian options may be exercised only at maturity (European) or at any time till the maturity (American). They may give the owner of the option the right to either sell (put) or buy (call). Theoretically, we will only study calls, because the framework for puts one may be derived in the exact same way.
 
 
 
 \section{Literature Review}
-\label{sec:asian-lit-review}
+\label{sec:asian-literature-review}
 
-Before we go into the details of the singular points method, we shall look into the pre-existing methods of pricing Asian options, and discuss their advantages and disadvantages briefly. As we remarked in Section \ref{subsec:continuous-other}, Asian options cannot be valued by closed-form formulae in the Black–Scholes model, and their valuation requires the use of numerical methods. Here we consider tree methods for pricing these types of options.
+Before we go into the details of the singular points method, we shall look into the pre-existing methods of pricing Asian options, and discuss their advantages and disadvantages briefly. As we remarked in Section \ref{subsec:continuous-other}, Asian options with arithmetic mean cannot be valued by closed-form formulae in the Black–Scholes model, and their valuation requires the use of numerical methods. Here we consider a tree method for pricing these types of options.
 
 The main barrier to applying the Cox–Ross–Rubinstein method \cite{Cox1979} introduced in Chapter \ref{cha:models} to Asian options with arithmetic averages is the exponential increase in the number of paths that the underlying may take, and this increases the computational difficulty very quickly as we increase the number of time steps.
 
@@ -28,7 +28,7 @@ Table \ref{tab:asian-literature-review} briefly reviews the discussion above.
 \begin{table}[h]
 	\label{tab:asian-literature-review}
 	\centering
-	\caption{Existing methods}
+	\caption{Pre-existing methods for Asian options}
 	% \rowcolors{1}{Burlywood1}{}
 	\begin{tabular}{cccl}
 		\toprule
@@ -49,7 +49,8 @@ A number of these algorithms has been implemented in Premia 13. Premia is a soft
 
 
 \section{The exact binomial algorithm}
-The evolution of the risky asset price $ (S_t)_t $ is governed by the Black-Scholes stochastic differential equation
+\label{sec:asian-binom}
+The evolution of the risky asset price $ (S_t)_t $ is governed by the Black-Scholes stochastic differential equation given below.
 \begin{subequations}
 	\begin{align*}
 		\frac{\dif S_t}{S_t}  &=  (r - q) \dif t + \sigma \dif W_t  \\
@@ -402,6 +403,8 @@ We note that the $R$ is not an instantaneous quantity, but one which is constant
 	\end{equation}
 \end{dfn}
 
+In the rest of the chapter, we will assume that the average means arithmetic mean, unless otherwise stated.
+
 
 \begin{dfn}[Path]
 	A path is a sequence $(j_i)_{i \in [n]}$ such that $j_{i+1} \in \{ j_i,j_i+1 \}$.
@@ -579,7 +582,8 @@ In defining the price function, we note that three cases may arise.
 	
 \item $ j \notin \{ 0, n \} $ and $ K \in ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\	
 	In this case, the price function is characterised by three singular points ($ L_{i,j} = 3 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2, 3 \} } $, since we need to compare the averages with the fixed strike price $ K $. The points are as follows.  \\
-	\begin{equation} \label{eq:asian-price-maturity-kin}
+	\begin{equation}
+		\label{eq:asian-price-maturity-kin}
 		\begin{aligned}
 			( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , 0 ) \\
 			( A_{n,j}^2 , P_{n,j}^2 ) &= ( K , 0 ) \\
@@ -590,6 +594,7 @@ In defining the price function, we note that three cases may arise.
 \item $ j \notin \{ 0, n \} $ and $ K \notin ( A_{n,j}^{\min}, A_{n,j}^{\max} ) $ \\
 	In this case, the price function is characterised by only two singular points ($ L_{i,j} = 2 $), $ ( A_{n,j}^l , P_{n,j}^l )_{l \in \{ 1, 2 \} } $, which are as follows. \\
 	\begin{equation}
+		\label{eq:asian-price-maturity-knotin}
 		\begin{aligned}
 			( A_{n,j}^1 , P_{n,j}^1 ) &= ( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ ) \\
 			( A_{n,j}^2 , P_{n,j}^2 ) &= ( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ ) \\
@@ -627,7 +632,7 @@ In defining the price function, we note that three cases may arise.
 	Since the options is of the European type, applying the no-arbitrage condition, the price function $ v_{i,j}: \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] \to [0, \infty) $ is obtained by considering the discounted expectation value.
 	\begin{equation}
 		\label{eq:asian-dsc-expt}
-		v_{i,j}(A) = \frac{1}{R} \left[ \pi v_{i+1,j+1}(A_u) + (1 - \pi) v_{i+1,j}(A_d) \right]
+		v_{i,j}(A) = \frac{1}{R} \left[ p v_{i+1,j+1}(A_u) + (1 - p) v_{i+1,j}(A_d) \right]
 	\end{equation}
 	From equation \ref{eq:asian-av-up-dn}, we get that $A_u$ and $A_d$ are linear functions of $A$. Thus, $ v_{i+1,j+1}(A_u) = v_{n,j+1}(A_u)$ and $ v_{i+1,j}(A_d) = v_{n,j}(A_d) $ are piecewise-linear convex continuous functions of $A_u$ and $A_d$ respectively. Thus, $ v_{i+1,j+1} $ and $ v_{i+1,j} $ may be seen as a linear combination of the above functions, and is thus piecewise-linear, convex and continuous itself. Again, from equation \ref{eq:asian-dsc-expt}, we get that $v_{i,j}$ is a convex combination of such functions, and the proof is complete.
 	
@@ -677,7 +682,7 @@ We consider an up movement of the underlying asset from node $ N_{i,j} $. In thi
 We follow this up by calculating the price associated with the singular value $ B^l $ by evaluating the discounted expectation value.
 \begin{equation}
 	\label{eq:asian-up-pr}
-	v_{i,j}( B^l ) = \frac{1}{R} \left[ \pi v_{i+1,j+1} \left( B^l_u \right) + (1 - \pi) v_{i+1,j} \left( A_{i+1,j}^l \right) \right]
+	v_{i,j}( B^l ) = \frac{1}{R} \left[ p v_{i+1,j+1} \left( B^l_u \right) + (1 - p) v_{i+1,j} \left( A_{i+1,j}^l \right) \right]
 \end{equation}
 
 Figure \ref{fig:asian-2tr-up} depicts the idea.
@@ -723,7 +728,7 @@ For $ v_{i,j}( C^l ) $, $ \forall \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] 
 
 \begin{equation}
 	\label{eq:asian-dn-pr}
-	v_{i,j}( C^l ) = \frac{1}{R} \left[ \pi v_{i+1,j+1} \left( A_{i+1,j+1}^l \right) + (1 - \pi) v_{i+1,j} \left( C^l_d \right) \right]
+	v_{i,j}( C^l ) = \frac{1}{R} \left[ p v_{i+1,j+1} \left( A_{i+1,j+1}^l \right) + (1 - p) v_{i+1,j} \left( C^l_d \right) \right]
 \end{equation}
 
 Figure \ref{fig:asian-2tr-dn} depicts the idea.
@@ -752,8 +757,8 @@ This procedure is applied to all nodes, starting from maturity and proceeding ba
 \begin{subequations}
 	\label{eq:asian-terminal-nodes}
 	\begin{align}
-		P_{i,0}^1 &= \frac{1}{R} \left[ \pi P_{i+1,0}^1 + (1 - \pi) P_{i+1,1}^1 \right] \\
-		P_{i,i}^1 &= \frac{1}{R} \left[ \pi P_{i+1,i+1}^1 + (1 - \pi) P_{i+1,i}^{L_{i+1,i}} \right]
+		P_{i,0}^1 &= \frac{1}{R} \left[ p P_{i+1,0}^1 + (1 - p) P_{i+1,1}^1 \right] \\
+		P_{i,i}^1 &= \frac{1}{R} \left[ p P_{i+1,i+1}^1 + (1 - p) P_{i+1,i}^{L_{i+1,i}} \right]
 	\end{align}
 \end{subequations}
 
@@ -763,9 +768,58 @@ Thus we have a complete description of the price function at each node of the bi
 \section{Fixed-strike Asian options of the American type}
 \label{sec:fixed-strike-am}
 
+We now consider the American case. At maturity we have the same situation as in the European case. The price function is $ v_{n,j} (A) = (A - K)_+ $ for $ A \in [ A_{n,j}^{\min}, A_{n,j}^{\max} ] $, and it is characterized by the same singular points.
+
+Consider the step $ i = n - 1 $. At the node $ N_{i,j} $, we first compute, by using the procedure described in the previous section (European case), the singular points associated with this node, thus obtaining the continuation value function $ v_{n,j}^c (A) $. But now, we must also account for exercise rights at this time. Thus, we have
+\begin{equation}
+	v_{n,j} (A)  =  \max \{ \underbrace{A - K}_{\text{exercise}}, \underbrace{v_{n,j}^c (A)}_{\text{hold}} \} .
+\end{equation}
+
+Note that $ v_{n,j} (A) $ is still a piecewise-linear convex function, since $ \max $ is a convex function. For this reason, we can again characterize it by its singular points. In order to compute the singular points associated with the American case, we first remark that the slopes characterizing the piecewise-linear convex function $ v_{n,j}^c (A) $ are all smaller than 1. This can be seen from Equations \ref{eq:asian-av-up-dn} and \ref{eq:asian-dsc-expt} and by differentiating $ v_{n,j}^c (A) $ in the open intervals $ \left(  A_{i,j}^{l}, A_{i,j}^{l+1}  \right)  \  \forall l \in \{ 1, 2, \dots, L_{i,j} \} $. Hence there are two possible cases, as follows.
+
+\begin{enumerate}
+	\item $ A_{i,j}^{\max} - K  \le  v_{i,j}^c ( A_{i,j}^{\max} ) $. This implies that $ v_{i,j} \equiv v_{i,j}^c $. The singular points remain the same.
+	\item $ A_{i,j}^{\max} - K  <  v_{i,j}^c ( A_{i,j}^{\max} ) $. This case has two subcases, as follows.
+	\begin{enumerate}
+		\item $ A_{i,j}^{\min} - K  \ge  v_{i,j}^c ( A_{i,j}^{\min} ) $. This implies that $ v_{i,j} (A) = A - K \  \forall A \in [ A_{i,j}^{\min}, A_{i,j}^{\max} ] $, so the only singular points points are $ \left(  A_{i,j}^{\min}, A_{i,j}^{\min} - K  \right) $ and $ \left(  A_{i,j}^{\max}, A_{i,j}^{\max} - K  \right) $.
+		\item $ A_{i,j}^{\min} - K  <  v_{i,j}^c ( A_{i,j}^{\min} ) $. This means that there is a unique average $ \bar{A} $ at which point the continuation value equals the early exercise. Let $ j_0 $ be the largest index such that $ A_{i,j}^{j_0} < \bar{A} $. The new set of singular points becomes
+		\begin{equation*}
+			\left\lbrace  \left( A_{i,j}^{1}, P_{i,j}^{1} \right), \left( A_{i,j}^{j_0}, P_{i,j}^{j_0} \right), \left( \bar{A}, \bar{A} - K \right), \left( A_{i,j}^{\max}, A_{i,j}^{\max} - K \right)  \right\rbrace
+		\end{equation*}
+	\end{enumerate}
+\end{enumerate}
+
+We can repeat the same procedure iteratively for $ i = n-2, \dots, 0 $. At the final step, we get only one singular point, which gives us $ P_{0,0}^1 $, the exact American binomial price relative to the tree with $ n $ steps.
+
+[TODO: Insert Figure 4 -- Not so important.]
 
 
-TODO
+\begin{rem}[Computational complexity -- European vs American]
+	If we do not approximate, the number of singular points in the American case can never be greater than the European case. Thus, the American procedure cannot be slower than the European one. In case we also take approximations into account, the American case is expected to be faster heuristically, but cannot be proved in general.
+\end{rem}
+
+\begin{rem}[Put]
+	For an Asian put, the exact same procedure has to be followed.
+\end{rem}
+
+\begin{rem}[Floating]
+	In this case, we modify the procedure as follows: at maturity the singular points depend not on the strike $ K $ but rather on the underlying value at each node $ S_{i,j} $. Therefore the new singular points are obtained by replacing $ K $ by $ S_{i,j} $. The backward procedure is the same as before, just properly taking into account the new intrinsic values.
+\end{rem}
+
+
+\section{Approximation}
+[TODO]
+
+\subsection{Upper bound}
+\label{subsec:asian-ub}
+[TODO]
+
+\subsection{Lower bound}
+\label{subsec:asian-lb}
+[TODO]
+
+
+
 \clearpage
 \section{The program}
 \label{sec:asian-program}
@@ -777,64 +831,47 @@ TODO
 	
 	\KwIn{\\
 		\qquad \emph{Contract details}  \\
-		\qquad \quad time to maturity: $ T $ \\
-		\qquad \quad number of observations: $ N $ \\
-		\qquad \quad local floor and cap: $ F_{loc}, C_{loc} $  \\
-		\qquad \quad global floor and cap: $ F_{glob}, C_{glob} $ \\
+		\qquad \quad time to maturity: $ T $, strike price: $ K $ \\
+		\qquad \quad type: arithmetic/geometric, call/put, European/American, fixed/floating  \\
 		
 		\qquad \emph{Details of the underlying asset}  \\
-		\qquad \quad initial price: $ s_0 $  \\
-		\qquad \quad volatility: $ \sigma $  \\
-		\qquad \quad continuous dividend rate: $ q $  \\
+		\qquad \quad initial price: $ s_0 $, volatility: $ \sigma $, continuous dividend rate: $ q $  \\
 		
 		\qquad \emph{Market parameters} -- spot interest rate: $ r $ \\
 		
-		\qquad \emph{Computational parameters} -- time steps within each observed period: $ m $ \\
+		\qquad \emph{Computational parameters} -- time steps: $ n $ \\
 	}
 	
 	\KwOut{The price of the option at the initial time}
 	
 	\Begin{
-		Update $ F_{glob} $ and $ C_{glob} $ using Equations \ref{eq:asian-update-glob}. \;
+		Set $ \Delta T, u, p $ from the formulae in Section \label{sec:asian-binom}. \;
 		
-		Set $ \Delta T, u, p $ from the formulae in Section \ref{sec:asian-models}. \;
-		
-		Compute the returns and probabilities using Equation \ref{eq:asian-return-final} and Equation \ref{eq:asian-prb-binom}. \;
-		
-		Compute $ j_{\min}, j_{\max}, j_0 $ (Equations \ref{eq:asian-j-mix-max}) and shifted returns (Table \ref{tab:asian-shift}). \;
-		
-		\tcp{$ S_i $ and $ S_+ $ denotes the current ($ i^{\mathrm{th}} $) and next ($ (i+1)^{\mathrm{th}} $) list of singular points.}
-		
-		$ S_N \leftarrow \{ (N F_{loc}, F_{glob}), (F_{glob}, F_{glob}), (C_{glob}, C_{glob}), (N C_{loc}, C_{glob}) \} $ \tcp{Table \ref{tab:asian-maturity}.}
-		
-		$ S_+ \leftarrow S_N $ \;
+		Compute the singular points at maturity using Equation \ref{eq:asian-price-maturity-kin} and \ref{eq:asian-price-maturity-knotin}. \;
 		
 		\For{$ i \in \{ N-1, \dots, 0 \} $}{
-			$ S_i \leftarrow \emptyset, \qquad L_+ \leftarrow \mathrm{length}(S_+) $ \;
+			Evaluate $ P_{i,0}^1 $ and $ P_{i,i}^1 $ by Equation \ref{eq:asian-terminal-nodes} with the early exercise.
 			
-			\ForAll{$ (l, j) \in [L_+] \times [j_0 + 1] $}{
-				Compute $ B_{l,j} $ using Equation \ref{eq:asian-b}, replacing $ N $ by $ i $. \;
+			\ForAll{$ N_{i,j}, \  j \in \{ 1, \dots, i-1 \} $}{
+				Using Equation \ref{eq:asian-proj-up}, $\forall A_{i+1,j}^l, \forall l \in \{ 1, \dots, L_{i+1,j} \} $, compute $ B^l $. \;
 				
-				\If{ $ ( B_{l,j} + R_k' ) \notin [ Z_N^{l_0}, Z_N^{l_0 + 1} ] $ } {
-					Continue \tcp*{to the next item in the loop}
+				$ \forall B^l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $, compute $ v_{i,j}^c ( B^l ) $ by Equations \ref{eq:asian-up-lint} and \ref{eq:asian-up-pr}. \;
+				
+				Using Equation \ref{eq:asian-proj-dn}, $\forall A_{i+1,j+1}^l, \forall l \in \{ 1, \dots, L_{i+1,j+1} \} $, compute $ C^l $. \;
+				
+				$ \forall C^l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $, compute $ v_{i,j}^c ( C^l ) $ by Equations \ref{eq:asian-dn-lint} and \ref{eq:asian-dn-pr}. \;
+				
+				Sort the averages $ {B^l}_l \cup {C^l}_l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $ to obtain the set of $ L_{i,j} $ singular points. \;
+				
+				Compute the American price according to Section \ref{sec:fixed-strike-am} and obtain a new set of singular points with a new cardinality denoted, for simplicity, by $ L_{i,j} $ again. \;
+				
+				\Switch(Approximation){upper or lower}{
+					\Case{upper bound} {Follow Section \ref{subsec:asian-ub} \;}
+					\Case{lower bound} {Follow Section \ref{subsec:asian-ub} \;}
 				}
-				
-				Find $ l_0 $ such that $ ( B_{l,j} + R_k' ) \in [ Z_{i+1}^{l_0}, Z_{i+1}^{l_0 + 1} ] $. \;
-				
-				Evaluate $ V_{i+1} (B_{l,j} + R_k') $ by linear interpolation of the extrema. \;
-				
-				Evaluate $ V_{i}(B_{l,j}) $ by using Equation \ref{eq:asian-penultimate}, replacing $ N $ by $ i $. \;
-				
-				$ S_i \leftarrow S_i \cup (B_{l,j}, V_{N-1}(B_{l,j})) $ \;
 			}
-			
-			\If{$ m \mid i $}{
-				Approximate as described in Section \ref{subsec:asian-approx}. \;
-			}
-			
-			$ S_+ \leftarrow S_i $ \;
 		}
-		\KwRet{$ (S_i)_{1,2} $ \tcp*{Singular price at time 0} }
+		\KwRet{$ P_{0,0}^1 $    \tcp*{the upper or lower estimate of the exact binomial price with error smaller that $ nh $.} }
 	}
 	
 	\caption{Pricing cliquet options using the singular points method}
@@ -846,8 +883,6 @@ TODO
 
 \subsection{Implementation}
 The algorithm was implemented in Python 3.5.0 (2015-09-13).
-The system specifications are as follows
-[TODO: Shift this to some common region for both Asian and cliquet]
 
 <TODO: The actual implementation goes here>
 %\inputminted[tabsize=2]{python}{../code/tr_asian_singularpoints.py}
@@ -860,24 +895,22 @@ The system specifications are as follows
 
 Let us recapitulate the conditions required for the singular points method to work in the case of Asian options with arithmetic mean.
 \begin{itemize}
-\item The ability to calculate the upper and lower bounds of the mean for all nodes of the tree.
-\item The recombinant nature of the tree for the underlying. Note that the tree for the option prices are \emph{not} recombinant.
-\item Convexity and piecewise-linearity of the price function on the mean of the underlying.
-\item Fixed volatility
+	\item The ability to calculate the upper and lower bounds of the mean for all nodes of the tree.
+	\item The recombinant nature of the tree for the underlying. Note that the tree for the option prices are \emph{not} recombinant.
+	\item Convexity and piecewise-linearity of the price function on the mean of the underlying.
+	\item Constant volatility
 \end{itemize}
 
 Keeping these in mind, let us look at the possibility of extending the singular points method to the following cases:
 \begin{enumerate}
-\item Asian options with geometric mean and fixed volatility.
-\item Asian options with arithmetic mean and local volatility.
+	\item Asian options with geometric mean and fixed volatility.
+	\item Asian options with arithmetic mean and local volatility.
 \end{enumerate}
 
 
 
-\subsection{Geometric mean and fixed volatility}
-\label{subsec:gm-fixed-vol}
-
-In the case of geometric options, we have a closed form formula under the Black-Scholes market model. We try to extend the singular points method.
+\paragraph{Geometric mean and fixed volatility}
+In the case of geometric options, we have a closed form formula under the Black-Scholes market model. Let us try to extend the singular points method to this case.
 
 Firstly, we show that the result about the maximum and minimum paths still hold in the geometric case.
 
@@ -910,32 +943,20 @@ One of the central ideas behind the singular points method is that the price of 
 	G_d &= \left( G^{i+1} S_0 u^{-i+2j-1} \right)^{\frac{1}{i+2}} \propto G^{\frac{i+1}{i+2}}
 \end{align}
 Clearly, the final function $ v_{i,j} $ is not linear in $G$. Rather it is piecewise-concave. Thus we cannot use the singular points method in this case.
-TODO: Insert a graph of the function here.
+
+
+\paragraph{Arithmetic mean with local volatility}
+In this case, the tree for the underlying is not recombinant, so we do not have more than one singular point in one (non-recombining) node. Essentially, we cannot use the singular points method for local volatility models.
 
 
 
-\subsection{Arithmetic mean with local volatility}
-\label{subsec:am-local-vol}
+\section{Results and conclusion}
+\label{sec:asian-results}
 
-In this case, the tree for the underlying is not recombinant, so we do not have more than one singular point in one (non-recombining) node. Clearly, we cannot use the singular points method.
-
-
-
-\section{Conclusion}
-\label{sec:asian-adv}
-
-We conclude the chapter by noting the pros and cons of the singular points method.
-\paragraph{Advantages}
-\begin{itemize}
-\item Fast -- Experimental order of complexity = $ O(n^3) $
-\item It allows us to specify an \emph{a priori} error bound.
-\end{itemize}
+[TODO: The results section will be very similar in format to the one in the Cliquet chapter. Sorry for not being able to specify this exactly.]
 
 
-\paragraph{Disadvantages}
-\begin{itemize}
-\item Very specific method -- only applicable to a few specific cases.
-\end{itemize}
+Thus, we have seen that the singular points method fails to be generalised, its shortcomings being the inability to deal with Asian options with geometric mean and to deal with local volatility cases. Nevertheless, it is quite efficient in its domain. It is comparatively fast, having experimental order of complexity $ O(n^3) $. It also allows specification of \emph{a priori} error bounds, allowing us to immediately prove convergence of order $ O(\Delta T) $ to the continuous value. Numerical results reported by \cite{Gaudenzi2010} shows that the method outperforms alternative algorithms, and may be viewed as an improvement on previous tree methods.
 
 
 %%% Local Variables:

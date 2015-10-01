@@ -50,8 +50,12 @@
 % \setcounter{secnumdepth}{3}
 
 % Set the section and figure numbering as Chapter#.<>
-\renewcommand{\thesection}{\thechapter .\arabic{section}}
-\renewcommand{\thefigure}{\thechapter .\arabic{figure}}
+\numberwithin{section}{chapter}
+\numberwithin{figure}{chapter}
+\numberwithin{table}{chapter}
+
+% Change the second nested bullet to a star.
+\renewcommand{\labelitemii}{$\star$}
 
 
 % Figures

@@ -113,7 +113,7 @@ The binomial method may always be used to price any option, including path-depen
 
 A modification of the singular points method described in the previous chapter solves this problem for cliquet options by the process of approximation. The method of approximation selectively removes certain paths that would be normally considered, but which do not affect the result in a significant manner. This may be done by putting an \emph{a priori} error bound while removing points. The method turns out to be significantly faster and memory efficient compared to known binomial techniques. Moreover, its flexible is evinced by the fact that it is adaptable for varying interest rate and volatility in each observational period.
 
-In this section, we will note some elementary definitions and results, and give a detailed exposition of the method. The reader is advised to keep in mind the notation introduced in section \ref{sec:asian-notations} of chapter \ref{cha:asian}.
+In this section, we will note some elementary definitions and results, and give a detailed exposition of the method. The reader is advised to keep in mind the notation introduced in section \ref{subsec:asian-notations} of chapter \ref{cha:asian}.
 
 \begin{dfn}[Singular points and singular values]
 	\label{def:clq-sp}
@@ -523,9 +523,7 @@ The following proposition proves that the approximation of the price obtained by
 		\qquad \quad global floor and cap: $ F_{glob}, C_{glob} $ \\
 		
 		\qquad \emph{Details of the underlying asset}  \\
-		\qquad \quad initial price: $ s_0 $  \\
-		\qquad \quad volatility: $ \sigma $  \\
-		\qquad \quad continuous dividend rate: $ q $  \\
+		\qquad \quad initial price: $ s_0 $, volatility: $ \sigma $, continuous dividend rate: $ q $  \\
 		
 		\qquad \emph{Market parameters} -- spot interest rate: $ r $ \\
 		
@@ -574,7 +572,7 @@ The following proposition proves that the approximation of the price obtained by
 			
 			$ S_+ \leftarrow S_i $ \;
 		}
-		\KwRet{$ (S_i)_{1,2} $ \tcp*{Singular price at time 0} }
+		\KwRet{$ (S_i)_{1,2} $    \tcp*{Singular price at time 0} }
 	}
 	
 	\caption{Pricing cliquet options using the singular points method}
