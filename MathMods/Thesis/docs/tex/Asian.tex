@@ -807,6 +807,7 @@ We can repeat the same procedure iteratively for $ i = n-2, \dots, 0 $. At the f
 
 
 \section{Approximation}
+\label{sec:asian-approx}
 The above sections introduced the singular points method, a procedure to evaluate the exact binomial price of an Asian option. Since for any node $ N_{i,j} $, we have that $ L_{i,j} \le L_{i+1,j} + L_{i+1,j+1} - 2 $, the resulting algorithm has exponential complexity, same as that of the binomial method.
 
 Where this method shines, though, is its ability to use approximations to drastically reduce the order of complexity from exponential to polynomial time. The singular points method can be used to obtain upper and lower bounds of the binomial price at a fraction of the computational cost. Moreover, we can specify \emph{a priori} bounds on the error. We shall see that these are just simple consequences of Lemmas \ref{lmm:asian-upper-estimate} and \ref{lmm:asian-lower-estimate}.

@@ -567,12 +567,12 @@ For the call, we put $ h(x) = (x - K)_+ $, and denote $ F(t, x) $ by $ c(t, x) $
 \begin{align*}
 	c(t, x)  &=  \E^* \left( e^{-r \Delta t} \  h \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  \mathcal{F}_t \right)  \\
 	&=  \E^* \left( e^{-r \Delta t} \  \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } - K  \right)_+  \Big|  \mathcal{F}_t \right)  \\
-	&=  x \underbrace{ \E^* \left( e^{ \sigma W_t - \frac{\sigma^2}{2} t }  \mathbbm{1}_{x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K}  \Big|  \mathcal{F}_t \right) }_{A}  +  K e^{-r \Delta t}  \underbrace{ \E^* \left(  \mathbbm{1}_{x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K}  \Big|  \mathcal{F}_t \right) }_{B}
+	&=  x \underbrace{ \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right) }_{A}  +  K e^{-r \Delta t}  \underbrace{ \E^* \left(  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right) }_{B}
 \end{align*}
 
 We deal with $ B $ first as it is more manageable.
 \begin{align*}
-	B  &=  \E^* \left( \mathbbm{1}_{x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K}  \Big|  \mathcal{F}_t \right)  \\
+	B  &=  \E^* \left( \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
 	&=  P^* \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \Big|  \mathcal{F}_t \right)  \\
 	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \bigg|  \mathcal{F}_t \right)  \\
 	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  <  - \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \bigg|  \mathcal{F}_t \right)  \\
@@ -595,18 +595,24 @@ where $ \mathcal{N} $ is the (cumulative) distribution function of the standard 
 
 
 Similarly, we now evaluate $ A $.
-
-\textbf{[TODO: for the final draft.]}
-
-Writing 
-\begin{equation*}
-d_{\oplus} ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r + \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
-\end{equation*}
-and using independence, we get:
 \begin{align*}
-A  &=  P^* \left( N(0, 1)  <  d_{\oplus} \right)  \\
-\implies  \qquad  A  &=  \mathcal{N}(d_{\oplus} ( \Delta t, x; K, \sigma, r )).
+	A  &=  \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
+	&=  \E^* \left( e^{ \sigma \sqrt{\Delta t} \frac{ \Delta W_t }{ \sqrt{\Delta t} } - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  - d_{\ominus}  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
+	&=  \int_{- d_{\ominus}}^{\infty}  e^{ \sigma \sqrt{\Delta t} z - \frac{\sigma^2}{2} \Delta t } \frac{ e^{-\frac{z^2}{2}} }{ \sqrt{2 \pi} } \dif z  \\
+	&=  \int_{- d_{\ominus}}^{\infty}  \frac{ 1 }{ \sqrt{2 \pi} }  e^{- \frac{ ( z - \sigma \sqrt{\Delta t } )^2 }{2} }  \dif z  \\
+	&=  \int_{- d_{\oplus}}^{\infty}  \frac{ e^{-\frac{y^2}{2}} }{ \sqrt{2 \pi} }  \dif y  \\
+	&=  \int_{- \infty}^{d_{\oplus}}  \frac{ e^{-\frac{y^2}{2}} }{ \sqrt{2 \pi} }  \dif y  \\
+	&=  \mathcal{N}(d_{\oplus} ( \Delta t, x; K, \sigma, r ))
 \end{align*}
+
+The pre-penultimate step is obtained by substituting $ y = z - \sigma \sqrt{\Delta t } $. Then the new lower limit, denoted $ - d_{\oplus} $, is given as follows.
+\begin{align*}
+	- d_{\oplus} ( \Delta t, x; K, \sigma, r )  & \coloneqq  - \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } - \sigma \sqrt{\Delta t }  \\
+	&=  - \frac{ \log \frac{x}{K} + ( r + \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \\
+	\implies  d_{\oplus} ( \Delta t, x; K, \sigma, r )  &=  \frac{ \log \frac{x}{K} + ( r + \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }
+\end{align*}
+
+Therefore, we have $ d_{\opm} ( \Delta t, x; K, \sigma, r )  =  \frac{ \log \frac{x}{K} + ( r \pm \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } $.
 
 Henceforth, we shall write $ d_{\opm} $ to denote $ d_{\opm} ( \Delta t, x; K, \sigma, r ) $.
 
@@ -618,7 +624,7 @@ Assembling all the pieces together we obtain the famous Black-Scholes formula fo
 
 
 \paragraph{Pricing the put}
-Employing the call-put parity to get
+Employing the call-put parity, we get
 \begin{equation}
 	\label{eq:continous-put-pr}
 	p_t = p(t, S_t) = K e^{-r \Delta t} \mathcal{N}(- d_{\ominus}) - S_t \mathcal{N}(- d_{\oplus}).
@@ -655,6 +661,8 @@ In spite of its limitations, the Black-Scholes model remain one of the most usef
 
 
 \subsection{Discrete and continuous -- different worlds?}
+
+Even though it may seem that the Cox-Ross-Rubinstein model and the Black-Scholes models are fundamentally different, we can show that as the number of time steps increase to infinity, the former converges to the latter in distribution.
 [TODO: Proof of convergence in distribution of CRR to BS]
 
 

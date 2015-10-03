@@ -6,11 +6,11 @@
     <file url="file://$PROJECT_DIR$/results.txt" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/run.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tr_asian_geometric_singularpoints.py" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/tr_asian_singularpoints.py" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/tr_asian_singularpoints_new.py" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/tr_cliquet_singularpoints.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tr_asian_singularpoints_old.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tr_cliquet_singularpoints_unique.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tr_crr.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tr_sp_asian.py" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/tr_sp_cliquet.py" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/tr_vanilla.py" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>

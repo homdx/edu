@@ -3,27 +3,8 @@ __author__ = 'Sudip Sinha'
 
 from tr_crr import tr_underlying
 from tr_vanilla import vanilla_call
-from tr_asian_singularpoints import sp_asian_call
-from tr_cliquet_singularpoints import sp_cliquet
-
-# Market
-r = 0.05
-
-# Underlying
-s0 = 50.
-sigma = 0.2
-q = 0.0
-
-# Derivative
-t = 1.
-k = 60.
-am = False
-
-# Computation
-mach_eps = 65536 * (7 / 3 - 4 / 3 - 1)
-n = 5
-h = 1e-4
-ub = True
+from tr_sp_asian import sp_asian_call
+from tr_sp_cliquet import sp_cliquet
 
 
 def show_results(n: int) -> None:
@@ -53,8 +34,10 @@ def show_results(n: int) -> None:
 	# print('Price of the call = {prc}'.format(prc=sp[0][0][0][1]))
 
 
-def run_asian(ns: list, d: int=6) -> None:
+def run_asian_old(ns: list, d: int=6) -> None:
 	"""Display short results for a list of 'n's."""
+
+	s0 = 100.; k = 100.; sigma = 0.1; q = 0.; t = 0.25; r = 0.1; am = False; h = 1e-6
 
 	for n in ns:
 		upper = sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=True, n=n, h=h, ub=True)[0][0][0][1]
@@ -65,19 +48,36 @@ def run_asian(ns: list, d: int=6) -> None:
 		else:
 			print('n={n:3}: {lb:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ub=upper))
 
+
+def run_asian(ns: list, d: int=6) -> None:
+	"""Display short results for a list of 'n's."""
+
+	s0 = 100.; k = 100.; sigma = 0.1; q = 0.; t = 0.25; r = 0.1; am = False; h = 1e-6
+
+	for n in ns:
+		upper = sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n, h=h, ub=True)
+		lower = sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n, h=h, ub=False)
+		if n < 25:
+			actual = sp_asian_call(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n)
+			print('n={n:3}: {lb:.{d}f} <= {ac:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ac=actual, ub=upper))
+		else:
+			print('n={n:3}: {lb:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ub=upper))
+
+
 def run_cliquet(ms: list, d: int = 9) -> None:
 	"""Display short results for a list of 'n's."""
 
 	for m in ms:
-		pr = sp_cliquet( r = 0.03, q = 0., sigma = 0.02,
-		                 t = 5., m = m, N = 5,
+		pr = sp_cliquet( r = 0.03, q = 0., sigma = 0.2,
+		                 # sigma = [(0.05 + 0.04 * i) for i in range(1,9)],
+		                 t = 2., m = m, N = 8,
 		                 f_loc = 0., c_loc = 0.08,
 		                 f_glob = 0.16, c_glob = float('inf'), h = 1e-6 )
-		print('m = {m:4}: price = {pr:.{d}f}'.format(d = d, m = m, pr = pr))
+		# print('m = {m:4}: price = {pr:.{d}f}'.format(d = d, m = m, pr = pr))
 
 
 # Display the results
-# run_asian([100], d=6)
+# run_asian([10], d=6)
 # run_asian([221], d=6)
 # run_asian([222], d=6)
 
@@ -92,5 +92,5 @@ def run_cliquet(ms: list, d: int = 9) -> None:
 # http://www.fintools.com/resources/online-calculators/options-calcs/binomial/
 # http://www.optionspricevaluation.com/
 
+run_cliquet([10])
 # run_cliquet([10, 20, 50, 100, 200, 500, 1000])
-run_cliquet([20])

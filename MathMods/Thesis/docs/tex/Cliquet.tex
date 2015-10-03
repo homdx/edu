@@ -308,7 +308,7 @@ Now we focus on how to determine the price function at time $ t_{N - 1} $. Recal
 \end{equation}
 
 Since $ V_{N} $ is piecewise-linear and continuous, and the above is just a linear combination of such functions, the resulting function is also piecewise-linear and continuous, and thus may be completely represented by singular points. The next logical step is of course to figure out a method to compute these singular points.
-
+OO
 From equation \ref{eq:clq-penultimate}, we note that each singular point $ l $ at maturity may have $ j_0 + 1 $ possible returns, given by
 \begin{equation}
 	\label{eq:clq-b}
@@ -474,7 +474,7 @@ Since at each $ N $ the upper bound for the error is $ h $, if we repeat the app
 
 
 \begin{rem}[Comparison with Asian options]
-	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section [TODO: reference] of Chapter \ref{cha:asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
+	While using approximations for Asian options, the error bound was $ nh $, where $ n $ was the number of time steps considered for computation (refer to Section \ref{sec:asian-approx} of Chapter \ref{cha:asian}). But in the case of the cliquet options, the error depends only on the $ h $ and the number of observations - precluding any dependence on the computational parameters. This technique gives a precise approximation of the price without considering upper and lower estimates.
 \end{rem}
 
 The following proposition proves that the approximation of the price obtained by this method does converge to the price of the cliquet option in the continuous model. The proposition and proof is directly from \cite{Gaudenzi2011}.
@@ -489,7 +489,7 @@ The following proposition proves that the approximation of the price obtained by
 	The binomial Cox-Ross-Rubinstein tree converges weakly to the lognormal process. In fact, Kushner’s Theorem (see \cite{kushner1984approximation} and \cite{Kushner:1992:NMS:151172}) ensures that the local consistency conditions, i.e. the matching at the first order of the first and the second moments of the logarithmic increments of the approximating Markov chain
 	with those of the continuous-time limit, leads to the convergence of the expectations of smooth functionals. In particular, let $ \psi $ be a continuous bounded function and $ \tilde{S}_j $ be the Cox–Ross–Rubinstein binomial process defined in \ref{eq:clq-risky-iid-binom-rvs}. Then it holds that
 	\begin{equation*}
-		\lim_{n \to \infty} \E \left( e^{-rT} \psi \left( \bar{S}_j, j \in [n] \right) \right)  =  \E \left( e^{-rT} \psi \left( S_t, t \in [0, T] \right) \right)
+		\lim_{n \to \infty} \E^* \left( e^{-rT} \psi \left( \bar{S}_j^n, j \in [n] \right) \right)  =  \E^* \left( e^{-rT} \psi \left( S_t, t \in [0, T] \right) \right)
 	\end{equation*}
 	Therefore the exact binomial price $ Q_n $ converges to the continuous option price as $ n \to \infty $.
 	
@@ -563,9 +563,7 @@ The following proposition proves that the approximation of the price obtained by
 				$ S_i \leftarrow S_i \cup (B_{l,j}, V_{N-1}(B_{l,j})) $ \;
 			}
 			
-			\If{$ m \mid i $}{
-				Approximate as described in Section \ref{subsec:clq-approx}. \;
-			}
+			Approximate as described in Section \ref{subsec:clq-approx}. \;
 			
 			$ S_+ \leftarrow S_i $ \;
 		}
@@ -582,9 +580,17 @@ The following proposition proves that the approximation of the price obtained by
 \subsection{Implementation}
 The algorithm was implemented in Python 3.5.0 (2015-09-13).
 
-<TODO: The actual implementation goes here>
-%\inputminted[tabsize=2]{python}{../code/tr_cliquet_singularpoints.py}
-%\label{lst:clq}
+\paragraph{mymath.py}
+This file contains the $ \binom{n}{k} $ function.
+
+\inputminted[tabsize=4]{python}{../code/mymath.py}
+\label{lst:mymath}
+
+\paragraph{tr\_sp\_cliquet.py}
+This file contains the function \emph{sp\_cliquet}, which returns the price of the cliquet option at time 0.
+
+\inputminted[tabsize=4]{python}{../code/tr_sp_cliquet.py}
+\label{lst:clq}
 
 
 \section{Numerical results and conclusions}
@@ -622,22 +628,22 @@ Table \ref{tab:clq-results} highlights the results.
 		&&  Bin  &  SP  &  MC  &  Bin  &  SP  \\
 		\midrule
 		\multirow{7}{2em}{$ 0.2 $}
-		&    10  &    &  0.165661911  &  \multirow{7}{5em}{0.174106 (0.17398 -- 0.17423)}  &    &    \\
-		&    20  &    &  0.172300056  &    &    &    \\
-		&    50  &    &  0.165661911  &    &    &    \\
-		&   100  &    &  0.173927464  &    &    &    \\
+		&    10  &  0.165661911  &  0.165661911  &  \multirow{7}{5em}{0.174106 (0.17398 -- 0.17423)}  &    &    \\
+		&    20  &  0.172300056  &  0.172300056  &    &    &    \\
+		&    50  &  0.172501269  &  0.172501269  &    &    &    \\
+		&   100  &  0.172501269  &  0.173927464  &    &    &    \\
 		&   200  &  0.173716366  &  0.173716366  &    &    &    \\
-		&   500  &  0.173922597  &  0.173922597  &    &    &    \\
-		&  1000  &  0.174051949  &  0.174051949  &    &    &    \\
+		&   500  &  0.173922597  &  0.173922671  &    &    &    \\
+		&  1000  &  0.174051949  &  0.174051983  &    &    &    \\
 		\midrule
 		\multirow{7}{2em}{$ 0.02 $}
-		&    10  &    &  0.151234115  &  \multirow{7}{5em}{0.150525 (0.150472 -- 0.150578)}  &    &    \\
-		&    20  &    &  0.149734212  &    &    &    \\
-		&    50  &    &  0.150228984  &    &    &    \\
-		&   100  &    &  0.150386306  &    &    &    \\
-		&   200  &  0.150465004  &  0.150465004  &    &    &    \\
-		&   500  &  0.150508871  &    &    &    &    \\
-		&  1000  &  0.150522368  &    &    &    &    \\
+		&    10  &  0.151234115  &  0.151234416  &  \multirow{7}{5em}{0.150525 (0.150472 -- 0.150578)}  &    &    \\
+		&    20  &  0.149734212  &  0.149734992  &    &    &    \\
+		&    50  &  0.150228984  &  0.150230185  &    &    &    \\
+		&   100  &  0.150386306  &  0.150387954  &    &    &    \\
+		&   200  &  0.150465004  &  0.150466828  &    &    &    \\
+		&   500  &  0.150508871  &  0.150510526  &    &    &    \\
+		&  1000  &  0.150522368  &  0.150524027  &    &    &    \\
 		\midrule
 		\multirow{7}{2em}{Var}
 		&    10  &    &    &  \multirow{7}{5em}{0.226169 (0.225978 -- 0.226360)}  &    &    \\
