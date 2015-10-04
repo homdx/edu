@@ -5,10 +5,10 @@ from mymath import choose
 
 
 # @profile
-def sp_cliquet( r: float, q: float, sigma: float, t: float,
+def cliquet_sp( r: float, q: float, sigma: float, t: float,
                 f_loc: float, c_loc: float, f_glob: float, c_glob: float,
                 N: int, m: int, h: float = 0. ) -> float:
-	"""Prices of an Cliquet call option using the singular point method"""
+	"""Price of a cliquet option using the singular point method"""
 
 	err_p = "ERROR: p_u must be a probability! " + \
 	        "We must have dt < ( sigma ** 2 / ( r - q ) ** 2 ) for this. " + \
@@ -22,15 +22,15 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 	f_glob = max( N * f_loc, f_glob )
 	c_glob = min( N * c_loc, c_glob )
 
-	# Singular points for maturity (go to the future)
-	future = [(N * f_loc, f_glob),
-	          (f_glob, f_glob),
-	          (c_glob, c_glob),
-	          (N * c_loc, c_glob)]
+	# Singular points for maturity (go to the nxt)
+	now = [(N * f_loc, f_glob),
+	       (f_glob, f_glob),
+	       (c_glob, c_glob),
+	       (N * c_loc, c_glob)]
 	if f_glob == N * f_loc:
-		future = future[1:]
+		now = now[1:]
 	if c_glob == N * c_loc:
-		future = future[:-1]
+		now = now[:-1]
 
 	# Uniqueness of sigma
 	if type( sigma ) == float:
@@ -62,7 +62,7 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 
 	if unique_v:
 		u = exp( sigma * sqrt( dt ) )  # Up factor
-		# d = 1. / u
+	# d = 1. / u
 
 	if unique_r and unique_v:
 		# Risk neutral probability
@@ -97,8 +97,9 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 		for j in range( j_min + 1, j_max ):
 			ret[j - j_min] = u ** (-m + 2 * j) - 1
 
-	# Come back from the future, one step at a time.
+	# Come back from the nxt, one step at a time.
 	for i in range( N - 1, -1, -1 ):
+		nxt = now
 		now = []
 
 		# Checks
@@ -147,9 +148,9 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 
 		# Obtain a sorted list for B
 		b_list = []
-		for l in range( 0, len( future ) ):
+		for l in range( 0, len( nxt ) ):
 			for j in range( 0, j0 + 1 ):
-				b = future[l][0] - ret[j]
+				b = nxt[l][0] - ret[j]
 				if (i * f_loc) <= b <= (i * c_loc):
 					close = False
 					for rsz in b_list:
@@ -163,19 +164,19 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 		for b in b_list:
 			v = 0
 			for k in range( 0, j0 + 1 ):
-				# Running sum Z corresponding to B at the future time step.
+				# Running sum Z corresponding to B at the nxt time step.
 				rszp = b + ret[k]
-				if rszp <= future[0][0]:
-					vk = future[0][1]
-				elif rszp >= future[-1][0]:
-					vk = future[-1][1]
+				if rszp <= nxt[0][0]:
+					vk = nxt[0][1]
+				elif rszp >= nxt[-1][0]:
+					vk = nxt[-1][1]
 				else:
-					for idx in range( 0, len( future ) ):
-						if future[idx][0] <= rszp < future[idx + 1][0]:
-							vk = future[idx][1] + \
-							     (future[idx + 1][1] - future[idx][1]) / \
-							     (future[idx + 1][0] - future[idx][0]) * \
-							     (rszp - future[idx][0])
+					for idx in range( 0, len( nxt ) ):
+						if nxt[idx][0] <= rszp < nxt[idx + 1][0]:
+							vk = (nxt[idx][1] +
+							      (nxt[idx + 1][1] - nxt[idx][1]) /
+							      (nxt[idx + 1][0] - nxt[idx][0]) *
+							      (rszp - nxt[idx][0]))
 				v += prb[k] * vk
 			v /= R_N
 			now.append( (b, v) )
@@ -190,8 +191,8 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 					for k in range( l + 1, j ):
 						approx = True
 						delta = abs(
-							slope * (now[k][0] - now[l][0]) + now[l][1] -
-							now[k][1] )
+							slope * (now[k][0] - now[l][0]) +
+							now[l][1] - now[k][1])
 						if delta >= h:
 							approx = False
 							break
@@ -200,7 +201,5 @@ def sp_cliquet( r: float, q: float, sigma: float, t: float,
 				if approx and j > l + 1:
 					del now[l + 1:j]
 				l += 1
-
-		future = now
 
 	return now[0][1]

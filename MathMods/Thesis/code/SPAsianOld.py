@@ -1,5 +1,4 @@
-__author__ = 'Sudip Sinha'
-
+__author__ = "Sudip Sinha"
 
 from math import exp, sqrt
 

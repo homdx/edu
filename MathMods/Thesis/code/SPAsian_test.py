@@ -1,5 +1,4 @@
-__author__ = 'Sudip Sinha'
-
+__author__ = "Sudip Sinha"
 
 # import unittest
 import tr_asian_singularpoints_old
