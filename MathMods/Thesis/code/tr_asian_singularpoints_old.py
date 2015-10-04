@@ -5,7 +5,7 @@ from math import exp, sqrt
 
 
 # @profile
-def sp_asian_call(r: float,    # Market
+def sp_asian_call_old(r: float,    # Market
                   s0: float, sigma: float, q: float,    # Underlying
                   k: float, t: float, am: bool=False,    # Derivative
                   mach_eps=65536 * (7/3 - 4/3 - 1), n: int=25, h: float=0., ub: bool=True    # Computation
@@ -50,13 +50,14 @@ def sp_asian_call(r: float,    # Market
 		else:
 			sp[n][j] = [(a_min, 0), (k, 0), (a_max, a_max - k)]
 
-	# Singular points for N(i,j) i != n
+	# Singular points for N(i,j)  i != n
 	for i in range(n-1, -1, -1):
 
 		for j in range(i+1):
 
 			a_min = s0 / (i+1) * ((1 - d**(i-j+1)) / (1-d) + d**(i-j-1) * (1 - u**j) / (1-u))
 			a_max = s0 / (i+1) * ((1 - u**(j+1)) / (1-u) + u**(j-1) * (1 - d**(i-j)) / (1-d))
+			# print('a_min = {}, a_max = {}'.format(a_min, a_max))
 
 			if a_min > a_max:
 				(a_min, a_max) = (a_max, a_min)    # Jugaad
@@ -192,5 +193,5 @@ def sp_asian_call(r: float,    # Market
 						l += 1
 
 			sp[i][j] = sp_i_j
-
+	# print(sp)
 	return sp

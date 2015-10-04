@@ -873,7 +873,7 @@ The possibility of obtaining estimates of the exact binomial price with an error
 		
 		\qquad \emph{Market parameters} -- spot interest rate: $ r $ \\
 		
-		\qquad \emph{Computational parameters} -- time steps: $ n $ \\
+		\qquad \emph{Computational parameters} -- time steps: $ n $, error bound: $ h $ \\
 	}
 	
 	\KwOut{The price of the option at the initial time}
@@ -895,7 +895,7 @@ The possibility of obtaining estimates of the exact binomial price with an error
 				
 				$ \forall C^l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $, compute $ v_{i,j}^c ( C^l ) $ by Equations \ref{eq:asian-dn-lint} and \ref{eq:asian-dn-pr}. \;
 				
-				Sort the averages $ {B^l}_l \cup {C^l}_l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $ to obtain the set of $ L_{i,j} $ singular points. \;
+				Sort the averages $ \{ B^l \}_l \cup \{ C^l \}_l \in \left[  A_{i,j}^{\min}, A_{i,j}^{\max}  \right] $ to obtain the set of $ L_{i,j} $ singular points. \;
 				
 				Compute the American price according to Section \ref{sec:fixed-strike-am} and obtain a new set of singular points with a new cardinality denoted, for simplicity, by $ L_{i,j} $ again. \;
 				
