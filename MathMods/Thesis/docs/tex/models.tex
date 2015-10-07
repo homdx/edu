@@ -77,7 +77,7 @@ We want $ p \in [0,1] $ such that $ \E(S_1) = S_0 R $. This would make the syste
 	\implies  &&  p  & =  \frac{R - d}{u - d}    \label{eq:discrete-pr}
 \end{alignat}
 
-The probability thus obtained is called the \emph{risk neutral probability}, because under this probability, it is equivalent for the investor whether he invests in a risky or a riskless asset. Note that this probability is completely objective as it is determined completely by the parameters $ u $, $ d $ and $ r $. Since the probability distribution is uniquely determinable from the market parameters, the market is viable and complete (See Theorems \ref{thm:discrete-ftoap1} and \ref{thm:discrete-ftoap2} in the next section).
+The probability thus obtained is called the \emph{risk neutral probability}, because under this probability, on average, it is equivalent for the investor whether he invests in a risky or a riskless asset. Note that this probability is completely objective as it is determined completely by the parameters $ u $, $ d $ and $ r $. Since the probability distribution is uniquely determinable from the market parameters, the market is viable and complete (See Theorems \ref{thm:discrete-ftoap1} and \ref{thm:discrete-ftoap2} in the next section).
 
 Now we impose the condition $ p \in [0,1] $ to obtain
 \begin{equation}
@@ -194,6 +194,19 @@ Using exactly the same computations as in the binomial case, we again find the r
 
 
 \subsection{Fundamental Theorems of Asset Pricing}
+
+
+\begin{dfn}[absolute continuity of measures]
+	Let $ (\Omega, \mathcal{F}) $ be a measurable space, with associated measures $ P $ and $ Q $. The we say that $ P $ is absolutely continuous with respect to $ Q $, or $ P \ll Q $, if $ \forall A \in \mathcal{F} $,
+	\begin{equation*}
+		Q(A) = 0 \implies P(A) = 0 .
+	\end{equation*}
+\end{dfn}
+
+\begin{dfn}[Equivalence of measures]
+	Let $ (\Omega, \mathcal{F}) $ be a measurable space, with associated measures $ P $ and $ Q $. The we say that $ P $ is equivalent to $ Q $, or $ P \sim Q $, if $ P \ll Q $ and $ Q \ll P $.
+\end{dfn}
+
 
 We now need to invoke two cornerstone theorems, which will allow us to price the option at any time step $ i $.
 
@@ -387,11 +400,54 @@ On the set $ \{ \tau = m \} $, this is equivalent to
 	\end{cases} .
 \end{equation*}
 
-[TODO: Introduce completely stopping times and sup over stopping times to motivate the discussion on the theory of Asian options.]
+
+Below we state some results without proofs. The proofs may be found in \cite[Section 2.2.1]{Lamberton1996}.
+
+\begin{prp}[Stopped (super) martingales are (super) martingales]
+	If $ (X_i)_i $ is an adapted process and $ \tau $ is a stopping time, then $ ( X_{i}^{\tau} )_{i \in [n]} $ is adapted. Furthermore, if $ (X_i)_i $ is a (super) martingale, then so is $ \left( X_{i}^{\tau} \right) $.
+\end{prp}
+
+\begin{prp}
+	The random variable defined by $ \tau_0 = \inf \{ i \ge 0 \mid U_i = Z_i \} $ is a stopping time, and $ (U_i^{\tau_0}) $ is a martingale.
+\end{prp}
+
+We denote by $ \mathcal{T}_{i, n} $ the set of stopping times taking values in $ \{ i, i+1, \dots, n \} $. Since $ \Omega $ is finite, $ \mathcal{T}_{i, n} $ is also finite. The martingale property of the process $ (U_i^{\tau_0}) $ gives the following result, relating the concepts of Snell envelope to the optimal stopping problem. The idea portrayed is that if $ Z_n $ represents the total winnings of a gambler after $ n $ games, then stopping at time $ \tau_0 $ maximises the expected gain given $ \mathcal{F}_0 $ (the information at time 0).
+
+\begin{prp}
+	The stopping time $ \tau_0 $ satisfies
+	\begin{equation*}
+		U_0  =  \E^* ( Z_{\tau_0} \mid \mathcal{F}_0 )  =  \sup_{ \tau \in \mathcal{T}_{0, n} } \E^* ( Z_{\tau} \mid \mathcal{F}_0 )
+	\end{equation*}
+\end{prp}
+
+Generalising the above proposition, we get
+\begin{equation}
+	U_i  =  \sup_{ \tau \in \mathcal{T}_{i, n} } \E^* ( Z_{\tau} \mid \mathcal{F}_i )  =  \E^* ( Z_{\tau_i} \mid \mathcal{F}_i ) ,
+\end{equation}
+where $ \tau_i = \inf \{ j \ge i \mid U_j = Z_j \} $.
+
+\begin{dfn}[optimal stopping time]
+	\label{dfn:discrete-optimal-stopping-time}
+	A stopping time $ \tau $ is called optimal for the process $ (Z_i)_i $ if
+	\begin{equation}
+		\E^* ( Z_{\tau} \mid \mathcal{F}_0 )  =  \sup_{ \tau \in \mathcal{T}_{0, n} } \E^* ( Z_{\tau} \mid \mathcal{F}_0 )
+	\end{equation}
+\end{dfn}
+
+\begin{thm}
+	A stopping time $ \tau $ is optimal if and only if both of the following hold.
+	\begin{equation*}
+		\begin{cases}
+			U_{\tau}  =  Z_{\tau}  \\
+			(U_i^{\tau})_{i \in [n]}  \text{ is a martingale}
+		\end{cases}
+	\end{equation*}
+\end{thm}
+
 
 
 \paragraph{Computational details}
-If we are given the contingency claim, and the option is of the American type, it becomes very simple to evaluate it value in this model. The only difference with the European options is that at each node, we select the higher value among the the price for immediate exercise and holding the option till the next time. While going through the algorithm, it is suggested to keep in mind Figure \ref{fig:discrete-4tr}.
+If we are given the contingency claim, and the option is of the American type, it becomes very simple to evaluate it in this model. The only difference with the European options is that at each node, we select the higher value between the prices for immediate exercise and holding the option till the next time. While going through the algorithm, it is suggested to keep in mind Figure \ref{fig:discrete-4tr}.
 
 \begin{algorithm}[H]
 	\DontPrintSemicolon
@@ -450,37 +506,52 @@ Solving this initial value problem, we get
 \end{equation}
 
 
-The risky asset is dependent on both deterministic and stochastic factors. The deterministic part is proportional to the current value of the asset and the time. The non-deterministic part is dependent on its current value and a stochastic process, whose mean should be zero, and variance should be proportional to the time. We choose these criteria because we do not expect the process to have a bias on going up or down (mean zero) and we expect that the process has a higher probability of going away from the current value with more time. It so happens that the best candidate for such a process is a standard Brownian motion.
-[TODO: Brownian motion in Appendix]
+The risky asset is dependent on both deterministic and stochastic factors. The deterministic part is proportional to the current value of the asset and the time. The non-deterministic part is dependent on its current value and a stochastic process, whose mean should be zero, and variance should be proportional to the time. We choose these criteria because we do not expect the process to have a bias on going up or down (mean zero) and we expect that the process has a higher probability of going away from the current value with more time. It so happens that the best candidate for such a process is a standard Brownian motion\footnote{For more information on Brownian motion, refer to \cite[Section 3.1]{Lamberton1996}}.
 
-Let $ B_t $ be a Brownian process. Let $ \mu $ (drift) and $ \sigma $ (volatility) be proportionality constants.
+Hence, Black and Scholes proposed the solution of the following stochastic differential equation with initial value as a model for the price dynamics.
 \begin{subequations}
 	\label{eq:continous-risky-sde}
 	\begin{align}
 		\dif S_t  &=  \mu S_t \dif t + \sigma S_t \dif B_t \\
-		S_0  &=  s_0
+		S_0  &=  s_0 .
 	\end{align}
 \end{subequations}
+Here $ B_t $ be a Brownian motion, and $ \mu $ (drift) and $ \sigma $ (volatility) are proportionality constants. We shall assume that $ \sigma > 0 $, for if $ \sigma = 0 $, the process becomes deterministic, and $ \sigma < 0 $ is equivalent to $ \sigma > 0 $ because a Brownian motion is symmetric with respect to the time axis.
 
-This is a stochastic differential equation with initial value. The solution to this problem is the geometric Brownian motion
+The solution to this problem is the geometric Brownian motion
 \begin{equation}
 \label{eq:continous-risky-int}
 S_t = s_0 e^{ ( \mu - \frac{\sigma^2}{2} )t + \sigma B_t }.
 \end{equation}
 
 
-Before we proceed further in this section, we need to recall the Girsanov theorem.
+Before we proceed further in this section, we state the Radon-Nikodym Theorem and the Girsanov theorem.
+
+\begin{thm}[Radon-Nikodym]
+	\label{thm:radon-nikodym}
+	Let $ (\Omega, \mathcal{F}) $ be a measurable space, with associated $ \sigma $-finite measures $ P $ and $ Q $ such that $ Q \ll P $. Then there exists an $ \mathcal{F} $-measurable function $ f $ such that
+	\begin{equation*}
+	Q(A) = \int_{A} f dP  \qquad  \forall A \in \mathcal{F}
+	\end{equation*}
+\end{thm}
+
+\begin{dfn}[Radon-Nikodym derivative]
+	\label{dfn:radon-nikodym-derivative}
+	In Theorem \ref{thm:radon-nikodym}, the function $ f $ is called the Radon-Nikodym derivative of $ Q $ with respect to $ P $, and is denoted as $ f = \od{Q}{P} $.
+\end{dfn}
+
+
 \begin{thm}[Girsanov]
 	\label{thm:continuous-girsanov}
-	Let $ (\Omega, \mathcal{F}, (\mathcal{F}_t)_t, P) $ be a filtered probability space, $ (B_t)_t $ be a $ (\mathcal{F}_t)_t $-Brownian motion on the bounded interval $ [0, T] $, and $ \theta \in \mathbb{R} $. Let the probability $ P^* $ be defined by the Radon-Nikodym derivative [TODO]
+	Let $ (\Omega, \mathcal{F}, (\mathcal{F}_t)_t, P) $ be a filtered probability space, $ (B_t)_t $ be a $ (\mathcal{F}_t)_t $-Brownian motion on the bounded interval $ [0, T] $, and $ \theta \in \mathbb{R} $. Let the probability $ P^* $ be defined by the Radon-Nikodym derivative
 	\begin{equation}
-	\frac{\dif P^*}{\dif P} = e^{ \theta B_T - \frac{\theta^2}{2} T }.
+	\od{P^*}{P} = e^{ \theta B_T - \frac{\theta^2}{2} T }.
 	\end{equation}
 	
 	Then, the following holds.
 	\begin{itemize}
 		\item $ P^* \sim P $
-		\item The process $ Z_t \coloneqq \E \left( \frac{\dif P^*}{\dif P} \mid \mathcal{F}_t \right) $ is a $ P $-martingale
+		\item The process $ Z_t \coloneqq \E \left( \od{P^*}{P} \mid \mathcal{F}_t \right) $ is a $ P $-martingale
 		\item The process $ W_t \coloneqq B_t + \theta t $ is a $ P^* $-Brownian motion
 	\end{itemize}
 \end{thm}
@@ -490,7 +561,7 @@ Before we proceed further in this section, we need to recall the Girsanov theore
 \end{proof}
 
 
-First, we need to show that there exists a probability measure $ P^* $ equivalent to $ P $ under which the discounted share price $ \tilde{S}_t = e^{-rt} S_t $ is a martingale[TODO]. From Equation \ref{eq:continous-risky-sde} and Ito's Lemma [TODO], we get
+First, we need to show that there exists a probability measure $ P^* $ equivalent to $ P $ under which the discounted share price $ \tilde{S}_t = e^{-rt} S_t $ is a martingale. From Equation \ref{eq:continous-risky-sde} and Itô's Lemma (see \cite[Theorem 4.1.2]{Oksendal2003stochastic}), we get:
 \begin{align*}
 	\dif \tilde{S}_t  &=  -r e^{-rt} S_t \dif t + e^{-rt} \dif S_t  \\
 	&=  -r \tilde{S}_t \dif t + e^{-rt} ( \mu S_t \dif t + \sigma S_t \dif B_t )  \\
@@ -498,7 +569,7 @@ First, we need to show that there exists a probability measure $ P^* $ equivalen
 	&=  \tilde{S}_t ( (\mu - r) \dif t + \sigma \dif B_t )
 \end{align*}
 
-Let $ W_t = B_t + \frac{\mu - r}{\sigma} t $. The we derive the following.
+Let $ W_t = B_t + \frac{\mu - r}{\sigma} t $ (since $ \sigma \ne 0 $). The we derive the following.
 \begin{subequations}
 	\label{eq:continuous-risky-disc-sde}
 	\begin{align}
@@ -519,14 +590,14 @@ under which $ (W_t)_t $ is a standard Brownian motion. The definition of stochas
 	\end{align}	
 \end{subequations}
 
-To derive a SDE under the risk-neutral probability, we use Ito's lemma.
+To derive a SDE under the risk-neutral probability, we use Itô's lemma to get
 \begin{equation}
 	\label{eq:continuous-risky-sde-risk-neutral}
-	\frac{\dif S_t}{S_t} = r \dif t + \sigma \dif W_t
+	\frac{\dif S_t}{S_t} = r \dif t + \sigma \dif W_t .
 \end{equation}
 
 
-We verify that $ \tilde{S}_t $ is a $ P^* $-martingale.
+We verify that $ \tilde{S}_t $ is a $ P^* $-martingale. Recall that we denote the set of all $ \mathcal{F} $-measurable functions by $ \mu \mathcal{F} $.
 \begin{align*}
 	\E^* \left( \tilde{S}_{t+s} \mid \mathcal{F}_t \right)  &=  \E^* \left( s_0 e^{\sigma W_{t+s} - \frac{\sigma^2}{2} (t+s) } \bigm| \mathcal{F}_t \right)  \\
 	&=  \E^* \left( e^{\sigma \overbrace{( W_{t+s} - W_{t} )}^{\perp \mathcal{F}_t} }
@@ -536,7 +607,7 @@ We verify that $ \tilde{S}_t $ is a $ P^* $-martingale.
 	&=  \tilde{S}_t e^{ - \frac{\sigma^2}{2} s } e^{ \frac{\sigma^2}{2} s }  \\
 	&=  \tilde{S}_t
 \end{align*}
-The last expectation was calculated using the fact that $ ( W_{t+s} - W_{t} ) \sim \mathcal{N}(0, s) $, and that the characteristic function of $ \mathcal{N}(\mu, \sigma) $ is given by $ \varphi(t) = e^{it \mu - \frac{\sigma^2 t^2}{2}} $.
+The last expectation was calculated using the fact that $ ( W_{t+s} - W_{t} ) \sim \mathcal{N}(0, s) $, and that the moment generating function\footnote{\url{https://en.wikipedia.org/wiki/Moment-generating_function}} of $ \mathcal{N}(\mu, \sigma) $ is given by $ M(t) = e^{\mu t + \frac{\sigma^2 t^2}{2}} $.
 
 
 \begin{rem}[Continuous dividend yield]
@@ -556,34 +627,36 @@ From Equation \ref{eq:continous-risky}, we have:
 
 The value of a contingency claim then becomes
 \begin{align*}
-	V_t  &=  \E^* \left( e^{-r \Delta t} \  h(S_T)  \big|  \mathcal{F}_t \right)  \\
-	     &=  \E^* \left( e^{-r \Delta t} \  h(S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t })  \big|  \mathcal{F}_t \right) .
+	v_t  &=  \E^* \left( e^{-r \Delta t} \  h(S_T)  \big|  \mathcal{F}_t \right)  \\
+	     &=  \E^* \left( e^{-r \Delta t} \  h \left(S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \big|  \mathcal{F}_t \right) .
 \end{align*}
 
-Since $ S_t $ is $ \mathcal{F}_t $-measurable, we can treat it as a constant $ x $. The value of the call can then be represented by $ V_t = F(t, S_t) $, where $ F(t,x) = \E^* \left( e^{-r \Delta t} \  h \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  \mathcal{F}_t \right) $.
+Since the process $ (S_t)_t $ is Markovian, we may write $ \E^*(\cdot \mid \mathcal{F}_t) = \E^*(\cdot \mid S_t) $. By conditional expectation, the latter is a measurable function of $ t $ and $ S_t $, denoted by $ F(t, S_t) $. Moreover, since $ S_t $ is $ \mathcal{F}_t $-measurable, we can treat it as a constant $ x $. The value of the call can then be represented by $ V_t = F(t, S_t) $, where $ F(t,x) = \E^* \left( e^{-r \Delta t} \  h \left( S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  S_t = x \right) $. By independence of increments of the Brownian motion $ W $ ($ \Delta W_t \perp \sigma(W_s : s \le t) $), the conditional expectation reduces to a simple expectation, and we write
+\begin{equation*}
+	F(t, x)  =  \E^* \left( e^{-r \Delta t} \  h \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right) \right)
+\end{equation*}
 
 For the call, we put $ h(x) = (x - K)_+ $, and denote $ F(t, x) $ by $ c(t, x) $.
 
 \begin{align*}
-	c(t, x)  &=  \E^* \left( e^{-r \Delta t} \  h \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  \mathcal{F}_t \right)  \\
-	&=  \E^* \left( e^{-r \Delta t} \  \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } - K  \right)_+  \Big|  \mathcal{F}_t \right)  \\
-	&=  x \underbrace{ \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right) }_{A}  +  K e^{-r \Delta t}  \underbrace{ \E^* \left(  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right) }_{B}
+	c(t, x)  &=  \E^* \left( e^{-r \Delta t} \  \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } - K  \right)_+  \right)  \\
+	&=  x \underbrace{ \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \right) }_{A}  +  K e^{-r \Delta t}  \underbrace{ \E^* \left(  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \right) }_{B}
 \end{align*}
 
 We deal with $ B $ first as it is more manageable.
 \begin{align*}
-	B  &=  \E^* \left( \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
-	&=  P^* \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \Big|  \mathcal{F}_t \right)  \\
-	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \bigg|  \mathcal{F}_t \right)  \\
-	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  <  - \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \bigg|  \mathcal{F}_t \right)  \\
-	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  <  \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \bigg|  \mathcal{F}_t \right)
+	B  &=  \E^* \left( \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \right)  \\
+	&=  P^* \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right)  \\
+	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \right)  \\
+	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  <  - \frac{ \log \frac{K}{x} - ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \right)  \\
+	&=  P^* \left( \frac{ \Delta W_t }{ \sqrt{\Delta t} }  <  \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} }  \right)
 \end{align*}
 
-Now, $ \Delta W_t \sim N(0, \Delta t) $, implying $ \frac{ \Delta W_t }{ \sqrt{\Delta t} } \sim N(0, 1) $. Also note that $ \Delta W_t \perp \mathcal{F}_t $. Writing 
+Now, $ \Delta W_t \sim N(0, \Delta t) $, implying $ \frac{ \Delta W_t }{ \sqrt{\Delta t} } \sim N(0, 1) $. Writing 
 \begin{equation*}
 	d_{\ominus} ( \Delta t, x; K, \sigma, r ) = \frac{ \log \frac{x}{K} + ( r - \frac{\sigma^2}{2} ) \Delta t }{ \sigma \sqrt{\Delta t} } ,
 \end{equation*}
-and using independence, we get:
+we get:
 \begin{align*}
 	B  &=  P^* \left( N(0, 1)  <  d_{\ominus} \right)  \\
 	\implies  \qquad  B  &=  \mathcal{N}(d_{\ominus} ( \Delta t, x; K, \sigma, r )),
@@ -594,10 +667,10 @@ where $ \mathcal{N} $ is the (cumulative) distribution function of the standard 
 \end{equation}
 
 
-Similarly, we now evaluate $ A $.
+Similarly, we may now evaluate $ A $.
 \begin{align*}
-	A  &=  \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
-	&=  \E^* \left( e^{ \sigma \sqrt{\Delta t} \frac{ \Delta W_t }{ \sqrt{\Delta t} } - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  - d_{\ominus}  \right\rbrace }  \Big|  \mathcal{F}_t \right)  \\
+	A  &=  \E^* \left( e^{ \sigma \Delta W_t - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } > K  \right\rbrace }  \right)  \\
+	&=  \E^* \left( e^{ \sigma \sqrt{\Delta t} \frac{ \Delta W_t }{ \sqrt{\Delta t} } - \frac{\sigma^2}{2} \Delta t }  \mathbbm{1}_{ \left\lbrace  \frac{ \Delta W_t }{ \sqrt{\Delta t} }  >  - d_{\ominus}  \right\rbrace }  \right)  \\
 	&=  \int_{- d_{\ominus}}^{\infty}  e^{ \sigma \sqrt{\Delta t} z - \frac{\sigma^2}{2} \Delta t } \frac{ e^{-\frac{z^2}{2}} }{ \sqrt{2 \pi} } \dif z  \\
 	&=  \int_{- d_{\ominus}}^{\infty}  \frac{ 1 }{ \sqrt{2 \pi} }  e^{- \frac{ ( z - \sigma \sqrt{\Delta t } )^2 }{2} }  \dif z  \\
 	&=  \int_{- d_{\oplus}}^{\infty}  \frac{ e^{-\frac{y^2}{2}} }{ \sqrt{2 \pi} }  \dif y  \\
@@ -654,17 +727,32 @@ In spite of its limitations, the Black-Scholes model remain one of the most usef
 \begin{description}
 	\item[computability] The ease of computation is one of the biggest advantages of the model.
 	\item[useful approximation] It serves as decent approximation of the real world, particularly when analysing the direction in which prices move when crossing critical points.
-	\item[basis] It serves as a bedrock for more refined models, which try to address its drawbacks.
+	\item[basis] It serves as a benchmark for more refined models, which try to address its drawbacks.
 	\item[reversible] The model's original output, price, can be used as an input and one of the other variables solved for; the implied volatility calculated in this way is often used to quote option prices.
 \end{description}
 
 
 
 \subsection{Discrete and continuous -- different worlds?}
+\label{subsec:discrete-to-continuous}
+Even though it may seem that the Cox-Ross-Rubinstein model and the Black-Scholes models are fundamentally different, it can be shown that as the number of time steps increase to infinity, the former converges to the latter in distribution.
 
-Even though it may seem that the Cox-Ross-Rubinstein model and the Black-Scholes models are fundamentally different, we can show that as the number of time steps increase to infinity, the former converges to the latter in distribution.
-[TODO: Proof of convergence in distribution of CRR to BS]
+The idea is that we rescale the Cox-Ross-Rubinstein model in time and space and use the central limit theorem. We assume
+\begin{itemize}
+	\item More trading periods $ t \in \frac{iT}{n} \quad \forall i \in [n] $
+	\item Smaller price increments: $ T_i^n \in \left\lbrace \frac{d}{\sqrt{n}}, \frac{u}{\sqrt{n}} \right\rbrace  \implies  \frac{1}{T} \Var_n (T_i^n) = \frac{\sigma}{\sqrt{n}} $
+	\item Continuous compounding
+\end{itemize}
 
+\begin{thm}[\footnote{\url{http://horst.qfl-berlin.de/sites/files/u4/CMM2.pdf}}]
+	The distribution of the asset price $ S_n^n $ at maturity under $ P_n^* $ converges to the distribution of the log-normal random variable $ S_T = S_0 e^{ ( r - \frac{\sigma^2}{2} ) T + \sigma W_T } $, where $ W_T \sim N(0, T) $.
+	
+	Moreover, if $ f $ is a continuous function on $ (0, \infty) $, such that $ |f(x)| \le c(1+x)^q $ for some $ c > 0 $ and $ 0 \le q < 2 $, then $ \E^* \left( f(S_n^n) \right) \to \E^* \left( f(S_T) \right) $.
+\end{thm}
+
+The proof is quite long, and we shall not prove it here. We refer the interested reader to \cite{He1989} for a detailed analysis.
+
+What is more interesting to us is that with the help of this result, we may use the Cox-Ross-Rubinstein model to price an option, and we would know that the result is guaranteed to converge to the Black-Scholes price, even if such a price cannot be calculated directly.
 
 
 \subsection{Black-Scholes model -- other options}
@@ -672,11 +760,11 @@ Even though it may seem that the Cox-Ross-Rubinstein model and the Black-Scholes
 
 We have seen that it is quite easy to compute the price of European options in the Black-Scholes model. On the other hand, pricing most other options is not so straight forward. For most options, we do not have closed-form solutions in the Black-Scholes model. Examples of such options include American options and most exotic options.
 
-On the other hand, the Cox-Ross-Rubinstein, even though computationally much more demanding, does allow pricing of all options in a straightforward manner. In fact, even though the theoretical foundations are quite different between European and American options, the similarity among the Algorithms \ref{alg:discrete-eu} and \ref{alg:discrete-am} testifies to this fact.
+On the other hand, the Cox-Ross-Rubinstein, even though computationally much more demanding, does allow pricing of all options in a straightforward manner. In fact, even though the theoretical foundations are quite different between European and American options, the similarity among the Algorithms \ref{alg:discrete-eu} and \ref{alg:discrete-am} testifies to this fact. This is because unlike in the Black-Scholes model, we do not calculate a closed form formula for the prices in the Cox-Ross-Rubinstein model. Rather, we utilise the recursive procedure that does not call for an explicit evaluation formula. This universal computability is one of the primary advantage of discrete models. Our trust on the prices computed using discrete models is bolstered by the fact that they do converge to the continuous models in certain cases -- a prime example being the convergence of the Cox-Ross-Rubinstein model to the Black-Scholes one.
 
-A good balance has been struck by algorithms which develop on the Cox-Ross-Rubinstein model in order to decrease the computational complexity by allowing for approximations. The sacrifice in accuracy is justified by the significant improvement in computability. One such algorithm is the \emph{Singular Points method} introduced by Gaudenzi, Zanette and Lepellere. 
+In light of the above, a good balance has been struck by algorithms which develop on the discrete models in order to decrease the computational complexity by allowing for approximations. The sacrifice in accuracy is justified by the significant improvement in computability. One such algorithm is the \emph{singular points method} introduced by Gaudenzi, Zanette and Lepellere.
 
-In the next two chapters, we shall deal with Asian options of the American type, and cliquet options, respectively. These options do not lend themselves to be priced in closed-form formulae in the Black-Scholes model. The Singular Points method is a viable alternative method for these options, and we focus our study on its theory and extensibility, stating also the numerical results.
+In the next two chapters, we shall deal with Asian options of the American type, and cliquet options, respectively. These options do not lend themselves to be priced in closed-form formulae in the Black-Scholes model. The singular points method is a viable alternative method for these options, and we focus our study on its theory and extensibility, stating also the numerical results.
 
 
 %%% Local Variables:

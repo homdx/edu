@@ -1,8 +1,9 @@
+# ============================================================================ #
 __author__ = "Sudip Sinha"
 
 from math import exp, log, sqrt, ceil, floor, isclose
 from mymath import choose
-
+# ---------------------------------------------------------------------------- #
 
 # @profile
 def cliquet_sp( r: float, q: float, sigma: float, t: float,
@@ -203,3 +204,4 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 				l += 1
 
 	return now[0][1]
+# ============================================================================ #

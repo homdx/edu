@@ -34,8 +34,5 @@ def run_cliquet_var(ms: list, d: int = 9) -> None:
 		                 sigma = [(0.05 + 0.04 * i) for i in range(1,9)],
 		                 t = 2., m = m, N = 8,
 		                 f_loc = 0., c_loc = 0.08,
-		                 f_glob = 0.16, c_glob = float('inf'), h = 1e-6 )
+		                 f_glob = 0.16, c_glob = float('inf'), h = 0. )
 		# print('m = {m:4}: price = {pr:.{d}f}'.format(d = d, m = m, pr = pr))
-
-
-run_cliquet_high([200])

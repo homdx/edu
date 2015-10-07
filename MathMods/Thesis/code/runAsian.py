@@ -62,19 +62,19 @@ def run_asian(ns: list, d: int=6) -> None:
 
 	# s0 = 100.; k = 100.; sigma = 0.1886; q = 0.; t = 0.25; r = 0.05; am = True; h = 1e-6    # Table 4
 
-	s0 = 100.; k = 90.; sigma = 0.2; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 1
+	# s0 = 100.; k = 90.; sigma = 0.2; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 1
 	# s0 = 100.; k = 90.; sigma = 0.4; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 1
-	# s0 = 100.; k = 110.; sigma = 0.2; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 2
+	s0 = 100.; k = 110.; sigma = 0.2; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 2
 	# s0 = 100.; k = 110.; sigma = 0.2; q = 0.03; t = 1.; r = 0.1; am = True; h = 1e-6    # Table 2
 
 	for n in ns:
 		upper = asian_call_sp(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n, h=h, ub=True)
 		lower = asian_call_sp(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n, h=h, ub=False)
-		if n < 25:
-			actual = asian_call_sp(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n)
-			print('n={n:3}: {lb:.{d}f} <= {ac:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ac=actual, ub=upper))
-		else:
-			print('n={n:3}: {lb:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ub=upper))
+		# if n < 25:
+		# 	actual = asian_call_sp(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n)
+		# 	print('n={n:3}: {lb:.{d}f} <= {ac:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ac=actual, ub=upper))
+		# else:
+		print('{n:3}: {lb:.{d}f} <= {ub:.{d}f}'.format(d=d, n=n, lb=lower, ub=upper))
 		# actual = asian_call_sp(r=r, s0=s0, sigma=sigma, q=q, k=k, t=t, am=am, n=n)
 		# print('n={n:3}: {ac}'.format(d=d, n=n, ac=actual))
 

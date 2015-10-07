@@ -1,7 +1,8 @@
+# ============================================================================ #
 __author__ = "Sudip Sinha"
 
 from math import exp, sqrt, isclose
-
+# ---------------------------------------------------------------------------- #
 
 # @profile
 def asian_call_sp( r: float,  # Market
@@ -50,12 +51,8 @@ def asian_call_sp( r: float,  # Market
 			now[j] = [(a_min, 0), (a_max, 0)]
 		else:
 			now[j] = [(a_min, 0), (k, 0), (a_max, a_max - k)]
-	# display = '\n' + '-' * 64 + '\n'
-	# for (j, tj) in enumerate(now):
-	# 	display = 'N({i},{j}): {tj}\n'.format(i=n, j=j, tj=tj) + display
-	# display = '-' * 64 + '\n' + display
 
-	
+
 	# Singular points for N(i,j) i != n
 	for i in range( n - 1, -1, -1 ):
 		nxt = now
@@ -68,7 +65,6 @@ def asian_call_sp( r: float,  # Market
 
 			a_max = s0 / (i + 1) * ((1 - u ** (j + 1)) / (1 - u) +
 			                        u ** (j - 1) * (1 - d ** (i - j)) / (1 - d))
-			# print('a_min = {}, a_max = {}'.format(a_min, a_max))
 
 			if a_min > a_max:
 				(a_min, a_max) = (a_max, a_min)  # Jugaad
@@ -108,8 +104,8 @@ def asian_call_sp( r: float,  # Market
 
 				assert len( nxt[j] ) > 0, "len( nxt[j] ) == 0"
 
-				# Uniqueness check: Verify that 'C' is not in the set of 'B'
-				# Not required since we eliminate close points later.
+				# Uniqueness check: Verify that 'C' is not in the set of 'B'.
+				# This is not required since we eliminate close points later.
 
 				# Get c_dn for c in [a_min, a_max]
 				if a_min <= c <= a_max \
@@ -153,8 +149,7 @@ def asian_call_sp( r: float,  # Market
 				elif now_nd[0][1] <= a_min - k:
 					now_nd = [(a_min, a_min - k), (a_max, a_max - k)]
 				else:
-					for l in range( len(
-							now_nd ) - 1 ):  # TODO: Replace by binary search
+					for l in range( len( now_nd ) - 1 ):
 						if isclose( now_nd[l][0], now_nd[l][1] ):
 							now_nd = now_nd[0:l + 1]
 							now_nd.append( (a_max, a_max - k) )
@@ -219,12 +214,5 @@ def asian_call_sp( r: float,  # Market
 
 			now[j] = now_nd
 
-		# disp = ""
-		# for (j, tj) in enumerate(now):
-		# 	disp = 'N({i},{j}): {tj}\n'.format(i=i, j=j, tj=tj) + disp
-		# disp = '-' * 64 + '\n' + disp
-		# display += disp
-
-	# print(display)
-
 	return now[0][0][1]
+# ============================================================================ #

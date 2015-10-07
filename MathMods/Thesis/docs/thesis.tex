@@ -18,11 +18,13 @@
 % Title page
 \input{tex/title.tex}
 
-%Research is what I’m doing when I don’t know what I’m doing. — Wernher von Braun
+% Research is what I’m doing when I don’t know what I’m doing. — Wernher von Braun
 
 % Information (copyright notice, ISBN, etc.)
 
-% Dedication if any, else empty
+%\chapter*{Dedication}
+%\label{cha:dedication}
+%\input{tex/dedication.tex}
 
 \tableofcontents
 
@@ -45,6 +47,8 @@
 	\item[$ \ceil{\cdot} $] The ceiling function. $ \ceil{x} $ gives the smallest integer larger or equal to $ x $.
 	\item[$ \sim $] Represents the discounted value when used on top of a quantity. For example, $ \tilde{S}_t = e^{-rt} S_t $
 \end{description}
+
+\subparagraph{Units of prices} Throughout the text, we have not specified any monetary unit for the prices of assets. This is because the theory and computations hold no matter what unit is chosen. The only care that needs to be taken is to have all quantities in the same unit; in case not, they should be converted to a uniform unit system.
 
 
 \mainmatter
@@ -70,10 +74,10 @@
 \input{tex/epilogue.tex}
 
 
-\appendix
-\chapter{Probability Theory}
-\label{cha:probability}
-\input{tex/probability.tex}
+%\appendix
+%\chapter{Probability Theory}
+%\label{cha:probability}
+%\input{tex/probability.tex}
 
 
 \backmatter
