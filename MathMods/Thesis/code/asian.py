@@ -1,14 +1,17 @@
-# ============================================================================ #
+# ==================================================================== #
 __author__ = "Sudip Sinha"
 
 from math import exp, sqrt, isclose
-# ---------------------------------------------------------------------------- #
+
+
+# -------------------------------------------------------------------- #
 
 # @profile
 def asian_call_sp( r: float,  # Market
                    s0: float, sigma: float, q: float,  # Underlying
                    k: float, t: float, am: bool = True,  # Derivative
-                   n: int = 25, h: float = 0., ub: bool = True  # Computation
+                   n: int = 25, h: float = 0., ub: bool = True
+                   # Computation
                    ) -> list:
 	"""Prices of an Asian call option using the singular point method"""
 
@@ -42,9 +45,11 @@ def asian_call_sp( r: float,  # Market
 	# Singular points for N(n,j)
 	for j in range( 1, n ):
 		a_min = s0 / (n + 1) * ((1 - d ** (n - j + 1)) / (1 - d)
-		                        + d ** (n - j - 1) * (1 - u ** j) / (1 - u))
+		                        + d ** (n - j - 1) * (1 - u ** j) /
+		                        (1 - u))
 		a_max = s0 / (n + 1) * ((1 - u ** (j + 1)) / (1 - u)
-		                        + u ** (j - 1) * (1 - d ** (n - j)) / (1 - d))
+		                        + u ** (j - 1) * (1 - d ** (n - j)) /
+		                        (1 - d))
 		if k < a_min:
 			now[j] = [(a_min, a_min - k), (a_max, a_max - k)]
 		elif k > a_max:
@@ -61,10 +66,12 @@ def asian_call_sp( r: float,  # Market
 		for j in range( i + 1 ):
 
 			a_min = s0 / (i + 1) * ((1 - d ** (i - j + 1)) / (1 - d) +
-			                        d ** (i - j - 1) * (1 - u ** j) / (1 - u))
+			                        d ** (i - j - 1) * (1 - u ** j) /
+			                        (1 - u))
 
 			a_max = s0 / (i + 1) * ((1 - u ** (j + 1)) / (1 - u) +
-			                        u ** (j - 1) * (1 - d ** (i - j)) / (1 - d))
+			                        u ** (j - 1) *
+			                        (1 - d ** (i - j)) / (1 - d))
 
 			if a_min > a_max:
 				(a_min, a_max) = (a_max, a_min)  # Jugaad
@@ -80,7 +87,9 @@ def asian_call_sp( r: float,  # Market
 				if a_min <= b <= a_max \
 						or isclose( b, a_min ) \
 						or isclose( b, a_max ):
-					b_up = ((i + 1) * b + s0 * u ** (-i + 2 * j + 1)) / (i + 2)
+					b_up = ((
+					       (i + 1) * b + s0 * u ** (-i + 2 * j + 1)) /
+					       (i + 2))
 					nxt_nd = nxt[j + 1]
 
 					v_b_up = 0
@@ -91,9 +100,10 @@ def asian_call_sp( r: float,  # Market
 					else:
 						for kb in range( len( nxt_nd ) - 1 ):
 							if nxt_nd[kb][0] <= b_up < nxt_nd[kb + 1][0]:
-								v_b_up = ((nxt_nd[kb + 1][1] - nxt_nd[kb][1]) /
-								          (nxt_nd[kb + 1][0] - nxt_nd[kb][0]) *
-								          (b_up - nxt_nd[kb][0]) + nxt_nd[kb][1])
+								v_b_up = (
+								(nxt_nd[kb + 1][1] - nxt_nd[kb][1]) /
+								(nxt_nd[kb + 1][0] - nxt_nd[kb][0]) *
+								(b_up - nxt_nd[kb][0]) + nxt_nd[kb][1])
 								break
 					sp_b.append( (b, p_u * v_b_up + p_d * v_a) )
 
@@ -104,14 +114,16 @@ def asian_call_sp( r: float,  # Market
 
 				assert len( nxt[j] ) > 0, "len( nxt[j] ) == 0"
 
-				# Uniqueness check: Verify that 'C' is not in the set of 'B'.
-				# This is not required since we eliminate close points later.
+				# Uniqueness check: Check if 'C' is not in the set of 'B'.
+				# Not required since we eliminate close points later.
 
 				# Get c_dn for c in [a_min, a_max]
 				if a_min <= c <= a_max \
 						or isclose( c, a_min ) \
 						or isclose( c, a_max ):
-					c_dn = ((i + 1) * c + s0 * u ** (-i + 2 * j - 1)) / (i + 2)
+					c_dn = ((
+					       (i + 1) * c + s0 * u ** (-i + 2 * j - 1)) /
+					       (i + 2))
 					nxt_nd = nxt[j]
 
 					v_c_dn = 0
@@ -122,9 +134,10 @@ def asian_call_sp( r: float,  # Market
 					else:
 						for kc in range( len( nxt_nd ) - 1 ):
 							if nxt_nd[kc][0] <= c_dn < nxt_nd[kc + 1][0]:
-								v_c_dn = ((nxt_nd[kc + 1][1] - nxt_nd[kc][1]) /
-								          (nxt_nd[kc + 1][0] - nxt_nd[kc][0]) *
-								          (c_dn - nxt_nd[kc][0]) + nxt_nd[kc][1])
+								v_c_dn = (
+								(nxt_nd[kc + 1][1] - nxt_nd[kc][1]) /
+								(nxt_nd[kc + 1][0] - nxt_nd[kc][0]) *
+								(c_dn - nxt_nd[kc][0]) + nxt_nd[kc][1])
 								break
 					sp_c.append( (c, p_u * v_a + p_d * v_c_dn) )
 
@@ -135,8 +148,8 @@ def asian_call_sp( r: float,  # Market
 			l = 0
 			while l < len( now_nd ) - 1:
 				if isclose( now_nd[l + 1][0], now_nd[l][0] ):
-					if (now_nd[l][0] - s0) == min( now_nd[l][0] - s0,
-					                               now_nd[l + 1][0] - s0 ):
+					if (now_nd[l][0] - s0) == min(now_nd[l][0] - s0,
+					                              now_nd[l + 1][0] - s0):
 						del now_nd[l + 1]
 					else:
 						del now_nd[l]
@@ -154,8 +167,9 @@ def asian_call_sp( r: float,  # Market
 							now_nd = now_nd[0:l + 1]
 							now_nd.append( (a_max, a_max - k) )
 							break
-						if (now_nd[l][0] - k <= now_nd[l][1]) and (
-									now_nd[l + 1][1] <= now_nd[l + 1][0] - k):
+						if (now_nd[l][0] - k <= now_nd[l][1]) \
+								and (now_nd[l + 1][1] <=
+										     now_nd[l + 1][0] - k):
 							# Find the point of intersection
 							# x = ((a2 - a1) * k - (a2 * v1 - a1 * v2)) /
 							#                      ((A2 - v2) - (A1 - v1))
@@ -167,7 +181,8 @@ def asian_call_sp( r: float,  # Market
 								 (now_nd[l + 1][1] - now_nd[l][1])))
 							now_nd = now_nd[0:l + 1]
 							now_nd.extend(
-								[(a_int, a_int - k), (a_max, a_max - k)] )
+								[(a_int, a_int - k),
+								 (a_max, a_max - k)] )
 							break
 
 			# Approximations
@@ -199,7 +214,8 @@ def asian_call_sp( r: float,  # Market
 						      (now_nd[l + 2][0] - now_nd[l + 1][0]))
 						x_bar = (((m2 * now_nd[l + 1][0] -
 						           m1 * now_nd[l - 1][0]) -
-						          (now_nd[l + 1][1] - now_nd[l - 1][1])) /
+						          (now_nd[l + 1][1] - now_nd[l - 1][
+							          1])) /
 						         (m2 - m1))
 						y_bar = (m1 * (x_bar - now_nd[l - 1][0]) +
 						         now_nd[l - 1][1])
@@ -215,4 +231,5 @@ def asian_call_sp( r: float,  # Market
 			now[j] = now_nd
 
 	return now[0][0][1]
-# ============================================================================ #
+
+# ==================================================================== #

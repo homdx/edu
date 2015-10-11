@@ -1,0 +1,65 @@
+\documentclass[utf8]{beamer}
+
+\usepackage{beamerthemeblackboard}
+\usepackage{graphicx}
+
+\begin{document}
+
+% set handwritten font, necessary packages are loaded in beamerthemeblackboard.sty
+\ECFAugie
+
+\title{Pricing exotic path-dependent options}
+\subtitle{The Singular Points method}
+\date[2015-10-23]{23\textsuperscript{rd} October, 2015}
+\institute[MathMods]{MathMods\\{\small Università degli Studi dell'Aquila}}
+%\author[Sudip Sinha]{Sudip Sinha\\{\small Supervisor: Prof. Fabio Antonelli}}
+\author{
+	\begin{minipage}[t]{0.4\textwidth}
+		\begin{center}
+			\emph{Candidate:}\\
+			{\textbf{\textsc{Sudip Sinha}}}\\
+			Matricola: 228435
+		\end{center}
+	\end{minipage}
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{center}
+			\emph{Supervisor:} \\
+			\textsc{Prof. \textbf{Fabio Antonelli}}
+		\end{center}
+	\end{minipage}
+	}
+
+
+\begin{frame}[plain]
+	\maketitle
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Overview}
+	\framesubtitle{}
+	\begin{itemize}
+		\item Introduction
+		\item Preliminaries
+		\item Proof
+		\item Summary
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Introduction}
+	The Routh-Hurwitz test enables you to find out if a polynomial is stable without having to find all its roots.
+	\begin{equation}
+		p(s) = a_n s^n + a_{n-1} s^{n-1} + \ldots + a_1 s + a_0 \,\, (a_i \in \mathbb{R}, s_i \in \mathbb{C})
+	\end{equation}
+\end{frame}
+
+\begin{frame}[t]
+	\frametitle{Example}
+	Let's consider a simple polynomial:
+	\begin{equation}
+		f(s) = x^4 + 3 x^3 - 5 x^2 + x - 7
+	\end{equation}
+	To find out if this polynomial is stable we need to find its Routh-table.
+\end{frame}
+
+\end{document}

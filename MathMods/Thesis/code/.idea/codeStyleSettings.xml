@@ -17,7 +17,7 @@
           </value>
         </option>
         <option name="LINE_SEPARATOR" value="&#10;" />
-        <option name="RIGHT_MARGIN" value="80" />
+        <option name="RIGHT_MARGIN" value="72" />
         <Python>
           <option name="SPACE_WITHIN_BRACES" value="true" />
           <option name="SPACE_AFTER_PY_COLON" value="false" />

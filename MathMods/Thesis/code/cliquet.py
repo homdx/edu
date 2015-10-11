@@ -1,9 +1,11 @@
-# ============================================================================ #
+# ==================================================================== #
 __author__ = "Sudip Sinha"
 
 from math import exp, log, sqrt, ceil, floor, isclose
 from mymath import choose
-# ---------------------------------------------------------------------------- #
+
+
+# -------------------------------------------------------------------- #
 
 # @profile
 def cliquet_sp( r: float, q: float, sigma: float, t: float,
@@ -12,7 +14,7 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 	"""Price of a cliquet option using the singular point method"""
 
 	err_p = "ERROR: p_u must be a probability! " + \
-	        "We must have dt < ( sigma ** 2 / ( r - q ) ** 2 ) for this. " + \
+	        "We must have dt < ( sigma ** 2 / ( r - q ) ** 2 ). " + \
 	        "You may want to decrease the time interval."
 
 	# Time period for each option
@@ -88,7 +90,8 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 		for j in range( j_max, m + 1 ):
 			prb[j0] += choose( m, j ) * (p_u ** j) * (p_d ** (m - j))
 		for j in range( j_min + 1, j_max ):
-			prb[j - j_min] = choose( m, j ) * (p_u ** j) * (p_d ** (m - j))
+			prb[j - j_min] = choose( m, j ) * (p_u ** j) * (
+			p_d ** (m - j))
 		assert isclose( sum( prb ), 1. ), "Sum of PMF must be unity."
 
 		# ret denotes R'
@@ -117,9 +120,11 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 				u = exp( sigma * sqrt( dt ) )
 				# Possible range of return
 				j_min = max( 0, floor(
-					log( f_loc + 1 ) / (2 * sigma * sqrt( dt )) + m / 2 ) )
+					log( f_loc + 1 ) / (
+					2 * sigma * sqrt( dt )) + m / 2 ) )
 				j_max = min( m, ceil(
-					log( c_loc + 1 ) / (2 * sigma * sqrt( dt )) + m / 2 ) )
+					log( c_loc + 1 ) / (
+					2 * sigma * sqrt( dt )) + m / 2 ) )
 				j0 = j_max - j_min
 			assert dt < (sigma ** 2 / (r - q) ** 2), err_p
 
@@ -135,10 +140,13 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 				prb[0] += choose( m, j ) * (p_u ** j) * (p_d ** (m - j))
 			prb[j0] = 0
 			for j in range( j_max, m + 1 ):
-				prb[j0] += choose( m, j ) * (p_u ** j) * (p_d ** (m - j))
+				prb[j0] += choose( m, j ) * (p_u ** j) * (
+				p_d ** (m - j))
 			for j in range( j_min + 1, j_max ):
-				prb[j - j_min] = choose( m, j ) * (p_u ** j) * (p_d ** (m - j))
-			assert isclose( sum( prb ), 1. ), "Sum of PMF must be unity."
+				prb[j - j_min] = choose( m, j ) * (p_u ** j) * (
+				p_d ** (m - j))
+			assert isclose( sum( prb ),
+			                1. ), "Sum of PMF must be unity."
 
 			# ret denotes R'
 			ret = [0 for j in range( j0 + 1 )]
@@ -188,12 +196,13 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 			while l < len( now ) - 2:
 				approx = True
 				for j in range( len( now ) - 1, l + 1, -1 ):
-					slope = (now[j][1] - now[l][1]) / (now[j][0] - now[l][0])
+					slope = (now[j][1] - now[l][1]) / (
+					now[j][0] - now[l][0])
 					for k in range( l + 1, j ):
 						approx = True
 						delta = abs(
 							slope * (now[k][0] - now[l][0]) +
-							now[l][1] - now[k][1])
+							now[l][1] - now[k][1] )
 						if delta >= h:
 							approx = False
 							break
@@ -204,4 +213,5 @@ def cliquet_sp( r: float, q: float, sigma: float, t: float,
 				l += 1
 
 	return now[0][1]
-# ============================================================================ #
+
+# ==================================================================== #

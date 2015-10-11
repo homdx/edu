@@ -1277,3 +1277,4 @@ Cliquet LOW
 10 loops, best of 3: 13.6 sec per loop
 10 loops, best of 3: 19.3 sec per loop
 10 loops, best of 3: 14.4 sec per loop
+10 loops, best of 3: 13.1 sec per loop
