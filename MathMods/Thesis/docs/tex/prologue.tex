@@ -28,35 +28,36 @@ A \emph{financial instrument} or a \emph{financial asset} is an intangible asset
 \subsection{Return on an asset}
 \label{subsec:intro-assets-return}
 
+\subparagraph{Notation} We will use a zero in the superscript to denote the riskless asset. For example, $ S_t^0 $ denotes the price of the riskless asset at a time $ t $. On the other hand, the absence of a zero (or presence of another index) in the subscript means that we are referring to a risky asset.
+
 \paragraph{Return on a riskless asset -- Compounding}
 Compounding is the first idea that we must be familiar with. Essentially, a riskless asset will increase in monetary value in a deterministic manner if we keep it in the market. The increase depends on the compounding frequency and the duration of investment. The term compounding is used because the interest earned in each period also contributes to the principal in the successive periods.
 
 Let the compounding frequency is $ n $ times per year, the total time is $ t $, and the annual rate of interest is $ r $. Then
 \begin{equation}
 	\label{eq:intro-compounding-discrete}
-	B_t = B_0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
+	S_t^0 = S_0^0 \left(1 + \frac{r}{n} \right)^{\floor{nt}},
 \end{equation}
-where $ B_0 $ is the starting value of the asset, and $ B_t $ is the value of the asset at time $ t $, and $ \floor{\cdot} $ represents the floor function.
+where $ S_0^0 $ is the starting value of the asset, and $ S_t^0 $ is the value of the asset at time $ t $, and $ \floor{\cdot} $ represents the floor function.
 
 If the compounding is continuous, we let $ n \to \infty $ to obtain
 \begin{equation}
 	\label{eq:intro-compounding-continous}
-	B_t = B_0 e^{rt}.
+	S_t^0 = S_0^0 e^{rt}.
 \end{equation}
 
 
 \paragraph{Return on a risky asset}
-At any point of time in the future, the value of a risky asset is not known with certainty, so it is a random variable taking values in $ [0, \infty) $. Since the values change with time, we denote the \emph{spot price} of a risky asset by the stochastic process\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_process}} $ (S_t)_t $, where $ t \in [0, T] $ denotes the time and $ T $ is the maturity. Since the future value of the asset is adventitious, we use the following quantities to measure the return of the risky asset in the given time interval.
+At any point of time in the future, the value of a risky asset is not known with certainty, so it is a random variable taking values in $ [0, \infty) $. Since the values change with time, we denote the \emph{spot price} of a risky asset by the stochastic process\footnote{\url{https://en.wikipedia.org/wiki/Stochastic_process}} $ (S_t)_t $, where $ t \in [0, T] $ denotes the time, $ T $ being the maturity. Since the future value of the asset is adventitious, we use the following metrics to measure the return of the risky asset in the given time interval.
 
 \begin{dfn}[absolute and relative returns]
 	The absolute return on an asset for the time interval $ [0, t], \  t \in [0, T] $ is given by
 	\begin{equation*}
-		\tilde{R}_t = S_t - S_0
+		\tilde{R}_t = S_t - S_0 ,
 	\end{equation*}
-	
-	The relative return on the asset is given by
+	while the relative return on the asset is given by
 	\begin{equation*}
-		R_t = \frac{S_t - S_0}{S_0}
+		R_t = \frac{S_t - S_0}{S_0} .
 	\end{equation*}	
 \end{dfn}
 
@@ -70,22 +71,22 @@ It must be noted that relative return is usually a better indicator of the retur
 		R_1^B  &=  \frac{S_1^B - S_0^B}{S_0^B} = \frac{5}{10} = \frac{1}{2}
 	\end{align*}
 	
-	Thus, the asset A is more interesting to an investor, as it gives more return on investment. If an investor were to invest an amount of $ 10 $ at $ t = 0 $, it is more profitable for him to buy two quantities of asset A than one quantity of asset B.
+	Thus, the asset A is more interesting to an investor, as it gives more return on investment. If an investor were to invest an amount of $ 10 $ at $ t = 0 $, it is more profitable for him to buy two units of asset A as compared to one unit of asset B.
 \end{eg}
 
 
 \subsection{Common asset types}
 
 \paragraph{Bonds}
-A \emph{bond} is an instrument of indebtedness of the bond issuer to the holders. It is a \emph{debt security}, under which the issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay them interest (the coupon) and/or to repay the principal at a later date, termed the maturity date. Bonds can also be thought of as a \emph{loan} given to the issuer of the bond by the holder. A bond primarily has two kinds of risks, \emph{credit default risk} and \emph{interest rate risk}. A bond issued by a reliable institution like the United States government is a good illustration of a risk-free asset. This is because the probability of such an organisation defaulting is close to zero, or in other words, the bond has \emph{negligible} \emph{credit default risk}. Such bonds are only subject to fluctuations of the current interest rate, called \emph{interest rate risk}. The interest rate risk may also be nullified if the bond is held till maturity. If we assume that the interest rate is deterministic (the fluctuations are not random), the value of the bond is computable at any given future date, making it riskless. Such an assumption is quite reasonable in short periods of time and for institutions with a low default risk rating.
+A \emph{bond} is an instrument of indebtedness of the \emph{issuer} to the \emph{holder}. It is a \emph{debt security}, under which the issuer owes the holders a debt and, depending on the terms of the bond, is obliged to pay them interest (the coupon) and/or to repay the principal at a later date, termed the maturity date. Bonds can also be thought of as a \emph{loan} given to the issuer by the holder. A bond primarily has two kinds of risks, \emph{credit default risk} and \emph{interest rate risk}. A bond issued by a reliable institution like the United States government is a good illustration of a risk-free asset. This is because the probability of such an organisation defaulting is close to zero, or in other words, the bond has \emph{negligible} \emph{credit default risk}. Such bonds are only subject to fluctuations of the current interest rate, called \emph{interest rate risk}. The interest rate risk may also be nullified if the bond is held till maturity. If we assume that the interest rate is deterministic (the fluctuations are not random), the value of the bond is computable at any given future date, making it riskless. Such an assumption is quite reasonable in short periods of time and for institutions with a low default risk rating.
 
 
 \paragraph{Stocks}
-A \emph{stock} of a corporation is an ownership certificate, and constitutes the equity stake of its owners. It represents the residual assets of the company that would be due to stockholders after discharge of all senior claims such as secured and unsecured debt. A \emph{share} of a stock is a unit of ownership of the organisation. Stocks are inherently risky, since the value of the organisation may change from time to time due to various internal and external factors. As noted earlier, since stocks are risky, the value of a stock in time is represented by a stochastic process $ (S_t)_t $.
+A \emph{stock} of a corporation is an ownership certificate, and constitutes the equity stake of its owners. It represents the residual assets of the company that would be due to stockholders after discharge of all senior claims such as secured and unsecured debt. A \emph{share} of a stock is a unit of ownership of the organisation. Stocks are inherently risky, since the value of the organisation may change from time to time due to various internal and external factors. This is why the value of a stock in time is represented by a stochastic process $ (S_t)_t $.
 
 
 \paragraph{Derivatives}
-A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially, the value of a derivative is a function of the value of the \emph{underlying} asset(s). Derivatives are traded in their own right, and a fair price must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, our main focus shall be the pricing problem of a particular class of derivatives, called \emph{exotic options}.
+A \emph{derivative} is a contract between two parties that specify conditions (starting and termination dates, resulting values and definitions of the underlying variables, the parties' contractual obligations, and the notional amount) under which transactions are to be made between the parties. The most common underlying assets include commodities, stocks, bonds, interest rates and currencies, but they can also be other derivatives, which adds another layer of complexity to proper valuation. Essentially, the value of a derivative is a function of the value of the \emph{underlying} asset(s). Derivatives are traded in their own right, and a \emph{fair price} must be found for a derivative at each time of its existence. This problem is known as the \emph{pricing problem}. One of the primary motivations for creation of derivatives was to hedge one's position from fluctuations in the market. A \emph{hedge} is an investment strategy intended to offset potential losses or gains that may be incurred by a companion investment. Finding a hedging strategy is called the \emph{hedging problem}. These are the two problems that must be looked at when defining a market model. In this thesis, our main focus shall be the pricing problem of a particular class of derivatives, called \emph{exotic options}.
 
 
 \subsection{Classification of derivatives}

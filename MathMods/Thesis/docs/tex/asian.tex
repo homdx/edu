@@ -98,7 +98,7 @@ In the Cox–Ross–Rubinstein model, consider a node at time $ i $. Let the pri
 	A_{i+1}^d  &=  \frac{(i+1) A_i + x d}{i+2}  =  \frac{(i+1) y + x d}{i+2}
 \end{align*}
 
-The price at time $ 0 $ of the Asian option of the European type with payoff function $ h(x, y) $ is given by $ v(0, s_0, s_0) $ (since $ a_0 = s_0 $), where the functions $ v(i, x, y) $ can be computed by the following backward dynamic programming equations, computed by the discounted risk-neutral expectation of the prices at the next time.
+Due to the Markov property of the pair of processes $ (S_t, A_t)_t $, we may use those as state variables in our evaluation formula. The price at time $ 0 $ of the Asian option of the European type with payoff function $ h(x, y) $ is given by $ v(0, s_0, s_0) $ (since $ a_0 = s_0 $), where the functions $ v(i, x, y) $ can be computed by the following backward dynamic programming equations, which are discounted risk-neutral expectation of the prices at the next time.
 \begin{subequations}
 	\label{eq:asian-dp-eu}
 	\begin{align}
@@ -910,7 +910,7 @@ Removal of points may be done on the basis of various criteria. One such method 
 
 Consider the set of singular points $ C $ associated with the node $ N_{i,j} $ and the corresponding price value function $ v_{i,j} (A) $. Let $ v_{i,j}^u (A) $ be the price value function obtained by removing a point $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $ from $ C $. We have
 \begin{equation}
-	\left| v_{i,j}^u (A) - v_{i,j} (A) \right|  \le  \epsilon_l  \qquad  \forall A \in \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right],
+	v_{i,j}^u (A) - v_{i,j} (A)  \le  \epsilon_l  \qquad  \forall A \in \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right],
 \end{equation}
 where
 \begin{equation}
@@ -922,20 +922,22 @@ Therefore, given any tolerance $ h > 0 $, we may remove a point $ \left( A_{i,j}
 
 \subsection{Lower bound}
 \label{subsec:asian-lb}
-The computational procedure is quite similar to the procedure of approximation using upper bounds. The theoretical foundation of this part is given by Lemma \ref{lmm:asian-lower-estimate}. If we remove the points $ \left( A_{i,j}^{l-1}, P_{i,j}^{l-1} \right) $ and $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $, and add the point $ (\bar{x}, \bar{y} ) $ as described in Lemma \ref{lmm:asian-lower-estimate}, the new function is never greater than the original one, and the differences between the values at any point is bounded over by $ \delta_l $, where
+The computational procedure is quite similar to the procedure of approximation using upper bounds. The theoretical foundation of this part is given by Lemma \ref{lmm:asian-lower-estimate}. If we remove the points $ \left( A_{i,j}^{l-1}, P_{i,j}^{l-1} \right) $ and $ \left( A_{i,j}^{l}, P_{i,j}^{l} \right) $, and add the point $ (\bar{x}, \bar{y} ) $ as described in Lemma \ref{lmm:asian-lower-estimate}, the new function is never greater than the original one, and the differences between the values at any point is bounded over by $ \delta_l $, that is
 \begin{equation}
-	\delta_l  =  \frac{ P_{i,j}^{l} - P_{i,j}^{l-1} }{ A_{i,j}^{l} - A_{i,j}^{l-1} } \left( \bar{x} - A_{i,j}^{l-1} \right) + \left( P_{i,j}^{l-1} - \bar{y} \right) .
+	v_{i,j} (A) - v_{i,j}^d (A)  \le  \delta_l  \qquad  \forall A \in \left[ A_{i,j}^{\min}, A_{i,j}^{\max} \right] ,
+\end{equation}
+where
+\begin{equation}
+	\delta_l  =  v_{i,j} (A) - v_{i,j}^d (A)  =  \frac{ P_{i,j}^{l} - P_{i,j}^{l-1} }{ A_{i,j}^{l} - A_{i,j}^{l-1} } \left( \bar{x} - A_{i,j}^{l-1} \right) + \left( P_{i,j}^{l-1} - \bar{y} \right) .
 \end{equation}
 
 Again, we allow for the operation only if $ \delta_l < h $.
 
-An implementation methodology is as follows. At each node $ N_{ij} $, we consider the starting four points $ \left\lbrace  \left( A_{i,j}^1, P_{i,j}^1 \right), \left( A_{i,j}^2, P_{i,j}^2 \right), \left( A_{i,j}^3, P_{i,j}^3 \right), \left( A_{i,j}^4, P_{i,j}^4 \right)  \right\rbrace $. Calculate $ \delta_3 $. If $ \delta_3 < h $, we add the point $ (\bar{x}, \bar{y}) $ and remove the points corresponding to $ \left( A_{i,j}^2, P_{i,j}^2 \right) $ and $ \left( A_{i,j}^3, P_{i,j}^3 \right) $. The procedure will continue by considering the four new points $ \left\lbrace  (\bar{x}, \bar{y}), \left( A_{i,j}^4, P_{i,j}^4 \right), \left( A_{i,j}^5, P_{i,j}^5 \right), \left( A_{i,j}^6, P_{i,j}^6 \right)  \right\rbrace $ and proceeding in the exact same way. On the other hand, if $ \delta_3 \ge h $, then we do not remove any points and the procedure will continue by considering the four new points $ \left\lbrace  \left( A_{i,j}^2, P_{i,j}^2 \right), \left( A_{i,j}^3, P_{i,j}^3 \right), \left( A_{i,j}^4, P_{i,j}^4 \right), \left( A_{i,j}^5, P_{i,j}^5 \right)  \right\rbrace $. The procedure is repeated until all the singular points of the node has been taken into account.
+An implementation methodology is as follows. At each node $ N_{ij} $, we consider the starting four points $ \left( A_{i,j}^1, P_{i,j}^1 \right) $, $ \left( A_{i,j}^2, P_{i,j}^2 \right) $, $ \left( A_{i,j}^3, P_{i,j}^3 \right) $, $ \left( A_{i,j}^4, P_{i,j}^4 \right) $. Calculate $ \delta_3 $. If $ \delta_3 < h $, we add the point $ (\bar{x}, \bar{y}) $ and remove the points corresponding to $ \left( A_{i,j}^2, P_{i,j}^2 \right) $ and $ \left( A_{i,j}^3, P_{i,j}^3 \right) $. The procedure will continue by considering the four new points $ (\bar{x}, \bar{y}) $, $ \left( A_{i,j}^4, P_{i,j}^4 \right) $, $ \left( A_{i,j}^5, P_{i,j}^5 \right) $, $ \left( A_{i,j}^6, P_{i,j}^6 \right) $ and proceeding in the exact same way. On the other hand, if $ \delta_3 \ge h $, then we do not remove any points and the procedure will continue by considering the four new points $ \left( A_{i,j}^2, P_{i,j}^2 \right) $, $ \left( A_{i,j}^3, P_{i,j}^3 \right) $, $ \left( A_{i,j}^4, P_{i,j}^4 \right) $, $ \left( A_{i,j}^5, P_{i,j}^5 \right) $. The procedure is repeated until all the singular points of the node has been taken into account.
 
-\begin{rem}[Convergence to the exact binomial value]
-	Jiang and Dai (2005) \cite{Jiang2004} proved the convergence of the exact binomial algorithm for European/American path-dependent options. In particular, they proved that the rate of convergence of the exact binomial algorithm to the continuous value is $ O( \Delta T ) $.
+\begin{rem}[Convergence]
+	We know that Jiang and Dai (2005) \cite{Jiang2004} proved the convergence of the exact binomial algorithm for European/American path-dependent options to the Black-Scholes prices, with rate of convergence of $ O( \Delta T ) $. The possibility of obtaining estimates of the exact binomial price with an error control allows us to prove easily the convergence of our method to the continuous value. By choosing $ h $ to depend on $ n $ so that $ n h(n) \to 0 $, we have that the corresponding sequences of upper and lower estimates converge to the continuous price value. Moreover, the choice $ h(n) = O(\frac{1}{n^2}) $ guarantees that the order of convergence is $ O( \Delta T ) $.
 \end{rem}
-
-The possibility of obtaining estimates of the exact binomial price with an error control allows us to prove easily the convergence of our method to the continuous value. By choosing $ h $ to depend on $ n $ so that $ n h(n) \to 0 $, we have that the corresponding sequences of upper and lower estimates converge to the continuous price value. Moreover, the choice $ h(n) = O(\frac{1}{n^2}) $ guarantees that the order of convergence is $ O( \Delta T ) $.
 
 \begin{rem}[Computational complexity -- theoretical considerations]
 	The key issue in assessing the theoretical complexity of the algorithm lies in the upper and lower bound computation. Since the number of singular points eliminated depends on various factors, and we do not control the number of singular points directly, it is difficult to theoretically calculate the order of complexity of the algorithm. The dependence of number of singular points and their nature (closeness, convexity) on the initial data might be a fruitful area of research, and this in turn might give us clues as to how the problem of finding complexity theoretically might be tackled. Nevertheless, the numerical results indicate that the method is quite competitive in practice.

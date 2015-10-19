@@ -4,7 +4,7 @@
 
 A forward start option is an option that starts at a specified future date (called the \emph{determination date}), with an expiration date set further in the future\footnote{\url{http://www.math.umn.edu/~spirn/5076/Lecture16.pdf} (Page 5)}. A forward start option starts at a specified date in the future; however, the premium is paid in advance, and the time of expiration is established at the time the forward start option is purchased. Since the asset price at the start of this option is not known a priori, it is common to specify that the strike price will be set in the future so that the option is initially at the money or a certain percentage in the money or out of the money.
 
-The payoff of a forward start call option with time to expiration $ T $ and such that the strike is determined at the money at time $ u $ is given by $ (S_T - S_u)_+ $\footnote{\url{http://www.stat.nus.edu.sg/~stalimtw/MFE5010/PDF/L2forward.pdf}}
+The payoff of a forward start call option with time to expiration $ T $ and such that the strike is determined at the money at time $ u $ is given by $ (S_T - S_u)_+ $\footnote{\url{http://www.stat.nus.edu.sg/~stalimtw/MFE5010/PDF/L2forward.pdf}}.
 
 A \emph{cliquet option} or a \emph{ratchet option} is an exotic option consisting of a series of consecutive forward start options. The first such option is active immediately, and once it expires the second comes into existence, and so on. Each option is struck \emph{at-the-money} when it becomes active. Therefore, such an option periodically settles and resets its strike price at the level of the underlying during the time of settlement. Investors can opt to receive their payout either when each option expires or wait until the entire time has elapsed.
 
@@ -85,7 +85,7 @@ We redefine singular points to exclude the constraint of convexity. The reader i
 
 \begin{dfn}[singular points and singular values]
 	\label{def:clq-sp}
-	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that $ a = x_0 < x_1 < \dots < x_{n-1} < x_n = b \forall i \in [n] $
+	Let $ P = (P_i)_{i \in [n]} = ( (x_i, y_i) )_{i \in [n]} $, $ n \in \mathbb{N} $ be a sequence of points such that $ a = x_0 < x_1 < \dots < x_{n-1} < x_n = b \  \forall i \in [n] $.
 	
 	Let $ f:[a,b] \to [0, \infty) $ be the function obtained by linear interpolation of the points in $P$. The definition of $f$ ensures that the function is continuous and piecewise-linear.
 	
@@ -599,7 +599,7 @@ Table \ref{tab:clq-results} highlights the results.
 		&  1000  &  0.150522368  &  0.150524027  &    &  $ \infty $  &  55  \\
 		\midrule
 		\multirow{7}{2em}{Var}
-		&    10  &  0.188738321  &  0.188738321  &  \multirow{7}{5em}{0.226169 (0.225978 -- 0.226360)}  &  0.00258  &  0.00253  \\
+		&    10  &  0.188738321  &  0.188738321  &  \multirow{7}{5em}{0.193777 (0.193610 -- 0.193881)}  &  0.00258  &  0.00253  \\
 		&    20  &  0.192927333  &  0.192927296  &    &  0.0153  &  0.0139  \\
 		&    50  &  0.192650261  &  0.192650204  &    &  0.510  &  0.0638  \\
 		&   100  &  0.193452450  &  0.193452358  &    &  2.43  &  0.162  \\
@@ -626,9 +626,9 @@ Table \ref{tab:clq-results} highlights the results.
 
 
 \begin{rem}[Computational complexity]
-	We remarked earlier that although the computational complexity of the algorithm without approximation is the same as that of the binomial model, enabling approximations decreases the complexity to a polynomial time algorithm. In fact, the Figure \ref{fig:clq-timing} corroborates exactly to this. The blue dots denotes the time taken to run the algorithm for constant volatility of $ \sigma = 0.2 $. The green line is a quadratic function of the number of time steps $ m $, whereas the red line is an exponential function of the same. We varied the parameters so that the curves fits the data. We see that the quadratic function serves as an upper bound for the running time for most data points in the plot, except for a few points, which may be treated as outliers. Thus, we may conclude that the computational complexity of the algorithm is $ O(m^2) $ in this case. In fact, our experiments show that this is indeed the general trend. Thus, even though we have not found out the theoretical complexity of the algorithm, in practice the algorithm is competitive.
+	We remarked earlier that although the computational complexity of the algorithm without approximation is the same as that of the binomial model, enabling approximations decreases the complexity to a polynomial time algorithm. In fact, the Figure \ref{fig:clq-timing} corroborates exactly to this. The blue dots denotes the time taken to run the algorithm for constant volatility of $ \sigma = 0.2 $. The brown bold curve is a quadratic function of the number of time steps $ m $, whereas the green dash-dot curve is an exponential function of the same. We varied the parameters so that the curves fits the data. We see that the quadratic function serves as an upper bound for the running time for most data points in the plot, except for a few points, which may be treated as outliers. Thus, we may conclude that the computational complexity of the algorithm is $ O(m^2) $ in this case. In fact, our experiments show that this is indeed the general trend. Thus, even though we have not found out the theoretical complexity of the algorithm, in practice the algorithm is competitive.
 	
-	Note that for the Asian case, the experimental complexity is $ O(n^3) $, whereas in the cliquet case, it is $ O(m^2) $.
+	Note that for the Asian case, the experimental complexity is $ O(n^3) $, whereas in the cliquet case, it is $ O(m^2) $. (Recall that in the cliquet case, $ n = N m $, where we can consider $ N $ as constant as it is specified in the contract.)
 \end{rem}
 
 

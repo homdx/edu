@@ -164,14 +164,15 @@
 \usepackage{datetime2}    % Custom date-time formats -- default: ISO
 \author{Sudip Sinha}
 \title{The Singular Points method for pricing exotic path-dependent options}
-\date{\DTMdate{2015-10-07}}
+\date{\today}
+%\date{\DTMdate{2015-10-07}}
 
 
 
 % Format Contents
 % There is a problem with the AMS classes -- the ToC overlaps http://tex.stackexchange.com/questions/20527/table-of-contents-section-number-and-title-overlapping
 % If we use tocloft, we get a lot of errors, but at the end it gives the correct output.
-\usepackage{tocloft}
+%\usepackage{tocloft}
 
 
 % Format titles
@@ -210,6 +211,7 @@
 
 
 % Format the headers and footers
+\setlength{\headheight}{14pt}   % To avoid the fancyhdr warning: \headheight is too small
 \usepackage{lastpage}		% To get the last page number
 \usepackage{fancyhdr}		% Headers and footers
 \pagestyle{fancy}			% All pages have headers and footers

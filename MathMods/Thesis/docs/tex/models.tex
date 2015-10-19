@@ -740,7 +740,10 @@ Even though it may seem that the Cox-Ross-Rubinstein model and the Black-Scholes
 The idea is that we rescale the Cox-Ross-Rubinstein model in time and space and use the central limit theorem. We assume
 \begin{itemize}
 	\item More trading periods $ t \in \frac{iT}{n} \quad \forall i \in [n] $
-	\item Smaller price increments: $ T_i^n \in \left\lbrace \frac{d}{\sqrt{n}}, \frac{u}{\sqrt{n}} \right\rbrace  \implies  \frac{1}{T} \Var_n (T_i^n) = \frac{\sigma}{\sqrt{n}} $
+	\item Smaller price increments: $ T_i^n \in \left\lbrace \frac{d_n}{\sqrt{n}}, \frac{u_n}{\sqrt{n}} \right\rbrace  \implies  \frac{1}{T} \Var_n (T_i^n) = \frac{\sigma}{\sqrt{n}} $.
+	
+	(Where $ u_n = d_n^{-1} = e^{\sigma \sqrt{\frac{T}{n}}} $.)
+	
 	\item Continuous compounding
 \end{itemize}
 
