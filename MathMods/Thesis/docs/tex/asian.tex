@@ -3,7 +3,7 @@
 % !TeX encoding = UTF-8
 
 
-In the last chapter, we saw that exotic options usually cannot be priced in a closed-form formula using the Black-Scholes model. The way out is by using numerical methods. These methods range from using discrete models (which converge to continuous models, as remared in Chapter \ref{cha:models}), to discretisation of the Black-Scholes PDE or using Monte Carlo simulations.
+In the last chapter, we saw that exotic options usually cannot be priced in a closed-form formula using the Black-Scholes model. The way out is by using numerical methods. These methods range from using discrete models (which converge to continuous models, as remarked in Chapter \ref{cha:models}), to discretisation of the Black-Scholes PDE or using Monte Carlo simulations.
 
 The advantage of using the Cox-Ross-Rubinstein model is that it converges to the Black-Scholes model as the number of time steps increases to infinity. But the exponential number of paths ($2^n$ to be exact, where $n$ is the number of time steps) make the method very slow and memory intensive, making it computably impractical. A logical step would be to modify the basic Cox-Ross-Rubinstein model to allow for approximations. In this direction, Gaudenzi et al\cite{Gaudenzi2010} introduced a new method called the \emph{singular points method} for pricing certain path-dependent options in an efficient manner.
 
@@ -24,7 +24,7 @@ Alternative feasible approaches were proposed by Hull and White (1993) \cite{Hul
 Later, Chalasani \emph{et al} (1999) \cite{Chalasani1999} proposed a totally different approach, which allowed them to obtain thin upper and lower bounds on the exact Cox–Ross–Rubinstein binomial price for American Asian options. Their method requires a forward procedure and a backward induction. This algorithm significantly increases the precision of the estimates but requires a very large amount of memory and has computational complexity $ O(n^4) $.
 
 \paragraph{PDE based methods}
-All of the above were tree methods. More recently, very efficient partial differential equation (PDE)-based methods have been introduced by Vecer (2001) \cite{Vecer2001} and d'Halluin et al (2005) \cite{dHalluin2005}. In Vecer's method, the price of the Asian option is characterized by a simple one-dimensional partial differential equation which could be applied to both continuous and discrete average Asian option. The compuatational complexity is $ O(n^2) $. This approach cannot be applied to American fixed-strike Asian options, which, on the other hand, can be treated using the semi-lagrangian approach of d'Halluin \emph{et al}.
+All of the above were tree methods. More recently, very efficient partial differential equation (PDE)-based methods have been introduced by Vecer (2001) \cite{Vecer2001} and d'Halluin et al (2005) \cite{dHalluin2005}. In Vecer's method, the price of the Asian option is characterized by a simple one-dimensional partial differential equation which could be applied to both continuous and discrete average Asian option. The computational complexity is $ O(n^2) $. This approach cannot be applied to American fixed-strike Asian options, which, on the other hand, can be treated using the semi-lagrangian approach of d'Halluin \emph{et al}.
 
 Table \ref{tab:asian-literature-review} briefly reviews the discussion above.
 \begin{table}[h]
@@ -59,7 +59,7 @@ Consider the discrete model. If the number of time steps in the binomial tree is
 	S_i = s_0 \prod_{j=1}^{i} T_j  \qquad  \forall i \in [n] .
 \end{equation*}
 
-As usual, we represent the risk-neutral probability by $ p = \frac{R - d}{u - d} $, where $ u = d^{-1} = e^{\sigma \sqrt{\Delta T}} $. We denote the effective rate of interest in each period as $ R \coloneqq e^{r \Delta T} $. We note that the $R$ is not an instantaneous quantity, but one which is constant on an interval of time.
+As usual, we represent the risk-neutral probability by $ p = \frac{R - d}{u - d} $, where $ u = d^{-1} = e^{\sigma \sqrt{\Delta T}} $. We denote the effective rate of interest in each period as $ R \coloneqq e^{r \Delta T} $. We note that $R$ is not an instantaneous quantity, but one which is constant on an interval of time.
 
 Asian options are dependent on the average prices of the underlying risky asset. The price of an Asian option of the American type with initial time $ 0 $ and maturity $ T $ is given by the risk-neutral expectation calculated at an optimal stopping time (see Definiton \ref{dfn:discrete-optimal-stopping-time} from Chapter \ref{cha:models}).
 \begin{equation}
@@ -83,7 +83,7 @@ Let $ K $ denote the strike price. The price function may be one of the followin
 
 
 \begin{dfn}[arithmetic mean]
-	The arithmetic mean of a set of numbers $ \{ S_i \}_{i \in [n]} $ is given by:
+	The arithmetic mean of a set of $ n+1 $ numbers $ \{ S_i \}_{i \in [n]} $ is given by:
 	\begin{equation}
 	\label{eq:am}
 	A_{n} = \frac{\sum_{i=0}^n S_i}{n+1}
@@ -543,13 +543,13 @@ Table \ref{tab:asian-notations} summarises the discussion above.
 \section{Fixed-strike Asian options of the European type}
 \label{sec:fixed-strike-eu}
 
-This is the simplest case. For this type of option, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $ T $ and a fixed constant $ K $, and is given by the following function.
+We start with the simplest case. For this type of option, the pay-off at maturity is dependent only on (some type of) average $ A_T $ at maturity $ T $ and a fixed constant $ K $, and is given by the following function.
 \begin{equation}
 	\label{eq:asian-price-eu-asian-am}
 	P_T = (A_T - K)_+
 \end{equation}
 
-In each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each of those averages. We shall show that these points satisfy condition \ref{eq:asian-conditions}, so the price function is piecewise-linear, convex and continuous, and is characterised by these points. In essence, we consider not only averages that are effectively achievable but all the possible averages between the minimum and maximum realized at that point. This gives us the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
+In each node of the binomial tree, we have a set of possible averages depending on the paths which may be taken to arrive at the node, and prices corresponding to each of those averages. We shall show that these points satisfy condition \ref{eq:asian-conditions}, so the price function is piecewise-linear, convex and continuous, and is completely characterised by these points. In essence, we consider not only averages that are effectively achievable but all the possible averages between the minimum and maximum realized at that point. This gives us the continuous representation of prices. The intuitive idea is that as the time step is reduced to zero, this function converges to the price function of the continuous time model.
 
 We start with the prices at maturity, and proceed using backward iteration. The exact details are explained below.
 

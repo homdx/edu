@@ -3,7 +3,7 @@
 % !TeX encoding = UTF-8
 
 
-Now that we are familiar the basics of financial assets and markets, we may delve into market models under which we may price options. Since continuous models are mathematically more complex than their discrete time counterparts (also known as \emph{lattice models}), we shall discuss the latter first. We shall then show that under certain convergence conditions, the discrete model converges to the continuous one.
+Now that we are familiar the basics of financial assets and markets, we may delve into market models under which we may price options. Since continuous models are mathematically more complex than their discrete time counterparts (also known as \emph{lattice models}), we shall discuss the latter first. We shall then show that under a certain mode of convergence, the discrete model converges to the continuous one.
 
 
 
@@ -14,24 +14,24 @@ We start our discussion with one of the simplest model used for pricing of asset
 
 We assume that the following are true.
 \begin{itemize}
-	\item The market is frictionless
-	\item All assets are infinitely divisible
-	\item The small investor hypothesis holds
-	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads
+	\item The market is frictionless.
+	\item All assets are infinitely divisible.
+	\item The small investor hypothesis holds.
+	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads.
 \end{itemize}
 
-In this model, we essentially have
+In this model, we essentially have:
 \begin{itemize}
-	\item two time points, $ t = 0 $ (present) and $ t = 1 $ (future)
-	\item two traded assets
+	\item two time points, $ t = 0 $ (present) and $ t = 1 $ (future), and
+	\item two traded assets:
 	\begin{itemize}
-		\item the riskless asset, usually a bond, which is compounded at a constant rate of interest $ r > 0 $
-		\item the risky asset, usually a stock, which may either go up with a factor $ u $, or down with a factor $ d $
+		\item the riskless asset, usually a bond, which is compounded at a constant rate of interest $ r > 0 $, and
+		\item the risky asset, usually a stock, which may either go up with a factor $ u $, or down with a factor $ d $.
 	\end{itemize}
 \end{itemize}
 The binomial model is so called because there are two times, two assets and two possible movements of the risky asset.
 
-We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ p, (1-p) $ -- signifying the probabilities of the up and down movements, respectively -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:discrete-2tr-underlying}.)
+We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its value at time 1. Firstly, in order to have no arbitrage opportunities, we must have $ d < R < u $, where $ R \coloneqq 1 + r $. Secondly, for fairness, there must exist a probability distribution $ (p, 1-p) $ -- signifying the probabilities of the up and down movements, respectively -- such that the expected value of the asset remains the same as that of the riskless asset given the same time. (See Figure \ref{fig:discrete-2tr-underlying}.)
 
 
 \begin{figure}[h]
@@ -51,13 +51,13 @@ We denote as $ S_0 $ the value of the risky asset at time 0, and by $ S_1 $ its 
 \end{figure}
 
 
-Thus, we have
+Thus, we have:
 \begin{equation*}
 	S_1 =
 	\begin{cases}
 		u S_0 & \quad \text{with probability } p \\
 		d S_0 & \quad \text{with probability } (1 - p) \\		
-	\end{cases}
+	\end{cases} .
 \end{equation*}
 
 We may also write $ S_1 = T_1 S_0 $, where $ T_1 $ is a random variable taking values in $ \{ u, d \} $ with associated probability distribution $ (p, 1-p) $.
@@ -82,7 +82,7 @@ The probability thus obtained is called the \emph{risk neutral probability}, bec
 Now we impose the condition $ p \in [0,1] $ to obtain
 \begin{equation}
 	\label{eq:discrete-feasibility-condition}
-	d < R < u
+	d < R < u .
 \end{equation}
 
 
@@ -99,8 +99,8 @@ With this choice it is natural to take
 \begin{subequations}
 	\label{eq:discrete-ud}
 	\begin{align}
-		u &= e^{\sigma \sqrt{\Delta T}} \\
-		d &= e^{- \sigma \sqrt{\Delta T}}
+		u &= e^{\sigma \sqrt{\Delta T}} , \\
+		d &= e^{- \sigma \sqrt{\Delta T}} .
 	\end{align}
 \end{subequations}
 
@@ -114,8 +114,8 @@ Let us use the above model to price a call. Recall that the pay-off of a call is
 
 
 \begin{align*}
-	c_0 &= \E(\frac{c_1}{R}) \\
-	    &= \frac{1}{R} ( p c_1^u + (1-p) c_1^d ) \\
+	c_0 &= \E \left( \frac{c_1}{R} \right) \\
+	    &= \frac{1}{R} \left( p c_1^u + (1-p) c_1^d \right) \\
 	    &= p \frac{c_1^u}{R} \\
 	    &= \frac{R - d}{u - d} \frac{u S_0 - K}{R}
 \end{align*}
@@ -155,12 +155,12 @@ Let $ (\Omega, \mathcal{F}, (\mathcal{F}_i)_i, P) $ be a finite probability spac
 
 We assume that the following are true.
 \begin{itemize}
-	\item The market is frictionless
-	\item All assets are infinitely divisible
-	\item The small investor hypothesis holds
-	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads
-	\item The market is viable
-	\item The market is complete
+	\item The market is frictionless.
+	\item All assets are infinitely divisible.
+	\item The small investor hypothesis holds.
+	\item The annual interest rate is constant and it is applied both for borrowing or lending, hence there are no spreads.
+	\item The market is viable.
+	\item The market is complete.
 \end{itemize}
 
 
@@ -173,7 +173,7 @@ From the binomial model, we have at any time $ i \in [n-1] $
 	\end{cases}.
 \end{equation*}
 
-And, $ S_{i+1} = T_{i+1} S_n $, where $ (T_{i+1})_{i \in [n-1]} $ is a sequence of independent and identically distributed random variables taking values in $ \{ u, d \} $ with associated probability distribution $ (p, 1-p) $.
+And, $ S_{i+1} = T_{i+1} S_i $, where $ (T_{i+1})_{i \in [n-1]} $ is a sequence of independent and identically distributed random variables taking values in $ \{ u, d \} $ with associated probability distribution $ (p, 1-p) $.
 \begin{equation*}
 	T_{i+1} =
 	\begin{cases}
@@ -215,7 +215,7 @@ We now need to invoke two cornerstone theorems, which will allow us to price the
 	The market model is viable if and only if there exists a probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
 	
 	Mathematically,
-	$ \text{Viable market} \iff \exists \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{i+1} | \mathcal{F}_n ) = \tilde{S}_{i} $, where $ \E^* $ is the expectation computed under $ P^* $..
+	$ \text{Viable market} \iff \exists \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{i+1} | \mathcal{F}_i ) = \tilde{S}_{i} $, where $ \E^* $ is the expectation computed under $ P^* $.
 \end{thm}
 
 \begin{proof}
@@ -229,7 +229,7 @@ Theorem \ref{thm:discrete-ftoap1} guarantees the existence of an equivalent mart
 	The market model is complete if and only if there exists a \textbf{unique} probability measure $ P^* $ equivalent to the historic probability measure $ P $ under which the discounted prices of the basic risky assets are martingales.
 	
 	Mathematically,
-	$ \text{Complete market} \iff \exists! \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{i+1} | \mathcal{F}_n ) = \tilde{S}_{i} $, where $ \E^* $ is the expectation computed under $ P^* $.
+	$ \text{Complete market} \iff \exists! \  P^* \sim P \text{ such that } \E^*( \tilde{S}_{i+1} | \mathcal{F}_i ) = \tilde{S}_{i} $, where $ \E^* $ is the expectation computed under $ P^* $.
 \end{thm}
 
 \begin{proof}
@@ -242,7 +242,7 @@ Theorem \ref{thm:discrete-ftoap2} guarantees the uniqueness of an equivalent mar
 
 \subsection{European options}
 
-Augmented by these theorems, we may now seek to price path-independent options in this model. Let $ E^* $ be the expectation computed under the risk-neutral martingale measure $ P^* $. If the pay-off of an option at maturity is given by the function $ h(x) $, then the price of the option $ v_n $ at any time step $ i $ is given by the following formula.
+Augmented by these theorems, we may now seek to price path-independent options in this model. Let $ E^* $ be the expectation computed under the risk-neutral martingale measure $ P^* $. If the pay-off of an option at maturity is given by the function $ h(x) $, then the price of the option $ v_i $ at any time step $ i $ is given by the following formula.
 \begin{equation}
 	\label{eq:discrete-crr-eu-pr}
 	v_i = \E^*( R^{-(n - i)} h(S_n) | \mathcal{F}_i )
@@ -341,7 +341,7 @@ If we are given the contingency claim (which is the function of the underlying a
 
 \subsection{American options}
 
-Since an American option can be exercised at any time $ i \in [n] $, at any time, the bearer of the option has two options -- to exercise or to hold. The exercise value at any time is given by $ Z_i = h(S_i) $, which in the case of a call is $ Z_i = (S_i - K)_+ $. Let the value of the options at a time $ i $ be denoted by $ U_i $. We start by backward induction. At maturity, we must have $ U_n = Z_n $. The value of holding the option at the time just before the maturity ($ i = n-1 $) is given by the discounted risk-neutral price $ \E^*( R^{-1} h(S_n) | \mathcal{F}_{n-1} ) = \E^*( R^{-1} U_n | \mathcal{F}_{n-1} ) $. The value of the option is thus given by the maximum of these two values, or
+An American option can be exercised at any time $ i \in [n] $. That is, at any time $ i $, the bearer of the option has two options -- to exercise or to hold. The exercise value at any time is given by $ Z_i = h(S_i) $, which in the case of a call is $ Z_i = (S_i - K)_+ $. Let the value of the options at a time $ i $ be denoted by $ U_i $. We start by backward induction. At maturity, we must have $ U_n = Z_n $. The value of holding the option at the time just before the maturity ($ i = n-1 $) is given by the discounted risk-neutral price $ \E^*( R^{-1} h(S_n) | \mathcal{F}_{n-1} ) = \E^*( R^{-1} U_n | \mathcal{F}_{n-1} ) $. The value of the option is thus given by the maximum of these two values, or
 \begin{equation}
 	U_{n-1} = \max \left\lbrace Z_{n-1}, \E^*( R^{-1} U_n | \mathcal{F}_{n-1} ) \right\rbrace .
 \end{equation}
@@ -351,7 +351,7 @@ By induction, we write the price of an American option at any time $ i \in [n] $
 	\label{eq:discrete-crr-am-pr}
 	\begin{cases}
 		U_i = \max \left\lbrace Z_i, \E^*( R^{-1} U_{i+1} | \mathcal{F}_{i} ) \right\rbrace  &  \forall i \in [n-1]  \\
-		U_n = Z_n \coloneqq h(S_n) .
+		U_n = Z_n = h(S_n) .
 	\end{cases}
 \end{equation}
 
@@ -373,7 +373,7 @@ In fact, this is the smallest super-martingale that dominates $ (Z_n)_n $ (see \
 
 
 \paragraph{Stopping time}
-The owner of an American options may exercise his/her right at any point of time. For the decision to be fair, the owner should be able to make the choice with the information available only at till that time $ i $. To model this, we need the definition of a stopping time.
+The owner of an American options may exercise his/her right at any point of time. For the decision to be fair, the owner should be able to make the choice with the information available only till time $ i $. To model this, we need the definition of a stopping time.
 
 \begin{dfn}[stopping time]
 	A random variable $ \tau $, taking values in $ [n] $ is called a stopping time, if for any $ i \in [n] $,
@@ -489,7 +489,7 @@ If we are given the contingency claim, and the option is of the American type, i
 \section{Continuous models -- the Black-Scholes model}
 \label{sec:continuous}
 
-We now consider a continuous model, meaning that the times are continuous and the prices do not have discrete jumps, but are continuous random variables. The most famous model is the Black-Scholes model proposed by Black and Scholes in 1973 \cite{Black1973}.
+We now consider a continuous model, meaning that the times are continuous and the prices do not have discrete jumps, but are continuous random variables. The most famous model is the Black-Scholes model proposed by Fischer Black and Myron Scholes in 1973 \cite{Black1973}.
 
 As in the previous chapter, we consider two assets -- one riskless and one risky.
 
@@ -506,7 +506,7 @@ Solving this initial value problem, we get
 \end{equation}
 
 
-The risky asset is dependent on both deterministic and stochastic factors. The deterministic part is proportional to the current value of the asset and the time. The non-deterministic part is dependent on its current value and a stochastic process, whose mean should be zero, and variance should be proportional to the time. We choose these criteria because we do not expect the process to have a bias on going up or down (mean zero) and we expect that the process has a higher probability of going away from the current value with more time. It so happens that the best candidate for such a process is a standard Brownian motion\footnote{For more information on Brownian motion, refer to \cite[Section 3.1]{Lamberton1996}}.
+The risky asset is dependent on both deterministic and stochastic factors. The deterministic part is proportional to the current value of the asset and the time. The non-deterministic part is dependent on its current value and a stochastic process with zero mean and a variance proportional to time elapsed. We choose these criteria because we do not expect the process to have a bias on going up or down (mean zero) and we expect that the process has a higher probability of going away from the current value with more time. It so happens that the best candidate for such a process is a standard Brownian motion\footnote{For more information on Brownian motion, refer to \cite[Section 3.1]{Lamberton1996}}.
 
 Hence, Black and Scholes proposed the solution of the following stochastic differential equation with initial value as a model for the price dynamics.
 \begin{subequations}
@@ -516,7 +516,7 @@ Hence, Black and Scholes proposed the solution of the following stochastic diffe
 		S_0  &=  s_0 .
 	\end{align}
 \end{subequations}
-Here $ B_t $ be a Brownian motion, and $ \mu $ (drift) and $ \sigma $ (volatility) are proportionality constants. We shall assume that $ \sigma > 0 $, for if $ \sigma = 0 $, the process becomes deterministic, and $ \sigma < 0 $ is equivalent to $ \sigma > 0 $ because a Brownian motion is symmetric with respect to the time axis.
+Here $ B_t $ is a standard Brownian motion, and $ \mu $ (drift) and $ \sigma $ (volatility) are proportionality constants. We shall assume that $ \sigma > 0 $, because if $ \sigma = 0 $, the process becomes deterministic, and $ \sigma < 0 $ is equivalent to $ \sigma > 0 $ because a Brownian motion is symmetric with respect to the time axis.
 
 The solution to this problem is the geometric Brownian motion
 \begin{equation}
@@ -583,8 +583,8 @@ Let $ W_t = B_t + \frac{\mu - r}{\sigma} t $ (since $ \sigma \ne 0 $). The we de
 From Theorem \ref{thm:continuous-girsanov}, with $ \theta = \frac{\mu - r}{\sigma} $, we know that there exists probability $ P^* \sim P $ given by $ \frac{\dif P^*}{\dif P} = e^{ \theta B_t - \frac{\theta^2}{2} t } $,
 under which $ (W_t)_t $ is a standard Brownian motion. The definition of stochastic integral is invariant by change of equivalent probability. Therefore, from Equation \ref{eq:continuous-risky-disc-sde}b, under the probability $ P^* $, the discounted risky asset prices become
 \begin{subequations}
+	\label{eq:continous-risky}
 	\begin{align}
-		\label{eq:continous-risky}
 		\tilde{S}_t  &=  s_0 e^{\sigma W_t - \frac{\sigma^2}{2} t }  \\
 		\implies  \qquad  S_t  &=  s_0 e^{ ( r - \frac{\sigma^2}{2} ) t + \sigma W_t }.
 	\end{align}	
@@ -631,7 +631,7 @@ The value of a contingency claim then becomes
 	     &=  \E^* \left( e^{-r \Delta t} \  h \left(S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \big|  \mathcal{F}_t \right) .
 \end{align*}
 
-Since the process $ (S_t)_t $ is Markovian, we may write $ \E^*(\cdot \mid \mathcal{F}_t) = \E^*(\cdot \mid S_t) $. By conditional expectation, the latter is a measurable function of $ t $ and $ S_t $, denoted by $ F(t, S_t) $. Moreover, since $ S_t $ is $ \mathcal{F}_t $-measurable, we can treat it as a constant $ x $. The value of the call can then be represented by $ V_t = F(t, S_t) $, where $ F(t,x) = \E^* \left( e^{-r \Delta t} \  h \left( S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  S_t = x \right) $. By independence of increments of the Brownian motion $ W $ ($ \Delta W_t \perp \sigma(W_s : s \le t) $), the conditional expectation reduces to a simple expectation, and we write
+Since the process $ (S_t)_t $ is Markovian, we may write $ \E^*(\cdot \mid \mathcal{F}_t) = \E^*(\cdot \mid S_t) $. By conditional expectation, the latter is a measurable function of $ t $ and $ S_t $, denoted by $ F(t, S_t) $. Moreover, since $ S_t $ is $ \mathcal{F}_t $-measurable, we can treat it as a constant $ x $. The value of the call can then be represented by $ v_t = F(t, S_t) $, where $ F(t,x) = \E^* \left( e^{-r \Delta t} \  h \left( S_t e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right)  \Big|  S_t = x \right) $. By independence of increments of the Brownian motion $ W $ ($ \Delta W_t \perp \sigma(W_s : s \le t) $), the conditional expectation reduces to a simple expectation, and we write
 \begin{equation*}
 	F(t, x)  =  \E^* \left( e^{-r \Delta t} \  h \left( x e^{ ( r - \frac{\sigma^2}{2} ) \Delta t + \sigma \Delta W_t } \right) \right)
 \end{equation*}
@@ -753,7 +753,7 @@ The idea is that we rescale the Cox-Ross-Rubinstein model in time and space and 
 	Moreover, if $ f $ is a continuous function on $ (0, \infty) $, such that $ |f(x)| \le c(1+x)^q $ for some $ c > 0 $ and $ 0 \le q < 2 $, then $ \E^* \left( f(S_n^n) \right) \to \E^* \left( f(S_T) \right) $.
 \end{thm}
 
-The proof is quite long, and we shall not prove it here. We refer the interested reader to \cite{He1989} for a detailed analysis.
+The proof is quite involved, and we shall not prove it here. We refer the interested reader to \cite{He1989} for a detailed analysis.
 
 What is more interesting to us is that with the help of this result, we may use the Cox-Ross-Rubinstein model to price an option, and we would know that the result is guaranteed to converge to the Black-Scholes price, even if such a price cannot be calculated directly.
 

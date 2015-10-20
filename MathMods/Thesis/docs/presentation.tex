@@ -44,9 +44,9 @@
 \setbeamercolor{example text}{fg=white}
 
 % Set fonts
-\setbeamerfont{my frametitle}{size=\Large}
+\setbeamerfont{frametitle}{size=\Large}
 \setbeamerfont{framesubtitle}{size=\large}
-\setbeamerfont{title}{size=\huge,}
+\setbeamerfont{title}{size=\LARGE,}
 \setbeamerfont{subtitle}{size=\Large}
 \setbeamerfont{author}{size=\large}
 \setbeamerfont{date}{size=\large}
@@ -55,25 +55,6 @@
 % Blackboard background
 \setbeamertemplate{background}
 {\includegraphics[width=\paperwidth,height=\paperheight]{Chalkboard-sHue-bg.jpg}}
-
-%%% Random Dust Trails
-%\pgfmathsetseed{\number\pdfrandomseed} % seed for random generator
-%\setbeamertemplate{background}{
-%    \begin{tikzpicture}
-%        \useasboundingbox (0,0) rectangle (\the\paperwidth, \the\paperheight); 
-%      \foreach \i in {1,...,30} {
-%            \pgfmathsetmacro{\x}{random(0,10000)/5000-1}%
-%            \pgfmathsetmacro{\y}{random(0,10000)/10000-0.1}%
-%            \pgfmathsetmacro{\r}{random(0,10000)/1000-5}%
-%            \rotatebox{\r}{
-%                \pgftext[at=\pgfpoint{\x\paperwidth}{\y\paperheight}, left, base]{\includegraphics[width=\textwidth]{paintstroke.png}}
-%            }
-%        }; 
-%    \end{tikzpicture}
-%}
-
-%%% use a small dash ('-') for a bulletpoint list
-%\setbeamertemplate{itemize item}{\usebeamercolor[fg]{item}\small\ECFAugie{-}}
 
 %% Frametitle
 \setbeamertemplate{frametitle}{
@@ -98,6 +79,12 @@
     \vspace*{-1cm}
 }
 
+% Put a frame at the starting of each section.
+\AtBeginSection[]{
+	\begin{frame}<beamer>{Outline}
+		\tableofcontents[currentsection]
+	\end{frame}
+}
 
 % Figure styles
 \tikzset{
@@ -142,16 +129,8 @@
 }
 
 
-\AtBeginSubsection[]
-{
-	\begin{frame}<beamer>{Outline}
-		\tableofcontents[currentsection,currentsubsection]
-	\end{frame}
-}
-
-
 \title{Pricing exotic path-dependent options}
-\subtitle{The Singular Points method}
+\subtitle{The Singular Points method \cite{Gaudenzi2010,Gaudenzi2011}}
 \date[2015-10-23]{23\textsuperscript{rd} October, 2015}
 \institute[MathMods]{MathMods\\{Università degli Studi dell'Aquila}}
 \author[Sudip Sinha]{Sudip Sinha\\{Supervisor: Prof. Fabio Antonelli}}
@@ -177,7 +156,7 @@
 				\item[riskless] deterministic: $ S_t^0 = e^{rt} $
 				\item[risky] stochastic process: $ (S_t)_t $
 			\end{description}
-			\item derivatives -- contracts on other assets
+			\item derivatives -- contracts on other assets (\emph{underlying})
 			\begin{description}
 				\item[futures \& forwards] symmetric risk
 				\item[options] asymmetric risk
@@ -211,7 +190,7 @@
 		\begin{description}
 			\item[\alert{Asian}] payoff: function of average of the underlying.
 			\item[lookback] payoff: function of extrema of the underlying.
-			\item[\alert{cliquet}] A series of globally or locally, capped or floored, at-the-money options.
+			\item[\alert{cliquet}] A series of globally or locally bounded at-the-money options.
 			\item[digital] existence depends on pre-set barriers.
 		\end{description}
 	\end{itemize}
@@ -294,7 +273,7 @@
 		Ease of implementation  &  Hard  &  Easy  \\
 		Closed-form formula  &  No\footnotemark  &  Yes  \\
 		Computational complexity  &  Hard: $ O(2^n) $\footnotemark[1]  &  Easy: $ O(1) $  \\
-		Universality  &  Yes  &  No  \\
+		Versatile  &  Yes  &  No  \\
 		\bottomrule
 	\end{tabular}
 	\footnotetext{CRR: backward recursive}
@@ -304,7 +283,7 @@
 
 \section{Asian options}
 
-\begin{frame}{Asian options}
+\begin{frame}{Asian options: introduction}
 	Payoff: function of some form of average price.
 	
 	\bigskip
@@ -327,7 +306,7 @@
 \end{frame}
 
 
-\begin{frame}{Asian option}{Pre-existing methods}
+\begin{frame}{Asian option: pre-existing methods}
 	\begin{block}{Arithmetic mean}
 		\begin{tabular}{cccl}
 			\toprule
@@ -351,45 +330,35 @@
 \end{frame}
 
 
-\begin{frame}{SPs method for Asian options: Introduction}
-	Idea: At any node $ N_{i,j} $:
-	\begin{itemize}
-		\item payoff $ P $: continuous, convex function of the underlying's average $ A $
-		\item number of possible averages = number of paths to $ N_{i,j} $ = $ \binom{i}{j} $
-		\item these averages completely characterise the payoff; no other payoff being possible under the given tree
-		\item the above points $ ((A_{i,j}^l, P_{i,j}^l))_l $ are called \alert{singular points}
-		\item payoff is represented as continuous, convex, and piecewise-linear function of the underlying's possible averages, found by joining the singular points
-		\item minimum possible average $ A_{i,j}^{\min} = \frac{S_0}{i+1} \left( \frac{1 - d^{i-j+1}}{1-d} + d^{i-j} u \frac{1 - u^{j}}{1-u} \right)$
-		\item maximum possible average $ A_{i,j}^{\max} = \frac{S_0}{i+1} \left( \frac{1 - u^{j+1}}{1-u} + u^{j} d \frac{1 - d^{i-j-1}}{1-d} \right) $
-	\end{itemize}
-\end{frame}
-
-
-\begin{frame}{Singular Points method (SPM) for Asian option: Idea}
+\begin{frame}{SPM for Asian options: idea}
 	\begin{description}
 		\item[$ N_{i,j} $] Node of the binomial tree
 		\item[$ A_{i,j} $] Average upto $ N_{i,j} $, $ \binom{i}{j} $ choices
 		\item[$ P_{i,j} $] Option price at $ N_{i,j} $
-		\item[$ \left\lbrace \left( A_{i,j}^l, P_{i,j}^l \right) \right\rbrace_l $] \alert{singular points} (SPs) -- completely characterise price
+		\item[$ \left\lbrace \left( A_{i,j}^l, P_{i,j}^l \right) \right\rbrace_l $] \alert{singular points} (SPs) -- \alert{completely characterise price}
 		\item[price] continuous, convex, piecewise-linear function found by joining SPs
 	\end{description}
 \end{frame}
 
 
-\begin{frame}{SPM for Asian}{Start: at maturity ($ i = n $)}
+\begin{frame}{SPM for Asian options: start at maturity ($ i = n $)}
 	\begin{minipage}[t]{0.55\linewidth}
-		At any node $ N_{n,j}, \exists $ three possibilities:
+		For $ N_{n,j} $: calculate $ A_{i,j}^{\min} $ and $ A_{i,j}^{\max} $.
+		
+		\bigskip
+		
+		Singular points:
 		\begin{enumerate}
 			\item $ j \in \{ 0, n \} $: $ (A, (A-K)_+) $
-			\item $ j \notin \{ 0, n \} $ and $ K \notin \left( A_{n,j}^{\min}, A_{n,j}^{\max} \right) $:
-			\begin{enumerate}
-				\item $ \left( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ \right) $
-				\item $ \left( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ \right) $
-			\end{enumerate}
 			\item $ j \notin \{ 0, n \} $ and $ K \in \left( A_{n,j}^{\min}, A_{n,j}^{\max} \right) $: \begin{enumerate}
 				\item $ ( A_{n,j}^{\min} , 0 ) $
 				\item $ ( K , 0 ) $
 				\item $ ( A_{n,j}^{\max} , A_{n,j}^{\max} - K ) $
+			\end{enumerate}
+			\item $ j \notin \{ 0, n \} $ and $ K \notin \left( A_{n,j}^{\min}, A_{n,j}^{\max} \right) $:
+			\begin{enumerate}
+				\item $ \left( A_{n,j}^{\min} , ( A_{n,j}^{\min} - K )_+ \right) $
+				\item $ \left( A_{n,j}^{\max} , ( A_{n,j}^{\max} - K )_+ \right) $
 			\end{enumerate}
 		\end{enumerate}
 	\end{minipage}
@@ -426,7 +395,7 @@
 			\end{scriptsize}
 			\end{tikzpicture}
 			
-			\caption{Case 3}
+			\caption{Case 2}
 		\end{figure}		
 	\end{minipage}
 \end{frame}
@@ -541,7 +510,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for Asian options: Approximation}{Upper estimates}
+\begin{frame}{SPM for Asian options: approximation}{Upper estimates}
 	\definecolor{ffffqq}{rgb}{1.,1.,0.}
 	\definecolor{dqfqcq}{rgb}{0.8156862745098039,0.9411764705882353,0.7529411764705882}
 	\definecolor{wqwqwq}{rgb}{0.3764705882352941,0.3764705882352941,0.3764705882352941}
@@ -602,7 +571,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for Asian options: Approximation}{Lower estimates}
+\begin{frame}{SPM for Asian options: approximation}{Lower estimates}
 	\definecolor{ffffqq}{rgb}{1.,1.,0.}
 	\definecolor{wqwqwq}{rgb}{0.3764705882352941,0.3764705882352941,0.3764705882352941}
 	\definecolor{afeeee}{rgb}{0.6862745098039216,0.9333333333333333,0.9333333333333333}
@@ -661,7 +630,7 @@
 \end{frame}
 
 
-\begin{frame}{Singular points method for Asian options}{Numerical results}
+\begin{frame}{SPM for Asian options: numerical results}
 	Data: $ s_0 = 100, T = 1, r = 0.1, q = 0.03 $.
 	\begin{tabular}{crcccc}
 		\toprule
@@ -711,25 +680,6 @@
 			\item[cliquet option] a series of consecutive at-the-money forward start options, with bounded returns.
 		\end{description}
 	\end{block}
-	\begin{block}{Pros and cons}
-		\begin{itemize}
-			\pro Safety against downside risks.
-			\pro Significant upside potential.
-			\con Unbounded gains not possible.
-		\end{itemize}
-	\end{block}
-\end{frame}
-
-
-\begin{frame}{Cliquet options: terminology \& literature review}
-	\begin{block}{Terminology}
-		\begin{itemize}
-			\item Observation times: time points at which the forward start options expire. Assumption: equidistant.
-			\item Return: $ R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1 $.
-			\item Running sum: $ Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \} $.
-			\item $ \mathrm{Payoff} = \mathrm{notional} \cdot \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \} $.
-		\end{itemize}
-	\end{block}	
 	\begin{block}{Pre-existing methods for pricing}
 		\begin{itemize}
 			\item No prominent tree-based method.
@@ -740,13 +690,23 @@
 \end{frame}
 
 
+\begin{frame}{Cliquet options: terminology}
+	\begin{itemize}
+		\item Observation times: time points at which the forward start options expire. Assumption: equidistant, count = $ N $.
+		\item Return: $ R_i = \frac{S_i - S_{i-1}}{S_{i-1}} = \frac{S_i}{S_{i-1}} - 1 $.
+		\item Running sum: $ Z_i = \sum_{k = 1}^{i} \max \{ F_{loc}, \min \{ C_{loc}, R_k \} \} $.
+		\item Payoff = $ \max \{ F_{glob}, \min \{ C_{glob}, Z_{N} \} \} $.
+	\end{itemize}
+\end{frame}
+
+
 \begin{frame}{SPM for cliquet options: details}
 	Idea: At the $ i $\textsuperscript{th} interval:
 	\begin{itemize}
-		\item $ m $: number of computational steps
+		\item $ m $: number of computational time steps
 		\item $ 2^m $ possible paths; probability -- binomially distributed.
-		\item $ Z $ (running sum) depends on paths and their probabilities.
-		\item $ (Z, P) \implies $ SP, where $ P \implies $ price function.
+		\item $ Z $ depends on paths and their probabilities.
+		\item $ (Z, P) \implies $ SP, where $ P \implies $ price.
 	\end{itemize}
 	Price function at maturity: piecewise-linear, continuous (not convex).
 	
@@ -801,7 +761,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for cliquet options: other times ($ i < N $)}
+\begin{frame}{SPM for cliquet options: previous times ($ i < N $)}
 	The realizable paths and associated quantities are denoted by primed variables.
 	\begin{enumerate}
 		\item From running sums $ Z_{i+1}^l $, subtract possible returns $ R_j' $ to get $ B_{l,j} $.
@@ -813,7 +773,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for cliquet options: Approximation}
+\begin{frame}{SPM for cliquet options: approximation}
 	\definecolor{ffffqq}{rgb}{1.,1.,0.}
 	\definecolor{qqffqq}{rgb}{0.,1.,0.}
 	\definecolor{wqwqwq}{rgb}{0.3764705882352941,0.3764705882352941,0.3764705882352941}
@@ -854,8 +814,8 @@
 	\draw [line width=1.6pt,dotted,color=qqffqq] (6.004094596374262,3.288054055071007)-- (6.,2.75);
 	\draw [color=wqwqwq] (10.,7.)-- (0.,7.);
 	\draw [line width=1.6pt,dotted,color=ffffqq] (7.999695997451529,5.499771998088647)-- (8.,4.);
-	\draw [color=qqffqq](1.0023349125274963,6.194217396762082) node[anchor=north west] {$| (V_1 - V)(Z) | \le h  \quad  \forall Z$};
-	\draw [color=ffffqq](1.0023349125274963,5.19634269973684) node[anchor=north west] {$\exists Z \: | (V_2 - V)(Z) | > h$};
+	\draw [color=qqffqq](1.0023349125274963,6.194217396762082) node[anchor=north west] {$| (V_1 - V)(Z) | \le \delta  \quad  \forall Z$};
+	\draw [color=ffffqq](1.0023349125274963,5.19634269973684) node[anchor=north west] {$\exists Z \: | (V_2 - V)(Z) | > \delta$};
 	\begin{scriptsize}
 	\draw [fill=afeeee] (1.,1.) circle (2.0pt);
 	\draw[color=afeeee] (0.9857036550273188,1.3877876060904992) node {$S_1$};
@@ -900,15 +860,15 @@
 	\draw[color=dqfqcq] (6.540543660086572,3.8658431037031837) node {$V_1$};
 	\draw[color=afeeee] (5.559299467576104,3.9822618183561285) node {$V_2$};
 	\draw [color=qqffqq] (6.004094596374262,3.288054055071007)-- ++(-2.0pt,-2.0pt) -- ++(4.0pt,4.0pt) ++(-4.0pt,0) -- ++(4.0pt,-4.0pt);
-	\draw[color=qqffqq] (6.340968570084443,3.0841745910334106) node {$\le$ h};
+	\draw[color=qqffqq] (6.340968570084443,3.0841745910334106) node {$ \le \delta $};
 	\draw [color=ffffqq] (7.999695997451529,5.499771998088647)-- ++(-1.5pt,-1.5pt) -- ++(3.0pt,3.0pt) ++(-3.0pt,0) -- ++(3.0pt,-3.0pt);
-	\draw[color=ffffqq] (8.303456955105375,4.847086555778005) node {>h};
+	\draw[color=ffffqq] (8.303456955105375,4.847086555778005) node {$ > \delta $};
 	\end{scriptsize}
 	\end{tikzpicture}
 \end{frame}
 
 
-\begin{frame}{SPM for cliquet options: Numerical results}
+\begin{frame}{SPM for cliquet options: numerical results}
 	\begin{block}{Data}
 		\begin{itemize}
 			\item $ F_{loc} = 0, C_{loc} = 0.08, F_{glob} = 0.16, C_{glob} = \infty $
@@ -936,7 +896,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for cliquet options: complexity -- $ O(m^2) $}
+\begin{frame}{SPM for cliquet options: complexity $ O(m^2) $}
 	% This plot was generated by plotly
 	\begin{figure}
 		\centering
@@ -945,7 +905,7 @@
 \end{frame}
 
 
-\begin{frame}{SPM for cliquet options: Summary}
+\begin{frame}{SPM for cliquet options: summary}
 	\begin{itemize}
 		\neu Introduced by Gaudenzi \emph{et al} \cite{Gaudenzi2011} in 2011.
 		\pro Convergent to exact CRR and thus BS.
@@ -971,6 +931,7 @@
 	Further research
 	\begin{itemize}
 		\item Theoretical complexity: dependence of singular point redundancy on initial data.
+		\item Verify complexity for large $ m $.
 		\item Customising the method for other path-dependent options.
 	\end{itemize}
 \end{frame}
@@ -991,12 +952,10 @@
 \end{frame}
 
 
-\appendix
-%\section<presentation>*{\appendixname}
-%\subsection<presentation>*{Bibliography}
 
-\begin{frame}[allowframebreaks]
-	\frametitle<presentation>{Bibliography}
+\appendix
+
+\begin{frame}<presentation>[allowframebreaks]{Bibliography}
 	\printbibliography
 \end{frame}
 

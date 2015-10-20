@@ -92,7 +92,7 @@ A \emph{derivative} is a contract between two parties that specify conditions (s
 \subsection{Classification of derivatives}
 \label{subsec:intro-derivative-classification}
 
-Derivatives may be classified on the basis of various factors. One important factor is whether the risk is shared, or taken up by only one party. Another factor is the nature of the function (of the underlying) that the derivative depends on. This function may either be dependent only on the final value of the underlying (\emph{path-independent}), or on the path that it took to reach this final value (\emph{path-dependent}). The function may be discrete (\emph{digital} or \emph{binary}), or continuous In this section, we briefly look at some of the more important types of derivatives. \footnote{
+Derivatives may be classified on the basis of various factors. One important factor is whether the risk is symmetric (shared equally), or asymmetric (taken up by only one party). Another factor is the nature of the function (of the underlying) that the derivative depends on. This function may either be dependent only on the final value of the underlying (\emph{path-independent}), or on the path that it took to reach this final value (\emph{path-dependent}). The function may be discrete (\emph{digital} or \emph{binary}), or continuous In this section, we briefly look at some of the more important types of derivatives. \footnote{
 	A more interested reader should consult the following extensive Wikipedia articles.
 	\begin{itemize}
 		\item \url{https://en.wikipedia.org/wiki/Option_(finance)\#Types}
@@ -150,7 +150,7 @@ Options may be categorised by the right of the owner and the exercise time.
 	\item[call] The owner has the right to buy. In this case, the price of the option at maturity is given by $ c_T = (S_T - K)_+ $, where $ (x)_+ \coloneqq \max \{ 0, x \} $.
 	\item[put] The owner has the right to sell. In this case, the price of the option at maturity is given by $ p_T = (K - S_T)_+ $.
 \end{description}
-Of course, other complicated ownership rights may be constructed, but we shall not go into the details of those.
+Of course, other complicated ownership rights may be constructed, but we shall restrict ourselves to calls and puts.
 
 \subparagraph{According to the time at which the option may be exercised}  Again, option may be of two main types.
 \begin{description}
@@ -183,8 +183,8 @@ We now look at the relationship. $ S_T - K = (S_T - K)_+ + (S_T - K)_- = (S_T - 
 \paragraph{Exotic options}
 European options are path-independent and the simplest type of options available. Hence, they are popularly known as \emph{vanilla options}. The American options are path-dependent. Typically, other options which are more complex in nature are collectively called \emph{exotic options}. These are usually path-dependent, and may be either European, American or have more complex exercise times. A few such options are described in brief.
 \begin{description}
-	\item[Asian] The payoff depends on the average of the underlying's prices
-	\item[lookback] The payoff depends on one of the extrema of the underlying's prices
+	\item[Asian] The payoff depends on the average of the underlying's prices.
+	\item[lookback] The payoff depends on one of the extrema of the underlying's prices.
 	\item[cliquet or ratchet] A series of globally or locally, capped or floored, at-the-money options, but where the total premium is determined in advance.
 	\item[barrier] The price of the underlying reaching the pre-set barrier level either springs the option into existence (\emph{knock-in}) or extinguishes an already existing option (\emph{knock-out}).
 \end{description}
@@ -196,10 +196,10 @@ European options are path-independent and the simplest type of options available
 
 The idea of financial markets is intricately linked to that of financial transactions. Analogous to the ordinary markets, a financial market is a human construct to allow transaction between investors. The assets in the financial market are typically financial instruments such as bonds, stocks and derivatives discussed in the previous section. In this section we will primarily concern ourselves with the nature of financial markets and the assumptions we make while modelling them. Some of the jargon used in the previous section will become clear after this section.
 
-Pricing of financial assets is one of the most pressing aims of the subject of Financial Mathematics. In order to do so, we need to understand and characterise the fundamental mechanisms of the market that shape the pricing of assets. In doing so, we must note which dynamics of the market are most fundamental and must be incorporated in every model, and which are more debatable may be excluded from simpler models.
+Pricing of financial assets is one of the pressing aims of the subject of Financial Mathematics. In order to do so, we need to understand and characterise the fundamental mechanisms of the market that shape the pricing of assets. In doing so, we must note which dynamics of the market are more fundamental and must be incorporated in every model, and which are more debatable may be excluded from simpler models.
 
 \paragraph{Viable market}
-The term viability here refers to the fairness of a market. To interpret viability, we need to familiarise ourselves with the following definitions.
+The term viability here refers to the fairness of a market. To interpret viability, we need to familiarise ourselves with some definitions.
 
 In what follows, we assume the following.
 \begin{itemize}
@@ -240,53 +240,7 @@ This implies that we do not run out of money at any point of time.
 \begin{dfn}[arbitrage strategy]
 	An admissible strategy $ \Phi $ is said to be an arbitrage strategy if $ V_0( \Phi ) = 0 $ and $ P( V_T( \Phi ) > 0 ) > 0 $.
 \end{dfn}
-A arbitrage strategy basically means that we generate value at time $ T $ without any initial investment. For the sake of fairness, we do not want a market in which there exist arbitrage opportunities. The next definition addresses this issue.
-
-%In what follows, we assume the following.
-%\begin{itemize}
-%	\item There is a probability space $ (\Omega, \mathcal{F}, (\mathcal{F}_n)_n, P) $, endowed with the filtration $ (\mathcal{F}_n)_n $.
-%	\item $ \forall n \in [N], N \in \mathbb{N} $, there is one riskless asset worth $ S_n^0 = e^{rt} $ ($ S_0^0 = 1 $).
-%	\item $ \forall t \in [0, T], T \in [0, \infty) $, there are $ d $ risky assets each worth $ S_t^i $, where $ i \in \{ 1, 2, \dots, d \} $ is the index of the risky asset. These may be represented as a $ d $-dimensional (vector) stochastic process $ ( S_t^1, S_t^2, \dots, S_t^d ) $.
-%\end{itemize}
-%
-%A word about notation: We shall denote the class of all $ \mathcal{F} $-measurable random variables by $ \mu \mathcal{F} $.
-%
-%\begin{dfn}[investment strategy]
-%	A $ d + 1 $ dimensional (vector) stochastic process $ \Phi = (\bm{\phi_t})_t = (\phi_t^0, \phi_t^1, \dots, \phi_t^d)_t $ is called an \emph{investment strategy} or \emph{trading strategy} if $ \phi_t^i \in \mu \mathcal{F}_t \  \forall i \in [d]$.
-%\end{dfn}
-%This means that there is a procedure to allocate resources within the portfolio at all times. We shall write strategy to mean investment strategy in the rest of the document.
-%
-%The following definition gives the value of a strategy at a point in time.
-%\begin{dfn}[value of a strategy]
-%	The value of a strategy $ \Phi $ at a time $ t $ is given by $ V_t( \Phi ) = \bm{\phi_t} \cdot S_t $.
-%\end{dfn}
-%
-%\begin{dfn}[self-financing strategy]
-%	A strategy $ \Phi $ is called \emph{self-financing} if $ \dif \bm{\phi_t} \cdot S_t = 0 \  \forall t \in [0, T] $.
-%\end{dfn}
-%This implies that we do not put in any fresh money in the strategy at any point of time, apart from what is generated due to the change is values of the underlying assets.
-%
-%\begin{dfn}[admissible strategy]
-%	A self-financing strategy $ \Phi $ is said to be admissible if $ V_t( \Phi ) \ge 0 \  \forall t \in [0, T] $.
-%\end{dfn}
-%This implies that we do not run out of money at any point of time.
-%
-%\begin{dfn}[arbitrage strategy]
-%	An admissible strategy $ \Phi $ is said to be an arbitrage strategy if $ V_0( \Phi ) = 0 $ and $ P( V_T( \Phi ) > 0 ) > 0 $.
-%\end{dfn}
-%A arbitrage strategy basically means that we generate value at time $ T $ without any initial investment. For the sake of fairness, we do not want a market in which there exist arbitrage opportunities. The next definition addresses this issue.
-%
-%\begin{prp}[Equivalence of arbitrage conditions]
-%	Assume that $ \phi_t^i \in L^2( P \times \lambda ) $, where $ \lambda $ is the Lebesgue measure for time. Then the following are equivalent.
-%	\begin{itemize}
-%		\item $ \Phi $ is self-financing
-%		\item $ \forall t \in [0, T], \dif V_t = \bm{\phi_t} \cdot \dif S_t $
-%		\item $ \forall t \in [0, T], \dif \tilde{V}_t = \bm{\phi_t} \cdot \dif \tilde{S}_t $
-%	\end{itemize}
-%\end{prp}
-%[TODO: Proof]
-%[TODO: May be incorrect -- Check \cite[Remark 4.1.3, Page 65]{Lamberton1996}]
-
+A arbitrage strategy basically means that it generates value at time $ T $ without any initial investment. For the sake of fairness, we do not want a market in which there exist arbitrage opportunities. The next definition addresses this issue.
 
 \begin{dfn}[viable market, no free lunch]
 	A market is called \emph{viable}, or there is \emph{no free lunch}, if there does not exist any arbitrage strategies.
@@ -298,7 +252,7 @@ We will see in Theorem \ref{thm:discrete-ftoap1} of Chapter \ref{cha:models} how
 \paragraph{Complete market}
 
 \begin{dfn}[hedgeable, attainable]
-	A derivative is called hedgeable or attainable if it can be represented as a linear combination of the basic assets at all times. Basic assets include stocks, bonds and commodities whose prices are \emph{not} directly linked to other assets in the market.
+	A derivative is called hedgeable or attainable if it can be represented as a linear combination of the \emph{basic assets} at all times. Basic assets include stocks, bonds and commodities whose prices are \emph{not} directly linked to other assets in the market.
 \end{dfn}
 
 \begin{dfn}[complete market]
