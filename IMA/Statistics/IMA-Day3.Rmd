@@ -1,0 +1,380 @@
+---
+title: "IMA Day 3 Notes"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+
+
+
+## Getting Started
+
+**Load packages required for exercises:**
+
+```{r}
+suppressPackageStartupMessages(library(rvest))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(tidyr))
+```
+
+
+## Scraping & Wrangling Data {-}
+
+**Scrape data from [Wiki](https://en.wikipedia.org/wiki/Current_members_of_the_United_States_House_of_Representatives)**
+
+```{r}
+#load the rvest library (if it's not already, install it first!)
+suppressPackageStartupMessages(library(rvest))
+
+#copy the Wiki url
+url = "https://en.wikipedia.org/wiki/Current_members_of_the_United_States_House_of_Representatives"
+
+#scrape ALL tables from the url
+allTables = read_html(url) %>% 
+    html_nodes("table") %>% 
+    html_table(fill=TRUE)
+
+#the 7th table corresponds to "Voting members by state".  store this as "houseDirty"
+houseDirty = allTables[[7]]
+
+#check out the head of houseDirty
+head(houseDirty, 3)
+```
+
+
+<br>
+<br>
+
+### Exercise 1
+
+```{r}
+#part a
+mytext <- "This is my text"
+gsub("s", "z", mytext)
+gsub(" ", "", mytext)
+substr(mytext, 1, 3)
+substr(mytext, 4, 7)
+
+#part b
+mynumber <- "2017"
+class(mynumber)
+mynewnumber <- as.numeric(mynumber)
+mynewnumber + 2
+class(mynewnumber)
+```
+
+<br>
+<br>
+
+### Exercise 2
+
+```{r}
+#load the dplyr library for some wrangling functions
+suppressPackageStartupMessages(library(dplyr))
+
+#take out the third column (the blank "Party" variable)
+house = houseDirty[-3]
+
+#remove the spaces from the variable names
+names(house) = gsub(" ", "_", names(house))
+
+#check the class of the Assumedoffice variable 
+class(house$Assumed_office)
+
+#in 1 set of code: 
+#remove the "*" from the Assumedoffice measurements
+#convert Assumedoffice to numeric
+house$Assumed_office = as.integer(substr(x = house$Assumed_office, start = 1, stop = 4))
+
+#define an "Age" variable
+house = mutate(.data = house, Age = as.integer(2017) - Born_in)
+
+#confirm that your house is consistent with the results in the notes
+dim(house)
+head(house[,c(1,6,7,8)])
+mean(house$Assumed_office)
+```
+
+<br>
+<br>
+
+## Sampling Variability
+```{r}
+suppressPackageStartupMessages(library(ggplot2))
+
+mu = mean(house$Age, na.rm=TRUE)
+
+sigma = sd(house$Age, na.rm=TRUE)
+
+ggplot(house, aes(x=Age)) + 
+    geom_histogram(color="white") + 
+    labs(title="POPULATION distribution")
+```
+
+
+### Exercise 3
+
+```{r}
+#choose your own random number seed
+set.seed(65536)
+
+#take a sample of 16 members
+sample1 = sample_n(house, size=16)
+
+#check the properties
+head(sample1)
+dim(sample1)
+```
+
+
+part b:
+```{r}
+ggplot(sample1, aes(x=Age)) + 
+    geom_histogram(color="white", binwidth=5) + 
+    labs(title="SAMPLE Distribution (n=16)")
+```
+
+part c:
+```{r}
+mu_est_1 = mean(sample1$Age)
+sigma_est_1 = sd(sample1$Age)
+```
+
+
+
+
+<br>
+<br>
+
+### Exercise 4
+
+```{r}
+#take another sample
+sample2 <- sample_n(house, size=16)
+
+head(sample2)
+
+mu_est_2 = mean(sample2$Age)
+
+sigma_est_2 = sd(sample2$Age)
+```
+
+
+
+
+<br>
+<br>
+
+
+## Sampling Distributions
+
+
+
+<br>
+
+Sample Size   Shape         Min $\overline{y}$  Mean $\overline{y}$   Max $\overline{y}$  St Dev of $\overline{y}$ 
+------------- ------------- ------------------- --------------------- ------------------- --------------------------
+$n = 16$
+$n = 64$
+$n = 100$
+
+
+
+<br>
+<br>
+
+### Exercise 5
+
+```{r}
+#set the seed
+set.seed(2)
+
+#initialize the for loop
+simulation <- data.frame(n16=rep(0,1000), n64=rep(0,1000), n100=rep(0,1000))
+
+#run the for loop
+for(i in 1:1000){
+	#take a sample of 16 members
+	s16 = sample_n(house, size=16)
+	
+	#calculate the mean age & store in simulation$n16
+	simulation$n16[i] = mean(s16$Age)
+	
+	#take a sample of 64 members
+	s64 = sample_n(house, size=64)
+	
+	#calculate the mean age & store in simulation$n64
+	simulation$n64[i] = mean(s64$Age)
+	
+	#take a sample of 100 members
+	s100 = sample_n(house, size=100)
+	
+	#calculate the mean age & store in simulation$n100
+	simulation$n100[i] = mean(s100$Age)
+}
+```
+
+
+<br>
+<br>
+
+### Exercise 6
+
+```{r}
+ggplot(simulation, aes(x=n16)) + 
+    geom_histogram(color="white", binwidth=2) + 
+    labs(title="SAMPLING Distribution") + 
+    lims(x=c(45,75)) + 
+    geom_vline(xintercept=58.54734, color="red")
+```
+
+
+    
+
+
+<br>
+<br>
+
+### Exercise 7
+
+```{r}
+ggplot(simulation, aes(x=n64)) + 
+    geom_histogram(color="white", binwidth=2) + 
+    labs(title="SAMPLING Distribution") + 
+    lims(x=c(45,75)) + 
+    geom_vline(xintercept=58.54734, color="red")
+```
+
+
+<br>
+<br>
+
+### Exercise 8
+
+```{r}
+ggplot(simulation, aes(x=n100)) + 
+    geom_histogram(color="white", binwidth=2) + 
+    labs(title="SAMPLING Distribution") + 
+    lims(x=c(45,75)) + 
+    geom_vline(xintercept=58.54734, color="red")
+```
+
+
+<br>
+<br>
+
+### Exercise 9
+
+```{r}
+#follow directions
+
+```
+
+
+<br>
+<br>
+
+### Exercise 10
+
+```{r}
+#density plot by group
+
+```
+
+
+<br>
+<br>
+
+### Exercise 11
+
+
+
+
+
+<br>
+<br>
+
+
+## Regression Models
+
+### Exercise 12
+
+part a:
+```{r}
+#set the seed
+
+#initialize the for loop
+
+
+#run the for loop
+
+```
+    
+part b:
+
+```{r}
+#construct a histogram of the 1000 beta0 estimates
+
+#construct a histogram of the 1000 beta1 estimates
+
+```
+
+part c:
+```{r}
+#approximate the standard errors
+
+```
+
+
+<br>
+<br>
+
+### Exercise 13
+
+part a:
+```{r}
+
+```
+
+part b:
+```{r}
+
+```
+
+
+    
+    
+
+    
+    
+
+<br>
+<br>
+
+
+## The Central Limit Theorem
+
+### Exercise 14
+
+
+
+<br>
+<br>
+
+
+## Extra: Writing Functions
+
+
+
+
+
+
+<br>
+<br>
+<br>
+
+

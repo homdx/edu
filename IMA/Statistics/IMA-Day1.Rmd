@@ -1,0 +1,435 @@
+---
+title: "IMA Day 1 Notes"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+
+
+
+## Getting Started
+
+**Load packages required for exercises:**
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(readr))
+suppressPackageStartupMessages(library(ggplot2))
+suppressPackageStartupMessages(library(choroplethr))
+suppressPackageStartupMessages(library(choroplethrMaps))
+```
+
+
+<!-- **Load the data** -->
+
+<!-- ```{r} -->
+<!-- #this uses the readr library: -->
+<!-- elect <- read.csv("https://raw.githubusercontent.com/tonmcg/County_Level_Election_Results_12-16/master/US_County_Level_Presidential_Results_08-16.csv") -->
+<!-- ``` -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+
+<!-- ## Pre-Bootcamp Review -->
+
+<!-- ### Exercise 1: Explore the structure of the data -->
+
+<!-- ```{r} -->
+<!-- # Check out the first rows of `elect`.  What are the cases?  The variables? -->
+<!-- head(elect) -->
+
+<!-- # How much data do we have? -->
+<!-- dim(elect) -->
+
+<!-- # What are the names of the variables? -->
+<!-- names(elect) -->
+
+<!-- #How can we subset just the `dem_2016` data? -->
+<!-- head(elect$dem_2016) -->
+
+<!-- #How can we filter out only the counties in which more than 25,000 people voted in 2016? -->
+<!-- library(plyr) -->
+<!-- filter(elect, total_2016 > 25000) -->
+<!-- ``` -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- ### Exercise 2: Create new variables -->
+
+
+<!-- ```{r} -->
+<!-- #start with 1 variable to get the hang of it -->
+
+
+<!-- #now 2 variables     -->
+
+
+<!-- #now 3.  (why do we put winrep_2016 in its own row?!) -->
+
+
+<!-- #finally, add all 2012 and 2016 variables and store as 'elect' -->
+<!-- elect = mutate(.data = elect, f_dem_2016 = dem_2016 / total_2016, f_gop_2016 = gop_2016 / total_2016, win_rep = ) -->
+
+<!-- ``` -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- ### Exercise 3: Explore the win column -->
+
+<!-- ```{r} -->
+<!-- #Construct a table (a numerical summary) of the number of counties that Trump won/lost -->
+
+<!-- #Construct a bar chart (a visual summary) of this variable.     -->
+
+<!-- ``` -->
+
+
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- ### Exercise 4: Visually explore vote percentages -->
+
+<!-- ```{r} -->
+<!-- #histogram -->
+
+<!-- #density plot -->
+
+<!-- ``` -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- ### Exercise 5: Numerically summarize vote percentages -->
+
+<!-- ```{r} -->
+<!-- #calculate the mean Trump support -->
+
+<!-- #calculate the median Trump support -->
+
+<!-- #calculate the variance in Trump support from county to county -->
+
+<!-- #calculate the standard deviation in Trump support from county to county -->
+
+<!-- #use the 68-95-99.7 Rule to approximate the range of from the 2.5th to 97.5th percentiles of  Trump support -->
+
+<!-- #calculate the exact 2.5th and 97.5th percentiles  -->
+<!-- ``` -->
+
+
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+<!-- <br> -->
+
+
+<!-- ## Explaining Variability + Wrangling -->
+
+
+<!-- **Load the data:** -->
+
+<!-- ```{r warning=FALSE} -->
+<!-- #load demographic data from the choroplethr library -->
+<!-- data("df_county_demographics") -->
+<!-- head(df_county_demographics,3) -->
+
+<!-- #load RedBluePurple data -->
+<!-- RedBlue <- read.csv("https://www.macalester.edu/~ajohns24/Data/RedBluePurple.csv") -->
+<!-- head(RedBlue,3) -->
+<!-- ``` -->
+
+
+
+<!-- <br> -->
+<!-- <br> -->
+
+<!-- **Join / merge these data tables into a single data set:** -->
+
+<!-- ```{r} -->
+<!-- #define "region" variable -->
+
+<!-- #join elect and df_county_demographics (from dplyr) -->
+
+<!-- #join the new fulldata with RedBlue -->
+
+<!-- #check out the names of fulldata -->
+<!-- ``` -->
+
+```{r Load Data}
+fulldata = read.csv("https://www.macalester.edu/~ajohns24/data/IMAdata1.csv")
+```
+
+
+<br>
+<br>
+<br>
+<br>
+
+
+## Visualizing Relationships
+
+### Exercise 6: Scatterplots of 2 quantitative variables
+
+
+```{r}
+#just a graphics frame
+plot = ggplot(data = fulldata, mapping = aes(x = perrep_2012, y = perrep_2016))
+
+#adding a scatterplot layer
+plot + geom_point()
+
+#another predictor
+ggplot(fulldata, aes(y = perrep_2016, x = median_rent)) + 
+    geom_point()
+
+#another predictor
+ggplot(fulldata, aes(y = perrep_2016, x = percent_white)) + 
+    geom_point()
+```
+    
+    
+   
+<br>
+<br>
+
+### Exercise 7: Side-by-side plots of 1 quantitative variable vs 1 categorical variable
+
+
+```{r}
+#density plots by group
+ggplot(fulldata, aes(x = perrep_2016, fill = StateColor)) + 
+    geom_density()
+
+#to see better: add transparency
+ggplot(fulldata, aes(x = perrep_2016, fill = StateColor)) + 
+    geom_density(alpha = 0.5) + 
+	scale_fill_manual(values = c("blue", "purple", "red"))
+
+#to see better: split groups into separate plots
+ggplot(fulldata, aes(x=perrep_2016, fill=StateColor)) + 
+    geom_density(alpha=0.5) + 
+    facet_wrap(~StateColor)
+
+#violins instead
+ggplot(fulldata, aes(y=perrep_2016, x=StateColor)) + 
+    geom_violin()
+
+#boxes instead
+ggplot(fulldata, aes(y=perrep_2016, x=StateColor)) + 
+    geom_boxplot()
+
+```
+
+
+
+<br>
+<br>
+
+
+### Exercise 8: Scatterplots of 1 quantitative variable vs 1 categorical & 1 quantitative variable
+
+
+```{r}
+#scatterplot: id groups using color
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, color=StateColor)) + 
+    geom_point(alpha=0.5)
+
+#scatterplot: id groups using shape
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, shape=StateColor)) + 
+    geom_point(alpha=0.5)
+
+#scatterplot: split/facet by group
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, color=StateColor)) + 
+    geom_point(alpha=0.5) + 
+    facet_wrap( ~ StateColor)
+```
+
+
+
+<br>
+<br>
+
+
+### Exercise 9: Side-by-side plots of 1 quantitative variable vs 2 categorical variables
+
+```{r}
+#density plots by group combo
+ggplot(fulldata, aes(x=perrep_2016, fill=StateColor)) + 
+    geom_density(alpha=0.5) + 
+    facet_wrap(~ winrep_2012)
+
+#switch faceting order
+ggplot(fulldata, aes(x=perrep_2016, fill=winrep_2012)) + 
+    geom_density(alpha=0.5) + 
+    facet_wrap(~ StateColor)
+```
+
+<br>
+<br>
+
+### Exercise 10: Plots of 3 quantitative variables
+
+```{r}
+#scatterplot: represent third variable using color
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, color=median_rent)) + 
+    geom_point(alpha=0.5)
+
+#scatterplot: discretize the third variable into 2 groups & represent with color
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, color=cut(median_rent,2))) + 
+    geom_point(alpha=0.5)
+
+#scatterplot: discretize the third variable into 2 groups & facet by group
+ggplot(fulldata, aes(y=perrep_2016, x=percent_white, color=cut(median_rent,2))) + 
+    geom_point() + 
+    facet_wrap(~ cut(median_rent, 2))
+```
+
+
+    
+<br>
+<br>
+
+
+### Exercise 11: Maps!
+
+```{r}
+#Construct maps using the choroplethrMaps library
+
+#a map of Trump support
+
+
+#a map of Trump wins
+
+
+#a map of percent white
+
+
+```
+
+
+
+
+<br>
+<br>
+
+<br>
+<br>
+
+
+
+## Linear Regression Models
+
+### Exercise 12: Models with 1 quantitative predictor
+
+
+```{r}
+#visualization
+
+#model
+
+```
+
+
+<br> 
+<br>
+
+### Exercise 13: Models with 1 categorical predictor
+
+```{r}
+#plot the relationship
+
+```
+
+
+```{r}
+#detach/unload libraries (a bug)
+detach(package:choroplethr)
+detach(package:acs)
+detach(package:plyr)
+
+#calculate the group means
+
+```
+
+
+
+```{r}
+#construct the model
+
+```
+
+
+
+<br>        
+<br>
+
+### Exercise 14: Models with 1 quantitative predictor & 1 categorical predictor
+
+
+```{r}
+#visualize the relationship
+
+#construct the model
+
+```
+
+
+
+<br>
+<br>
+
+
+### Exercise 15: Models with 2 quantitative predictors
+
+```{r}
+#visualize the relationship
+
+#construct the model
+
+
+```
+
+
+
+<br> 
+<br>
+
+### Exercise 16: Models with 2 categorical predictors
+
+```{r}
+#create income brackets
+
+```
+
+```{r}
+#visualize the relationship
+
+#construct the model
+
+```
+
+
+
+
+<br>
+<br>
+<br>
+<br>
+
+

@@ -1,0 +1,164 @@
+---
+title: "IMA Day 5 Notes"
+output:
+  html_document:
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+
+
+
+## Getting Started
+
+**Load packages required for exercises:**
+
+```{r}
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(ggplot2))
+```
+
+
+```{r}
+oring <- read.csv("https://www.macalester.edu/~ajohns24/data/NASA.csv")
+head(oring, 3)
+```
+
+
+
+
+```{r}
+oringMod1 <- lm(Broken ~ Temp, oring)
+summary(oringMod1)
+ggplot(oring, aes(x=Temp, y=Broken)) + 
+  geom_point() + 
+  geom_smooth(method="lm", se=FALSE)
+```
+
+
+<br>
+<br>
+
+
+
+## Logistic Regression
+
+### Exercise 1
+
+```{r}
+oringMod <- glm(Broken ~ Temp, oring, family="binomial")
+summary(oringMod)
+```
+
+
+<br>
+<br>
+
+### Exercise 2
+
+```{r}
+suppressPackageStartupMessages(library(mosaic))
+#store oringMod predictions on log scale
+oring$logPredictions <- logit(oringMod$fitted.values)
+
+#store oringMod predictions on odds scale
+oring$oddsPredictions <- exp(logit(oringMod$fitted.values))
+
+#store oringMod predictions on probability scale
+oring$probPredictions <- oringMod$fitted.values
+
+head(oring, 1)
+
+ggplot(oring, aes(x=Temp, y=logPredictions)) + 
+  stat_smooth(se=FALSE) + 
+  labs(y="log(odds of breaking)")
+
+ggplot(oring, aes(x=Temp, y=oddsPredictions)) + 
+  stat_smooth(se=FALSE) + 
+  labs(y="odds of breaking")
+
+ggplot(oring, aes(x=Temp, y=probPredictions)) +
+  stat_smooth(se=FALSE) +
+  labs(y="probability of breaking")
+
+```
+    
+
+<br>
+<br>
+
+
+### Exercise 3
+
+
+ 
+<br>
+<br>
+
+### Exercise 4
+
+```{r}
+suppressPackageStartupMessages(library(mosaic))
+probFun <- makeFun(oringMod)
+probFun(Temp = 31)
+
+1 - (1 - probFun(Temp = 31))^6
+```
+
+
+
+<br>
+<br>
+
+
+## Details
+
+
+```{r}
+suppressPackageStartupMessages(library(fivethirtyeight))
+data(bechdel)
+head(bechdel, 3)
+```
+
+
+<br>
+<br>
+
+### Exercise 5
+```{r}
+
+```
+    
+
+
+<br>
+<br>
+
+### Exercise 6
+
+```{r}
+median(bechdel$budget_2013)
+bechdel = mutate(.data = bechdel, bigbudget = (budget_2013 > 36995786))
+
+bechdelMod2 = glm(as.factor(binary) ~ year * bigbudget, bechdel, family="binomial")
+summary(bechdelMod2)
+
+#store predictions on probability scale
+bechdel$probPredictions = bechdelMod2$fitted.values
+
+#plot
+ggplot(bechdel, aes(x=year, y=probPredictions, color=bigbudget)) +
+  stat_smooth(se=FALSE) +
+  labs(y="probability of passing the Bechdel test")
+```
+
+
+
+
+<br>
+<br>
+
+
+
+

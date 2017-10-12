@@ -1,0 +1,11 @@
+set Items := 1 2 3 4;
+
+param capacity = 14;
+#param benefit := 16 22 8 12;
+#param mass := 5 7 3 4;
+
+param: benefit mass :=
+	1	16	5
+	2	22	7
+	3	8	3
+	4	12	4 ;

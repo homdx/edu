@@ -1,0 +1,8 @@
+set Products := bands coils plates;
+
+param total_hours := 40;
+
+param:      profit_per_mass    mass_per_hour    capacity    :=
+  bands     200                25               6000
+  coils     140                30               4000
+  plates    180                28               5000 ;

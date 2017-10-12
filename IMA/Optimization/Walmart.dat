@@ -1,0 +1,19 @@
+set Locations := Bloomington Rochester Duluth;
+set Stores := S1 S2 S3 S4;
+
+param: opening_cost :=
+	Bloomington  170
+	Rochester    150
+	Duluth       130 ;
+
+param: demand :=
+	S1    40
+	S2    50
+	S3    60
+	S4    70 ;
+
+param transport_cost:
+	           	S1	S2	S3	S4  :=
+	Bloomington	20	25	15	30
+	Rochester  	25	30	40	23
+	Duluth     	30	45	35	50 ;

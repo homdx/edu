@@ -1,0 +1,134 @@
+---
+title: "US Mass Shootings"
+author: "Sudip Sinha"
+date: "June 18, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+```
+
+```{r import, include=FALSE}
+# Import
+MJ = read.csv("https://www.macalester.edu/~ajohns24/data/MassShootings.csv")
+MJ$Date = as.Date(MJ$Day, format="%m/%d/%y")
+```
+
+
+## Cases
+```{r 1a}
+# 1a
+MJ$Event
+```
+
+## Summary
+```{r 1b}
+# 1b
+cat("Number of cases: ", nrow(MJ))
+
+cat("First cases:")
+head(MJ)
+
+cat("Variable names: ", paste(names(MJ), collapse = ", "))
+```
+
+
+## Mental illness
+```{r}
+# 2a
+paste(levels(MJ$MentalIllness), collapse = ", ")
+
+# 2b
+table(MJ$MentalIllness)
+
+# 2c
+ggplot(MJ, aes(x=MentalIllness)) + 
+    geom_bar(fill="blue") + 
+    labs(x="Mental illness")
+```
+
+It is quite clear from the bar graph that people with mental illness have been significantly more responsible for mass shootings.
+
+
+## Age
+```{r}
+# 3a
+boxplot(MJ$Age)
+
+# 3b
+ggplot(MJ, aes(x=Age)) + 
+	geom_histogram(color="red",fill="yellow", binwidth = 0.5)
+
+ggplot(MJ, aes(x=Age)) + 
+	geom_histogram(color="red",fill="yellow", binwidth = 50)
+```
+
+With very small bin widths, there is overfitting and we cannot obtain the broad idea (too much information). With very small bin widths, there is underfitting and we do not have any information.
+
+```{r}
+# 3d
+ggplot(MJ, aes(x=Age)) + 
+	geom_density(fill="blue")
+
+```
+
+Among the three plots, I prefer the density plot the most. This is because it gives an continuous idea of the distribution.
+
+
+## Age trends and variability
+```{r}
+# 4a
+mean(MJ$Age)
+median(MJ$Age)
+```
+
+The units are the same as the data, that is, years.
+
+```{r}
+# 4b
+var(MJ$Age)
+sd(MJ$Age)
+```
+
+The unit of variance is squared years, and the unit of standard deviation is years.
+
+```{r}
+# 4c
+c(mean(MJ$Age) - 2*sd(MJ$Age), mean(MJ$Age) + 2*sd(MJ$Age))
+
+# 4d
+quantile(MJ$Age, c(0.025,0.975))
+```
+
+
+## RStudio
+
+```{r}
+# 5a
+ggplot(MJ, aes(x=Age)) + 
+	geom_density(fill="blue") + 
+	labs(title="Crime and Age")
+
+# 5b
+ggplot(MJ, aes(x=Age)) + 
+	geom_density(fill="blue", alpha=0.25) + 
+	labs(title="Crime and Age")
+
+# 5c
+ggplot(MJ, aes(x=Age)) + 
+	geom_density(fill="blue", alpha=0.25) + 
+	labs(title="Crime and Age") + 
+	geom_vline(aes(xintercept=mean(Age)), color="red") + 
+	geom_vline(aes(xintercept=median(Age)), color="orange")
+
+# 5d
+ggplot(MJ, aes(x=Age)) + 
+	geom_density(fill="blue", alpha=0.25) + 
+	labs(title="Crime and Age") + 
+	geom_vline(aes(xintercept=mean(Age)), color="red") + 
+	geom_vline(aes(xintercept=median(Age)), color="orange") + 
+	xlim(0,100)
+```
+
