@@ -10,3 +10,4 @@ This repository contains small projects and assignments done during my education
     0. Machine Learning - Ulrike von Luxburg @ UHH
     0. Finite Elements - Winnifried Wollner @ UHH
     0. Finite Differences and Finite Volumes - Jens StruckMeier @ UHH
+* IMA - Container for my codes from the IMA Math-to-Industry Boot Camp II

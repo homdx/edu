@@ -8,7 +8,12 @@ from kivy.uix.boxlayout import BoxLayout
 
 class ScatterTextWidget(BoxLayout):
 	pass
-
+	# Create the method here.
+	# def change_label_color(self, *args):
+	# 	color = [random.random() for i in range(3)] + [1]
+	# 	label = self.ids['lbl']
+	# 	label.color = color
+		
 class TutorialApp(App):
 	# pass
 	def build(self):
