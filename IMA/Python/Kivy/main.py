@@ -1,41 +1,45 @@
 from kivy.app import App
-# from kivy.uix.button import Button
-# from kivy.uix.label import Label
-# from kivy.uix.scatter import Scatter
-# from kivy.uix.floatlayout import FloatLayout
-# from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+from random import random
 
-class ScatterTextWidget(BoxLayout):
-	pass
-	# Create the method here.
-	# def change_label_color(self, *args):
-	# 	color = [random.random() for i in range(3)] + [1]
-	# 	label = self.ids['lbl']
-	# 	label.color = color
+EXERCISES = ["SQ", "PU", "SU"]
+
+class DisplayWindow(BoxLayout):
+	def press_playpause(self, *args):
+		id_pp = self.ids.button_playpause
+		if id_pp.text == "Start":
+			id_pp.text = "Pause"
+			# Start recording
+		elif id_pp.text == "Continue":
+			id_pp.text = "Pause"
+			# Insert data into the table
+		else:
+			id_pp.text = "Continue"
+			# Pause recording
 		
-class TutorialApp(App):
-	# pass
+		# Update
+		exrcs = EXERCISES[int(random() * 3)]
+		cnt = str(int(random() * 10))
+		self.update(exercise = exrcs, count = cnt)
+
+	def press_stop(self, *args):
+		self.ids.button_playpause.text = "Start"
+		
+		# Update
+		exrcs = EXERCISES[int(random() * 3)]
+		cnt = str(int(random() * 10))
+		self.update(exercise = exrcs, count = cnt)
+
+	def update(self, exercise, count, *args):
+		self.ids.exercise.text = exercise
+		self.ids.count.text = count
+
+
+class BestFitApp(App):
+	"""docstring for BestFitApp"""
 	def build(self):
-		# # return Button(text = "BestFit!!!", font_size = 128)
-		# bl = BoxLayout(orientation = "vertical")
-		# fl = FloatLayout()
-		# sc = Scatter()
+		return DisplayWindow()
 
-		# lbl = Label(text = "Hello!!!", font_size = 64)
-		# ti = TextInput(text = "Team BestFit", font_size = 64, size_hint_y = None, height = 192)
-		# # ti.bind(text = ti_change)
-		# ti.bind(text = lbl.setter("text"))
-
-		# bl.add_widget(ti)
-		# bl.add_widget(fl)
-		# fl.add_widget(sc)
-		# sc.add_widget(lbl)
-		# return bl
-		return ScatterTextWidget()
-
-# def ti_change(*args):
-# 	print("Text changed!")
-
+	
 if __name__ == "__main__":
-	TutorialApp().run()
+	BestFitApp().run()

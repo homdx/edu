@@ -1,0 +1,41 @@
+#:import random random
+
+<DisplayWindow>:
+	orientation: "vertical"
+
+
+	Label:
+		text: "BestFit"
+
+
+	BoxLayout:
+		orientation: "horizontal"
+
+		Button:
+			id: button_playpause
+			text: "Start"
+			on_press: root.press_playpause()
+
+		Button:
+			id: button_stop
+			text: "Stop"
+			on_press: root.press_stop()
+
+
+	GridLayout:
+		rows: 2
+		cols: 2
+
+		Label:
+			text: "Type"
+
+		Label:
+			text: "Count"
+
+		Label:
+			id: exercise
+			text: "SQ"
+
+		Label:
+			id: count
+			text: "0"
