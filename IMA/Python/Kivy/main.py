@@ -1,10 +1,12 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
+# from kivy.properties import ListProperty
 from random import random
 
 EXERCISES = ["SQ", "PU", "SU"]
 
 class DisplayWindow(BoxLayout):
+
 	def press_playpause(self, *args):
 		id_pp = self.ids.button_playpause
 		if id_pp.text == "Start":
