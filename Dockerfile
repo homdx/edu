@@ -60,7 +60,7 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
   && cd ~/.buildozer/ \
   && echo "${CRYSTAX_HASH}  crystax-${CRYSTAX_NDK_VERSION}.tar.xz" | sha256sum -c \
   && time tar -xf crystax-${CRYSTAX_NDK_VERSION}.tar.xz && rm ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz \
-    && echo '-----Python 3 ----' && time buildozer android debug || echo "Fix build apk" \
+    && echo '-----Python 3 ----' && cd ${WORK_DIR} && time buildozer android debug || echo "Fix build apk" \
     && sudo rm -rf ${HOME_DIR}/.buildozer && date
 
 CMD tail -f /var/log/faillog
