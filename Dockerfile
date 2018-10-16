@@ -36,7 +36,7 @@ WORKDIR ${WORK_DIR}
 
 COPY IMA/Python/Kivy/ .
 
-RUN chown user /home/user/ -Rvfir tuos  
+RUN chown user /home/user/ -Rv 
 
 USER ${USER}
 
