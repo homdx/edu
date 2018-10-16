@@ -103,7 +103,7 @@ fullscreen = 0
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-android.ndk_path = /mnt/c/Users/sudip/GitHub/crystax-ndk-10.3.2
+android.ndk_path = /home/user/.buildozer/crystax-10.3.1
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path =
