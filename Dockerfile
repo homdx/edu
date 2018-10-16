@@ -61,7 +61,7 @@ RUN cd /tmp/ && buildozer init && buildozer android adb -- version \
   && echo "${CRYSTAX_HASH}  crystax-${CRYSTAX_NDK_VERSION}.tar.xz" | sha256sum -c \
   && time tar -xf crystax-${CRYSTAX_NDK_VERSION}.tar.xz && rm ~/.buildozer/crystax-${CRYSTAX_NDK_VERSION}.tar.xz \
     && echo '-----Python 3 ----' && cd ${WORK_DIR} && time buildozer android debug || echo "Fix build apk" \
-    && sudo rm -rf ${HOME_DIR}/.buildozer && date
+    && sudo rm -rf ${HOME_DIR}/.buildozer && date && cp -v /home/user/hostcwd/.buildozer/android/platform/build/dists/kivycrash/bin/KivyCrashCourse-0.1-debug.apk ${HOME_DIR}
 
 CMD tail -f /var/log/faillog
 
